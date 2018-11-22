@@ -18,6 +18,7 @@ import './icons' // icon
 import './errorLog' // error log
 import './permission' // permission control
 import './mock' // simulation data
+import { checkPermission } from '@/utils/permission'
 
 import * as filters from './filters' // global filters
 
@@ -32,6 +33,8 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
+
+Vue.prototype.checkPermission = checkPermission
 
 new Vue({
   el: '#app',

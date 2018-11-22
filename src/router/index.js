@@ -110,6 +110,7 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
+
   {
     path: '/permission',
     component: Layout,
@@ -151,6 +152,26 @@ export const asyncRouterMap = [
         component: () => import('@/views/svg-icons/index'),
         name: 'Icons',
         meta: { title: 'icons', icon: 'icon', noCache: true }
+      }
+    ]
+  },
+
+  {
+    path: '/role',
+    component: Layout,
+    meta: {
+      title: 'systemManage',
+      icon: 'lock'
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/role/index'),
+        icon: 'permission',
+        meta: {
+          title: 'systemManage',
+          icon: 'lock'
+        }
       }
     ]
   },
