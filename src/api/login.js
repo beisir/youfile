@@ -20,7 +20,6 @@ export function logout() {
 }
 
 export function getUserInfo() {
-  console.log('1-1-23123123')
   return request({
     url: '/user/info',
     method: 'post'

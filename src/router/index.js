@@ -160,6 +160,7 @@ export const asyncRouterMap = [
     path: '/system',
     component: Layout,
     redirect: 'noredirect',
+    name: 'systemManage',
     meta: {
       title: 'systemManage',
       icon: 'lock'
@@ -168,6 +169,7 @@ export const asyncRouterMap = [
       {
         path: '/user/index',
         component: () => import('@/views/system/user/index'),
+        name: 'userManage',
         icon: 'permission',
         meta: {
           title: 'userManage',
@@ -178,6 +180,7 @@ export const asyncRouterMap = [
         path: '/role/index',
         component: () => import('@/views/system/role/index'),
         icon: 'permission',
+        name: 'roleManage',
         meta: {
           title: 'roleManage',
           icon: 'lock'
