@@ -157,19 +157,29 @@ export const asyncRouterMap = [
   },
 
   {
-    path: '/role',
+    path: '/system',
     component: Layout,
+    redirect: 'noredirect',
     meta: {
       title: 'systemManage',
       icon: 'lock'
     },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/role/index'),
+        path: '/user/index',
+        component: () => import('@/views/system/user/index'),
         icon: 'permission',
         meta: {
-          title: 'systemManage',
+          title: 'userManage',
+          icon: 'lock'
+        }
+      },
+      {
+        path: '/role/index',
+        component: () => import('@/views/system/role/index'),
+        icon: 'permission',
+        meta: {
+          title: 'roleManage',
           icon: 'lock'
         }
       }

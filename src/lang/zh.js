@@ -63,7 +63,9 @@ export default {
     clipboardDemo: 'Clipboard',
     i18n: '国际化',
     externalLink: '外链',
-    systemManage: '系统管理'
+    systemManage: '系统管理',
+    roleManage: '角色管理',
+    userManage: '用户管理'
   },
   navbar: {
     logOut: '退出登录',
