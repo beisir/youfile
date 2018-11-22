@@ -201,6 +201,9 @@ export default {
     }
   },
   methods: {
+    checkPermission(param) {
+      return true
+    },
     /**
        * 获取所有角色权限
        */
