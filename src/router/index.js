@@ -7,10 +7,13 @@ Vue.use(Router)
 import Layout from '@/views/layout/Layout'
 
 /* Router Modules */
-import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
-import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
+import goodsRouter from './modules/goods'
+import orderRouter from './modules/order'
+import payRouter from './modules/pay'
+// import componentsRouter from './modules/components'
+// import chartsRouter from './modules/charts'
+// import tableRouter from './modules/table'
+// import nestedRouter from './modules/nested'
 
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -74,32 +77,6 @@ export const constantRouterMap = [
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
       }
     ]
-  },
-  {
-    path: '/documentation',
-    component: Layout,
-    redirect: '/documentation/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'documentation', icon: 'documentation', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/guide',
-    component: Layout,
-    redirect: '/guide/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: 'guide', icon: 'guide', noCache: true }
-      }
-    ]
   }
 ]
 
@@ -110,7 +87,6 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-
   {
     path: '/permission',
     component: Layout,
@@ -188,12 +164,185 @@ export const asyncRouterMap = [
       }
     ]
   },
-
+  /** 结算**/
+  {
+    path: '/settlement',
+    component: Layout,
+    alwaysShow: true,
+    redirect: 'noredirect',
+    meta: {
+      title: 'settlement',
+      icon: 'money'
+    },
+    children: [
+      {
+        path: '/settlementManage/index',
+        component: () => import('@/views/settlement/settlementManage/index'),
+        name: 'settlementManage',
+        meta: {
+          title: 'settlementManage'
+        }
+      }
+    ]
+  },
+  /** 商户**/
+  {
+    path: '/merchant',
+    component: Layout,
+    redirect: 'noredirect',
+    meta: {
+      title: 'merchant',
+      icon: 'peoples'
+    },
+    children: [
+      {
+        path: '/wholesaleList/index',
+        component: () => import('@/views/merchant/wholesaleList/index'),
+        name: 'wholesaleList',
+        meta: {
+          title: 'wholesaleList'
+        }
+      },
+      {
+        path: '/retailList/index',
+        component: () => import('@/views/merchant/retailList/index'),
+        name: 'retailList',
+        meta: {
+          title: 'retailList'
+        }
+      },
+      {
+        path: '/qualificationsManage/index',
+        component: () => import('@/views/merchant/qualificationsManage/index'),
+        name: 'qualificationsManage',
+        meta: {
+          title: 'qualificationsManage'
+        }
+      },
+      {
+        path: '/openPayment/index',
+        component: () => import('@/views/merchant/openPayment/index'),
+        name: 'openPayment',
+        meta: {
+          title: 'openPayment'
+        }
+      }
+    ]
+  },
+  /** 小云店**/
+  {
+    path: '/store',
+    component: Layout,
+    redirect: 'noredirect',
+    meta: {
+      title: 'store',
+      icon: 'tab'
+    },
+    children: [
+      {
+        path: '/wholesaleManage/index',
+        component: () => import('@/views/store/wholesaleManage/index'),
+        name: 'wholesaleManage',
+        meta: {
+          title: 'wholesaleManage'
+        }
+      },
+      {
+        path: '/retailManage/index',
+        component: () => import('@/views/store/retailManage/index'),
+        name: 'retailManage',
+        meta: {
+          title: 'retailManage'
+        }
+      }
+    ]
+  },
+  /** 客户**/
+  {
+    path: '/usersManage',
+    component: Layout,
+    redirect: 'noredirect',
+    meta: {
+      title: 'usersManage',
+      icon: 'user'
+    },
+    children: [
+      {
+        path: '/userList/index',
+        component: () => import('@/views/usersManage/userList/index'),
+        name: 'userList',
+        meta: {
+          title: 'userList'
+        }
+      },
+      {
+        path: '/customerList/index',
+        component: () => import('@/views/usersManage/customerList/index'),
+        name: 'customerList',
+        meta: {
+          title: 'customerList'
+        }
+      },
+      {
+        path: '/buyerList/index',
+        component: () => import('@/views/usersManage/buyerList/index'),
+        name: 'buyerList',
+        meta: {
+          title: 'buyerList'
+        }
+      }
+    ]
+  },
+  /** 商贸云管理**/
+  {
+    path: '/mallManage',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'mallManage',
+      icon: 'tree'
+    },
+    children: [
+      {
+        path: '/mallManage/index',
+        component: () => import('@/views/mallManage/mallList/index'),
+        name: 'mallList',
+        meta: {
+          title: 'mallList'
+        }
+      }
+    ]
+  },
+  /** 销售中心**/
+  {
+    path: '/salesCenter',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'salesCenter',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: '/cloudProducts/index',
+        component: () => import('@/views/salesCenter/cloudProducts/index'),
+        name: 'cloudProducts',
+        meta: {
+          title: 'cloudProducts'
+        }
+      }
+    ]
+  },
   /** When your routing table is too long, you can split it into small modules**/
-  componentsRouter,
-  chartsRouter,
-  nestedRouter,
-  tableRouter,
+  goodsRouter,
+  orderRouter,
+  payRouter,
+  // componentsRouter,
+  // chartsRouter,
+  // nestedRouter,
+  // tableRouter,
 
   {
     path: '/example',
