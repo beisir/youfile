@@ -25,7 +25,6 @@ export default {
     retailManage: 'Retail Manage',
     usersManage: 'User Manage',
     userList: 'User List',
-    customerList: 'Customer List',
     buyerList: 'Buyer List',
     mallManage: 'Mall Manage',
     mallList: 'Mall List',

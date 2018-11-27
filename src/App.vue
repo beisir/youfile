@@ -9,3 +9,7 @@ export default{
   name: 'App'
 }
 </script>
+<style>
+  .el-pagination{padding: 30px 0;}
+</style>
+

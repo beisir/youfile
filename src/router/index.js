@@ -276,14 +276,6 @@ export const asyncRouterMap = [
         }
       },
       {
-        path: '/customerList/index',
-        component: () => import('@/views/usersManage/customerList/index'),
-        name: 'customerList',
-        meta: {
-          title: 'customerList'
-        }
-      },
-      {
         path: '/buyerList/index',
         component: () => import('@/views/usersManage/buyerList/index'),
         name: 'buyerList',

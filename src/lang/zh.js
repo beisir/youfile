@@ -25,7 +25,6 @@ export default {
     retailManage: '新零售小云店',
     usersManage: '客户',
     userList: '用户列表',
-    customerList: '客户列表',
     buyerList: '进货商列表',
     mallManage: '商贸云管理',
     mallList: '商贸云列表',
