@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import request_upload_api from '@/utils/request_upload'
 
 export function getList(params) {
   return request({
@@ -12,5 +13,60 @@ export function getListRetail(params) {
     url: '/merchant/list/retail',
     method: 'post',
     data: params
+  })
+}
+export function getMerchantRetail(params) {
+  return request({
+    url: '/merchant/detail/' + params,
+    method: 'get'
+  })
+}
+export function editMerchantRetail(params) {
+  return request({
+    url: '/merchant/detail/',
+    method: 'put',
+    data: params
+  })
+}
+export function getImgUrl(params) {
+  return request({
+    url: '/base/image/sign',
+    method: 'put',
+    data: params
+  })
+}
+export function uploadImgUrl(params) {
+  return request_upload_api({
+    url: '/base/image',
+    method: 'post',
+    data: params
+  })
+}
+export function getProvinceList(params) {
+  return request({
+    url: '/district/type/province',
+    method: 'get',
+    params
+  })
+}
+export function getCityChildList(params) {
+  return request({
+    url: '/district/parentcode',
+    method: 'get',
+    params
+  })
+}
+export function getHeadbankList(params) {
+  return request({
+    url: '/headbank/' + params.bankName,
+    method: 'get',
+    params
+  })
+}
+export function getSmallbankList(params) {
+  return request({
+    url: '/subbank/' + params.headBankCode,
+    method: 'get',
+    params
   })
 }

@@ -28,23 +28,36 @@
       <el-table-column
         prop="createDate"
         label="创建时间"
+        width="180"
         align="center">
         <template slot-scope="scope">
           {{ unix2CurrentTime(scope.row.createDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="分类"
+        align="center">
+        <template slot-scope="scope">
+          <el-tree :data="scope.row.subGoodsCategoryList" :props="defaultProps" @node-click="handleNodeClick"/>
         </template>
       </el-table-column>
     </el-table>
   </div>
 </template>
 <script>
-import { getList } from '@/api/goods'
+import { getClassList } from '@/api/goods'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
       listLoading: false,
       parentCategoryCode: 0,
-      tableData: []
+      tableData: [],
+      defaultProps: {
+        children: 'subGoodsCategoryList',
+        label: 'name'
+      }
     }
   },
   created() {
@@ -52,13 +65,14 @@ export default {
   },
   methods: {
     unix2CurrentTime,
+    handleNodeClick(data) {
+    },
     /**
        * 获取列表
        */
     getList() {
       this.listLoading = true
-      getList(this.parentCategoryCode).then(response => {
-        console.log(response.data.result)
+      getClassList(this.parentCategoryCode).then(response => {
         this.tableData = response.data.obj
         this.listLoading = false
       })

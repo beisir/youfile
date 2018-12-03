@@ -20,6 +20,7 @@ export default {
     retailList: '新零售列表',
     qualificationsManage: '资质管理',
     openPayment: '开通支付',
+    merchantDetails: '商户详情',
     store: '小云店',
     wholesaleManage: '新批零小云店',
     retailManage: '新零售小云店',
