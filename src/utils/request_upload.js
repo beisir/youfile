@@ -32,7 +32,7 @@ service.interceptors.request.use(config => {
 // response拦截器
 service.interceptors.response.use(
   response => {
-    if (response.data.code === 200) {
+    if (response.status === 200) {
       return response.data
     } else {
       Message({

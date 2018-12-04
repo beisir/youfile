@@ -29,10 +29,10 @@ export function editMerchantRetail(params) {
   })
 }
 export function getImgUrl(params) {
-  return request({
+  return request_upload_api({
     url: '/base/image/sign',
-    method: 'put',
-    data: params
+    method: 'get',
+    params
   })
 }
 export function uploadImgUrl(params) {
