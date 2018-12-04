@@ -30,6 +30,7 @@ export default {
     mallList: '商贸云列表',
     salesCenter: '销售中心',
     cloudProducts: '云产品订单',
+    cloudProductsDetail: '云产品详情',
     introduction: '简述',
     documentation: '文档',
     guide: '引导页',

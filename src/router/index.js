@@ -324,6 +324,15 @@ export const asyncRouterMap = [
         meta: {
           title: 'cloudProducts'
         }
+      },
+      {
+        path: '/cloudProducts/detail',
+        component: () => import('@/views/salesCenter/cloudProducts/detail'),
+        name: 'cloudProductsDetail',
+        meta: {
+          title: 'cloudProductsDetail'
+        },
+        hidden: true
       }
     ]
   },
