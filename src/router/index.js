@@ -221,6 +221,15 @@ export const asyncRouterMap = [
         hidden: true
       },
       {
+        path: '/merchantDetails/indexFen',
+        component: () => import('@/views/merchant/merchantDetails/indexFen'),
+        name: 'merchantDetailsFen',
+        meta: {
+          title: 'merchantDetailsFen'
+        },
+        hidden: true
+      },
+      {
         path: '/qualificationsManage/index',
         component: () => import('@/views/merchant/qualificationsManage/index'),
         name: 'qualificationsManage',

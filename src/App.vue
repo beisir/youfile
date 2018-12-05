@@ -10,6 +10,11 @@ export default{
 }
 </script>
 <style>
-  .el-pagination{padding: 30px 0;}
+  .el-pagination{
+    padding: 30px 0;
+  }
+  label{
+    font-weight: normal
+  }
 </style>
 

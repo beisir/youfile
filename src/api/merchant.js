@@ -15,6 +15,13 @@ export function getListRetail(params) {
     data: params
   })
 }
+export function getListMerchantRetail(params) {
+  return request({
+    url: '/merchant/list',
+    method: 'post',
+    data: params
+  })
+}
 export function getMerchantRetail(params) {
   return request({
     url: '/merchant/detail/' + params,
@@ -70,3 +77,17 @@ export function getSmallbankList(params) {
     params
   })
 }
+export function getStoreMes(merchantNumber) {
+  return request({
+    url: '/merchant/miniprogram/' + merchantNumber + '/list',
+    method: 'get'
+  })
+}
+export function saveupdate(params) {
+  return request({
+    url: '/merchant/miniprogram/saveupdate',
+    method: 'post',
+    data: params
+  })
+}
+

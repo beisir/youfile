@@ -21,6 +21,7 @@ export default {
     qualificationsManage: 'Qualifications Manage',
     openPayment: 'Open Payment',
     merchantDetails: 'Merchant Details',
+    merchantDetailsFen: 'Merchant Details',
     store: 'Store',
     wholesaleManage: 'Wholesale Manage',
     retailManage: 'Retail Manage',
