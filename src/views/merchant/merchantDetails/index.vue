@@ -636,7 +636,7 @@ export default {
       // console.log(tab, event);
     },
     merchantCharacter(event) {
-      if (event === 3) {
+      if (event === '3') {
         this.enterpriseShow = true
       } else {
         this.enterpriseShow = false
@@ -652,6 +652,8 @@ export default {
     handleRemove(file, fileList) {
       // console.log(file)
       // console.log(fileList)
+      // console.log(this.idCardFaceUrl)
+      // console.log(this.idCardFaceUrlList)
       // this.param = new FormData()
       // this.param.append('file', file, file.name)
       // uploadImgUrl(this.param).then(response => {
@@ -771,7 +773,7 @@ export default {
       this.signHide = this.$route.query.sign
       getMerchantRetail(routerParams).then(response => {
         this.merchantRetail = response.data.merchantVO
-        if (response.data.merchantVO.merchantCharacter === 3) {
+        if (response.data.merchantVO.merchantCharacter === '3') {
           this.enterpriseShow = true
         } else {
           this.enterpriseShow = false
@@ -846,7 +848,7 @@ export default {
       const merchantRetail = this.merchantRetail
       delete (merchantRetail['createDate'])
       delete (merchantRetail['updateTime'])
-      if (this.merchantRetail.merchantCharacter === 3) {
+      if (this.merchantRetail.merchantCharacter === '3') {
         merchantSettleVO.settlementCardUrlList = ''
         merchantQualificationVO.handIdCardUrl = ''
         if (this.activeName === 'second') {
