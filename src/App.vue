@@ -16,5 +16,8 @@ export default{
   label{
     font-weight: normal
   }
+  .block .el-form-item__content input, .block .el-form-item__content select{
+    width: 200px;
+  }
 </style>
 

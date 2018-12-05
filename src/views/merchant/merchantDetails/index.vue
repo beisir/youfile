@@ -84,78 +84,80 @@
             <el-form-item label="组织机构代码证" prop="organCertificateNo">
               <el-input :readonly="readonly" v-model="merchantQualificationVO.organCertificateNo"/>
             </el-form-item>
-            <el-col :span="12">
-              <el-form-item label="营业执照" prop="businessLicenseUrl">
-                <el-upload
-                  :on-remove="handleRemoveSuccess"
-                  :limit="1"
-                  :file-list="fileList"
-                  :on-preview="handlePictureCardPreview"
-                  :on-success="handleSuccess"
-                  :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                  list-type="picture-card"
-                >
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img :src="businessLicenseUrl" width="100%" alt="">
-                  </el-dialog>
-                  <i class="el-icon-plus avatar-uploader-icon"/>
-                </el-upload>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="税务登记证" prop="taxRegisterCertificateUrl">
-                <el-upload
-                  :on-remove="handleRemovePreview"
-                  :limit="1"
-                  :file-list="taxRegisterCertificateUrlList"
-                  :on-preview="handlePictureCardPreview"
-                  :on-success="handleSuccessRegister"
-                  :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                  list-type="picture-card"
-                >
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img :src="taxRegisterCertificateUrl" width="100%" alt="">
-                  </el-dialog>
-                  <i class="el-icon-plus avatar-uploader-icon"/>
-                </el-upload>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="组织机构代码证" prop="organCodeCertificateUrl">
-                <el-upload
-                  :on-remove="handleRemoveOrgan"
-                  :limit="1"
-                  :file-list="organCodeCertificateUrlList"
-                  :on-preview="handlePictureCardPreview"
-                  :on-success="handleSuccessOrgan"
-                  :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                  list-type="picture-card"
-                >
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img :src="organCodeCertificateUrl" width="100%" alt="">
-                  </el-dialog>
-                  <i class="el-icon-plus avatar-uploader-icon"/>
-                </el-upload>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="银行开户许可证" prop="bankOrganUrl">
-                <el-upload
-                  :on-remove="handleRemovePictureCard"
-                  :limit="1"
-                  :file-list="bankOrganUrlList"
-                  :on-preview="handlePictureCardPreview"
-                  :on-success="handleSuccessBank"
-                  :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                  list-type="picture-card"
-                >
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img :src="bankOrganUrl" width="100%" alt="">
-                  </el-dialog>
-                  <i class="el-icon-plus avatar-uploader-icon"/>
-                </el-upload>
-              </el-form-item>
-            </el-col>
+            <div>
+              <el-col :span="12">
+                <el-form-item label="营业执照" prop="businessLicenseUrl">
+                  <el-upload
+                    :on-remove="handleRemoveSuccess"
+                    :limit="1"
+                    :file-list="fileList"
+                    :on-preview="handlePictureCardPreview"
+                    :on-success="handleSuccess"
+                    :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+                    list-type="picture-card"
+                  >
+                    <el-dialog :visible.sync="dialogVisible">
+                      <img :src="businessLicenseUrl" width="100%" alt="">
+                    </el-dialog>
+                    <i class="el-icon-plus avatar-uploader-icon"/>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="税务登记证" prop="taxRegisterCertificateUrl">
+                  <el-upload
+                    :on-remove="handleRemovePreview"
+                    :limit="1"
+                    :file-list="taxRegisterCertificateUrlList"
+                    :on-preview="handlePictureCardPreview"
+                    :on-success="handleSuccessRegister"
+                    :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+                    list-type="picture-card"
+                  >
+                    <el-dialog :visible.sync="dialogVisible">
+                      <img :src="taxRegisterCertificateUrl" width="100%" alt="">
+                    </el-dialog>
+                    <i class="el-icon-plus avatar-uploader-icon"/>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="组织机构代码证" prop="organCodeCertificateUrl">
+                  <el-upload
+                    :on-remove="handleRemoveOrgan"
+                    :limit="1"
+                    :file-list="organCodeCertificateUrlList"
+                    :on-preview="handlePictureCardPreview"
+                    :on-success="handleSuccessOrgan"
+                    :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+                    list-type="picture-card"
+                  >
+                    <el-dialog :visible.sync="dialogVisible">
+                      <img :src="organCodeCertificateUrl" width="100%" alt="">
+                    </el-dialog>
+                    <i class="el-icon-plus avatar-uploader-icon"/>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="银行开户许可证" prop="bankOrganUrl">
+                  <el-upload
+                    :on-remove="handleRemovePictureCard"
+                    :limit="1"
+                    :file-list="bankOrganUrlList"
+                    :on-preview="handlePictureCardPreview"
+                    :on-success="handleSuccessBank"
+                    :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+                    list-type="picture-card"
+                  >
+                    <el-dialog :visible.sync="dialogVisible">
+                      <img :src="bankOrganUrl" width="100%" alt="">
+                    </el-dialog>
+                    <i class="el-icon-plus avatar-uploader-icon"/>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+            </div>
           </el-tab-pane>
           <el-tab-pane label="统一社会信用代码证" name="second">
             <el-col :span="12">
@@ -280,7 +282,7 @@
           <el-input :readonly="readonly" v-model="merchantSettleVO.accountName"/>
         </el-form-item>
         <el-form-item label="开户银行总行" prop="headBankName">
-          <el-input :readonly="readonly" v-model="merchantSettleVO.headBankName" @blur="blurInput" @input="changeInput"/>
+          <el-input :readonly="readonly" v-model="merchantSettleVO.headBankName" @input="changeInput"/>
           <div v-if="showModel" class="ser-sel">
             <el-table
               :data="bankData"
@@ -299,21 +301,25 @@
         </el-form-item>
         <el-form-item label="开户银行省份" prop="bankProvince">
           <el-select v-model="merchantSettleVO.bankProvince" placeholder="请选择" @change="onSelectedBank($event)">
+            <el-option label="请选择" value="">请选择</el-option>
             <el-option v-for="item in areaData" :label="item.name" :value="item.code" :key="item.id"/>
           </el-select>
         </el-form-item>
         <el-form-item label="开户行城市" prop="bankCity">
           <el-select v-model="merchantSettleVO.bankCity" placeholder="请选择" @change="onSelectedCityBank($event)">
+            <el-option label="请选择" value="">请选择</el-option>
             <el-option v-for="item in bankCityData" :label="item.name" :value="item.code" :key="item.id"/>
           </el-select>
         </el-form-item>
         <el-form-item label="开户行支行" prop="subBankName">
           <el-select v-model="merchantSettleVO.subBankName" placeholder="请选择" @change="selectedSubBankCode($event)">
+            <el-option label="请选择" value="">请选择</el-option>
             <el-option v-for="item in smallBankData" :label="item.bankName" :value="item.bankCode" :key="item.id"/>
           </el-select>
         </el-form-item>
         <el-form-item label="结算方式" prop="settleType">
           <el-select v-model="merchantSettleVO.settleType" placeholder="请选择" @change="settleTypeFun($event)">
+            <el-option label="请选择" value="">请选择</el-option>
             <el-option label="自助结算" value="1">自助结算</el-option>
             <el-option label="手动结算" value="2">手动结算</el-option>
           </el-select>
@@ -548,7 +554,7 @@ export default {
       merchantNumber: '',
       signHide: false,
       showModel: false,
-      formLabelWidth: '180px',
+      formLabelWidth: '210px',
       param: '',
       listQuery: {
         pageNum: 1, // 页码
@@ -635,14 +641,22 @@ export default {
       this.merchantRetail.countyCode = event
       this.merchantRetail.county = name
     },
+    getBankCityData(listQuery) {
+      getCityChildList(listQuery).then(response => {
+        this.bankCityData = response.data.obj.result
+      })
+    },
     onSelectedBank(event) {
       const name = this.getDataName(this.areaData, event)
       this.merchantSettleVO.bankProvinceCode = event
       this.merchantSettleVO.bankProvince = name
       const listQuery = this.listQuery
       listQuery.parentCode = event
-      getCityChildList(listQuery).then(response => {
-        this.bankCityData = response.data.obj.result
+      this.getBankCityData(listQuery)
+    },
+    getSmallbankListData(listQuery) {
+      getSmallbankList(listQuery).then(response => {
+        this.smallBankData = response.data.obj.result
       })
     },
     onSelectedCityBank(event) {
@@ -654,9 +668,7 @@ export default {
       listQuery.headBankCode = this.merchantSettleVO.headBankCode
       listQuery.provinceCode = provinceCode
       listQuery.cityCode = event
-      getSmallbankList(listQuery).then(response => {
-        this.smallBankData = response.data.obj.result
-      })
+      this.getSmallbankListData(listQuery)
     },
     getDataNankName(arr, event) {
       let obj = {}
@@ -681,11 +693,6 @@ export default {
         })
       }
     },
-    blurInput() {
-      if (!this.showModel) {
-        this.$message.error('未选择开户银行总行！')
-      }
-    },
     // 商户性质
     merchantType(event) {
       this.merchantRetail.merchantType = event
@@ -702,7 +709,7 @@ export default {
     },
     alertBank(index, row) {
       this.merchantSettleVO.headBankCode = row.bankCode
-      this.merchantSettleVO.bankName = row.bankName
+      this.merchantSettleVO.headBankName = row.bankName
       this.showModel = false
     },
     // 删除图片
@@ -843,6 +850,19 @@ export default {
         }
         if (response.data.merchantSettleVO) {
           const settlementCardUrl = response.data.merchantSettleVO.settlementCardUrl
+          const bankProvinceCode = response.data.merchantSettleVO.bankProvinceCode
+          const cityCode = response.data.merchantSettleVO.cityCode
+          if (bankProvinceCode) {
+            const listQuery = this.listQuery
+            listQuery.provinceCode = bankProvinceCode
+            listQuery.headBankCode = response.data.merchantSettleVO.headBankCode
+            listQuery.parentCode = bankProvinceCode
+            this.getBankCityData(listQuery)
+            if (cityCode) {
+              listQuery.cityCode = cityCode
+              this.getSmallbankListData(listQuery)
+            }
+          }
           this.merchantSettleVO = response.data.merchantSettleVO
           if (settlementCardUrl) {
             this.getImageUrl(settlementCardUrl, 'settlementCardUrl')
@@ -876,26 +896,6 @@ export default {
           const merchantRetail = this.merchantRetail
           delete (merchantRetail['createDate'])
           delete (merchantRetail['updateTime'])
-          if (this.merchantRetail.merchantCharacter === '3') {
-            merchantSettleVO.settlementCardUrlList = ''
-            merchantQualificationVO.handIdCardUrl = ''
-            if (this.activeName === 'second') {
-              merchantQualificationVO.businessLicenseNo = ''
-              merchantQualificationVO.taxCertificateNo = ''
-              merchantQualificationVO.organCertificateNo = ''
-            } else {
-              merchantQualificationVO.unifiedCertificateNo = ''
-              merchantQualificationVO.openCertificateNo = ''
-              merchantQualificationVO.organCertificateNo = ''
-            }
-          } else {
-            merchantQualificationVO.businessLicenseNo = ''
-            merchantQualificationVO.taxCertificateNo = ''
-            merchantQualificationVO.organCertificateNo = ''
-            merchantQualificationVO.unifiedCertificateNo = ''
-            merchantQualificationVO.openCertificateNo = ''
-            merchantQualificationVO.organCertificateNo = ''
-          }
           const merchantDetail = { merchantNumber: this.merchantNumber, merchantQualificationVO: merchantQualificationVO, merchantSettleVO: this.merchantSettleVO, merchantVO: this.merchantRetail }
           editMerchantRetail(merchantDetail).then(response => {
             this.$message({
@@ -903,7 +903,7 @@ export default {
               type: 'success'
             })
             this.$router.push({
-              path: '/retailList/index'
+              path: '/qualificationsManage/index'
             })
           })
             .catch(response => {
