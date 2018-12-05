@@ -295,15 +295,11 @@
             </el-form-item>
           </el-col>
         </div>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="组织机构代码证是否长期有效" prop="organType">
-              <el-select v-model="merchantQualificationVO.organType" placeholder="请选择" @change="organTypeDataFun($event)">
-                <el-option v-for="item in organTypeData" :label="item.name" :value="item.code" :key="item.id"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="组织机构代码证是否长期有效" prop="organType">
+          <el-select v-model="merchantQualificationVO.organType" placeholder="请选择" @change="organTypeDataFun($event)">
+            <el-option v-for="item in organTypeData" :label="item.name" :value="item.code" :key="item.id"/>
+          </el-select>
+        </el-form-item>
       </el-form>
     </div>
     <div class="block">
