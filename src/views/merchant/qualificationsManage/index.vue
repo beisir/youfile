@@ -26,27 +26,22 @@
       <el-table-column
         prop="merchantName"
         label="店铺名称"
-        width="160"
         align="center"/>
       <el-table-column
         prop="merchantNumber"
         label="店铺编号"
-        width="160"
         align="center"/>
       <el-table-column
         prop="linkman"
         label="联系人"
-        width="160"
         align="center"/>
       <el-table-column
         prop="linkmanPhone"
         label="联系电话"
-        width="160"
         align="center"/>
       <el-table-column
         prop="merchantCharacter"
         label="商户性质"
-        width="160"
         align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantCharacter==&quot;1&quot;">个人</span>
@@ -57,7 +52,6 @@
       <el-table-column
         prop="merchantType"
         label="店铺性质"
-        width="160"
         align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantType==&quot;1&quot;">新批零</span>
@@ -66,6 +60,7 @@
       </el-table-column>
       <el-table-column
         label="操作"
+        width="400"
         align="center">
         <template slot-scope="scope">
           <el-button

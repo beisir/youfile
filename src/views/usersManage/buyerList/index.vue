@@ -28,22 +28,18 @@
       <el-table-column
         prop="storeName"
         label="店铺名称"
-        width="180"
         align="center"/>
       <el-table-column
         prop="storeId"
         label="店铺ID"
-        width="150"
         align="center"/>
       <el-table-column
         prop="merchantNumber"
         label="商户编号"
-        width="150"
         align="center"/>
       <el-table-column
         prop="nickName"
         label="微信昵称"
-        width="180"
         align="center"/>
       <el-table-column
         prop="phone"

@@ -25,22 +25,18 @@
       <el-table-column
         prop="userName"
         label="用户名称"
-        width="180"
         align="center"/>
       <el-table-column
         prop="nickName"
         label="微信昵称"
-        width="180"
         align="center"/>
       <el-table-column
         prop="mobile"
         label="手机号"
-        width="100"
         align="center"/>
       <el-table-column
         prop="weixinNumber"
         label="微信号"
-        width="100"
         align="center"/>
       <el-table-column
         prop="headPic"
