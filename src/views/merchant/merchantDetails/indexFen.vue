@@ -309,7 +309,7 @@
           <el-input :readonly="readonly" v-model="merchantSettleVO.accountName"/>
         </el-form-item>
         <el-form-item label="开户银行总行" prop="headBankName">
-          <el-input :readonly="readonly" v-model="merchantSettleVO.headBankName" @input="changeInput"/>
+          <el-input :readonly="readonly" v-model="merchantSettleVO.headBankName" @blur="blurFun" @input="changeInput"/>
           <div v-if="showModel" class="ser-sel">
             <el-table
               :data="bankData"
@@ -765,6 +765,10 @@ export default {
           this.showModel = true
         })
       }
+    },
+    blurFun() {
+      // this.merchantSettleVO.headBankName=''
+      // console.log(this.merchantSettleVO.headBankName)
     },
     // 商户性质
     merchantType(event) {

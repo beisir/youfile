@@ -19,12 +19,10 @@
       <el-table-column
         prop="name"
         label="商贸云名称"
-        width="180"
         align="center"/>
       <el-table-column
         prop="code"
         label="code"
-        width="180"
         align="center"/>
       <el-table-column
         prop="logo"
