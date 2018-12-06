@@ -41,9 +41,17 @@
         label="商品名称"
         align="center"/>
       <el-table-column
-        prop="storeId"
-        label="店铺Id"
+        prop="categoryName"
+        label="分类"
         align="center"/>
+      <el-table-column
+        prop="mainImgUrl"
+        label="主图"
+        align="center">
+        <template slot-scope="scope">
+          <img :src="imageUrl+scope.row.mainImgUrl" width="40" height="40" class="head_pic">
+        </template>
+      </el-table-column>
       <el-table-column
         prop="status"
         label="状态"
@@ -54,18 +62,6 @@
           <span v-if="scope.row.status==2" style="color: #43E0D6">已下架</span>
           <span v-if="scope.row.status==3" style="color: #670ACE">部分上架</span>
           <span v-if="scope.row.status==4" style="color: #E73E48">没有库存</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="categoryName"
-        label="分类"
-        align="center"/>
-      <el-table-column
-        prop="mainImgUrl"
-        label="主图"
-        align="center">
-        <template slot-scope="scope">
-          <img :src="imageUrl+scope.row.mainImgUrl" width="40" height="40" class="head_pic">
         </template>
       </el-table-column>
     </el-table>
