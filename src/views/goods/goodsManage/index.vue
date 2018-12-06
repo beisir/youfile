@@ -33,16 +33,12 @@
         label="序号"
         align="center"/>
       <el-table-column
-        prop="name"
-        label="商品名称"
-        align="center"/>
-      <el-table-column
         prop="goodsId"
         label="商品ID"
         align="center"/>
       <el-table-column
-        prop="storeName"
-        label="所属店铺"
+        prop="name"
+        label="商品名称"
         align="center"/>
       <el-table-column
         prop="storeId"

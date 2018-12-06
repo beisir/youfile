@@ -23,12 +23,12 @@
         label="序号"
         align="center"/>
       <el-table-column
-        prop="name"
-        label="店铺名称"
+        prop="id"
+        label="店铺编号"
         align="center"/>
       <el-table-column
         prop="merchantNumber"
-        label="店铺编号"
+        label="商户编号"
         align="center"/>
       <el-table-column
         prop="name"

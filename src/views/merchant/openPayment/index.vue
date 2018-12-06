@@ -11,6 +11,14 @@
           <el-option label="零售商" value="2">零售商</el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="在线支付状态">
+        <el-select v-model="formInline.onlinePay" placeholder="请选择">
+          <el-option label="全部" value="">全部</el-option>
+          <el-option label="未开通" value="0">未开通</el-option>
+          <el-option label="已开通" value="1">已开通</el-option>
+          <el-option label="未设置" value="2">未设置</el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="商户名称">
         <el-input v-model="formInline.merchantName" placeholder="请输入商户名称"/>
       </el-form-item>
@@ -59,6 +67,16 @@
         <template slot-scope="scope">
           <span v-if="scope.row.merchantType==&quot;1&quot;">批发商</span>
           <span v-if="scope.row.merchantType==&quot;2&quot;">零售商</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="onlinePay"
+        label="在线支付状态"
+        align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.onlinePay==&quot;0&quot;">未开通</span>
+          <span v-if="scope.row.onlinePay==&quot;1&quot;">已开通</span>
+          <span v-if="scope.row.onlinePay==&quot;2&quot;">未设置</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -138,7 +156,9 @@ export default {
       merchantNumber: '',
       formInline: {
         merchantType: '',
-        merchantName: ''
+        merchantName: '',
+        merchantNumber: '',
+        onlinePay: ''
       },
       merchantMes: {},
       listLoading: false,
