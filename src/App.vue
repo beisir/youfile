@@ -19,5 +19,8 @@ export default{
   .block .el-form-item__content input, .block .el-form-item__content select{
     width: 200px;
   }
+ .block .el-form-item--small{
+    width: 100%
+  }
 </style>
 

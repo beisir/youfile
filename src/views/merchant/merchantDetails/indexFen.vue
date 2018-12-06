@@ -203,98 +203,86 @@
         <el-form-item label="组织机构代码有效期至" prop="organExpireEndDate">
           <el-date-picker v-model="merchantQualificationVO.organExpireEndDate" type="date" placeholder="选择日期" style="width: 100%;"/>
         </el-form-item>
-        <div>
-          <el-col :span="12">
-            <el-form-item label="身份证正面" prop="idCardFaceUrl">
-              <el-upload
-                :on-remove="handleRemove"
-                :limit="1"
-                :file-list="idCardFaceUrlList"
-                :on-preview="handlePictureCardPreview"
-                :on-success="handleSuccessFace"
-                :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                list-type="picture-card"
-              >
-                <el-dialog :visible.sync="dialogVisible">
-                  <img :src="idCardFaceUrl" width="100%" alt="">
-                </el-dialog>
-                <i class="el-icon-plus avatar-uploader-icon"/>
-              </el-upload>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="身份证反面" prop="idCardConUrl">
-              <el-upload
-                :on-remove="handleRemovePreviewidCardConUrl"
-                :limit="1"
-                :file-list="idCardConUrlList"
-                :on-preview="handlePictureCardPreview"
-                :on-success="handleSuccessFaceCon"
-                :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                list-type="picture-card"
-              >
-                <el-dialog :visible.sync="dialogVisible">
-                  <img :src="idCardConUrl" width="100%" alt="">
-                </el-dialog>
-                <i class="el-icon-plus avatar-uploader-icon"/>
-              </el-upload>
-            </el-form-item>
-          </el-col>
-          <el-col v-if="!enterpriseShow" :span="12">
-            <el-form-item label="手持身份证" prop="handIdCardUrl">
-              <el-upload
-                :on-remove="handleRemoveFaceHand"
-                :limit="1"
-                :file-list="handIdCardUrlList"
-                :on-preview="handlePictureCardPreview"
-                :on-success="handleSuccessFaceHand"
-                :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                list-type="picture-card"
-              >
-                <el-dialog :visible.sync="dialogVisible">
-                  <img :src="handIdCardUrl" width="100%" alt="">
-                </el-dialog>
-                <i class="el-icon-plus avatar-uploader-icon"/>
-              </el-upload>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="经营场所门头照" prop="storePhotoUrl">
-              <el-upload
-                :on-remove="handleRemovePhoto"
-                :limit="1"
-                :file-list="storePhotoUrlList"
-                :on-preview="handlePictureCardPreview"
-                :on-success="handleSuccessPhoto"
-                :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                list-type="picture-card"
-              >
-                <el-dialog :visible.sync="dialogVisible">
-                  <img :src="storePhotoUrl" width="100%" alt="">
-                </el-dialog>
-                <i class="el-icon-plus avatar-uploader-icon"/>
-              </el-upload>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="收银台场景照" prop="scenePhoneUrl">
-              <el-upload
-                :on-remove="handleRemovePhone"
-                :limit="1"
-                :file-list="scenePhoneUrlList"
-                :on-preview="handlePictureCardPreview"
-                :on-success="handleSuccessPhone"
-                :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                list-type="picture-card"
-              >
-                <el-dialog :visible.sync="dialogVisible">
-                  <img :src="scenePhoneUrl" width="100%" alt="">
-                </el-dialog>
-                <i class="el-icon-plus avatar-uploader-icon"/>
-              </el-upload>
-            </el-form-item>
-          </el-col>
-        </div>
+        <el-form-item label="身份证正面" prop="idCardFaceUrl">
+          <el-upload
+            :on-remove="handleRemove"
+            :limit="1"
+            :file-list="idCardFaceUrlList"
+            :on-preview="handlePictureCardPreview"
+            :on-success="handleSuccessFace"
+            :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+            list-type="picture-card"
+          >
+            <el-dialog :visible.sync="dialogVisible">
+              <img :src="idCardFaceUrl" width="100%" alt="">
+            </el-dialog>
+            <i class="el-icon-plus avatar-uploader-icon"/>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="身份证反面" prop="idCardConUrl">
+          <el-upload
+            :on-remove="handleRemovePreviewidCardConUrl"
+            :limit="1"
+            :file-list="idCardConUrlList"
+            :on-preview="handlePictureCardPreview"
+            :on-success="handleSuccessFaceCon"
+            :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+            list-type="picture-card"
+          >
+            <el-dialog :visible.sync="dialogVisible">
+              <img :src="idCardConUrl" width="100%" alt="">
+            </el-dialog>
+            <i class="el-icon-plus avatar-uploader-icon"/>
+          </el-upload>
+        </el-form-item>
+        <el-form-item v-if="!enterpriseShow" label="手持身份证" prop="handIdCardUrl">
+          <el-upload
+            :on-remove="handleRemoveFaceHand"
+            :limit="1"
+            :file-list="handIdCardUrlList"
+            :on-preview="handlePictureCardPreview"
+            :on-success="handleSuccessFaceHand"
+            :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+            list-type="picture-card"
+          >
+            <el-dialog :visible.sync="dialogVisible">
+              <img :src="handIdCardUrl" width="100%" alt="">
+            </el-dialog>
+            <i class="el-icon-plus avatar-uploader-icon"/>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="经营场所门头照" prop="storePhotoUrl">
+          <el-upload
+            :on-remove="handleRemovePhoto"
+            :limit="1"
+            :file-list="storePhotoUrlList"
+            :on-preview="handlePictureCardPreview"
+            :on-success="handleSuccessPhoto"
+            :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+            list-type="picture-card"
+          >
+            <el-dialog :visible.sync="dialogVisible">
+              <img :src="storePhotoUrl" width="100%" alt="">
+            </el-dialog>
+            <i class="el-icon-plus avatar-uploader-icon"/>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="收银台场景照" prop="scenePhoneUrl">
+          <el-upload
+            :on-remove="handleRemovePhone"
+            :limit="1"
+            :file-list="scenePhoneUrlList"
+            :on-preview="handlePictureCardPreview"
+            :on-success="handleSuccessPhone"
+            :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+            list-type="picture-card"
+          >
+            <el-dialog :visible.sync="dialogVisible">
+              <img :src="scenePhoneUrl" width="100%" alt="">
+            </el-dialog>
+            <i class="el-icon-plus avatar-uploader-icon"/>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="组织机构代码证是否长期有效" prop="organType">
           <el-select v-model="merchantQualificationVO.organType" placeholder="请选择" @change="organTypeDataFun($event)">
             <el-option v-for="item in organTypeData" :label="item.name" :value="item.code" :key="item.id"/>
