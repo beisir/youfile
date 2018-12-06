@@ -40,8 +40,8 @@
         <el-form-item label="商户类型" prop="merchantType">
           <el-select v-model="merchantRetail.merchantType" placeholder="请选择" @change="merchantType($event)">
             <el-option label="请选择" value="">请选择</el-option>
-            <el-option label="新批零" value="1">新批零</el-option>
-            <el-option label="新零售" value="2">新零售</el-option>
+            <el-option label="批发商" value="1">批发商</el-option>
+            <el-option label="零售商" value="2">零售商</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="商户性质" prop="merchantCharacter">
@@ -312,10 +312,22 @@
           </el-select>
         </el-form-item>
         <el-form-item label="开户行支行" prop="subBankName">
-          <el-select v-model="merchantSettleVO.subBankName" placeholder="请选择" @change="selectedSubBankCode($event)">
-            <el-option label="请选择" value="">请选择</el-option>
-            <el-option v-for="item in smallBankData" :label="item.bankName" :value="item.bankCode" :key="item.id"/>
-          </el-select>
+          <el-input :readonly="readonly" v-model="merchantSettleVO.subBankName" @input="selectedSubBankCode"/>
+          <div v-if="showModelSub" class="ser-sel">
+            <el-table
+              :data="smallBankData"
+              style="width: 100%">
+              <el-table-column
+                prop="bankName"
+                width="180">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    @click="alertSubBank(scope.$index, scope.row)">{{ scope.row.bankName }}</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
         </el-form-item>
         <el-form-item label="结算方式" prop="settleType">
           <el-select v-model="merchantSettleVO.settleType" placeholder="请选择" @change="settleTypeFun($event)">
@@ -589,7 +601,8 @@ export default {
       organCodeCertificateUrlList: [],
       bankOrganUrlList: [],
       settlementCardUrlList: [],
-      enterpriseShow: true
+      enterpriseShow: true,
+      showModelSub: false
     }
   },
   created() {
@@ -650,25 +663,32 @@ export default {
       const name = this.getDataName(this.areaData, event)
       this.merchantSettleVO.bankProvinceCode = event
       this.merchantSettleVO.bankProvince = name
+      this.merchantSettleVO.bankCityCode = ''
+      this.merchantSettleVO.bankCity = ''
       const listQuery = this.listQuery
       listQuery.parentCode = event
       this.getBankCityData(listQuery)
     },
-    getSmallbankListData(listQuery) {
-      getSmallbankList(listQuery).then(response => {
-        this.smallBankData = response.data.obj.result
-      })
+    // getSmallbankListData(listQuery) {
+    //   getSmallbankList(listQuery).then(response => {
+    //     this.smallBankData = response.data.obj.result
+    //   })
+    // },
+    empetySubData() {
+      this.merchantSettleVO.subBankCode = ''
+      this.merchantSettleVO.subBankName = ''
     },
     onSelectedCityBank(event) {
       const name = this.getDataName(this.bankCityData, event)
       this.merchantSettleVO.bankCityCode = event
       this.merchantSettleVO.bankCity = name
-      const provinceCode = this.merchantSettleVO.bankProvinceCode
-      const listQuery = this.listQuery
-      listQuery.headBankCode = this.merchantSettleVO.headBankCode
-      listQuery.provinceCode = provinceCode
-      listQuery.cityCode = event
-      this.getSmallbankListData(listQuery)
+      // const provinceCode = this.merchantSettleVO.bankProvinceCode
+      // const listQuery = this.listQuery
+      // listQuery.headBankCode = this.merchantSettleVO.headBankCode
+      // listQuery.provinceCode = provinceCode
+      // listQuery.cityCode = event
+      // this.getSmallbankListData(listQuery)
+      this.empetySubData()
     },
     getDataNankName(arr, event) {
       let obj = {}
@@ -677,10 +697,28 @@ export default {
       })
       return obj.bankName
     },
-    selectedSubBankCode(event) {
-      const bankName = this.getDataNankName(this.smallBankData, event)
-      this.merchantSettleVO.subBankName = bankName
-      this.merchantSettleVO.subBankCode = event
+    selectedSubBankCode() {
+      const bankName = this.merchantSettleVO.subBankName
+      const listQuery = this.listQuery
+      listQuery.bankName = bankName
+      listQuery.headBankCode = this.merchantSettleVO.headBankCode
+      listQuery.provinceCode = this.merchantSettleVO.bankProvinceCode
+      listQuery.cityCode = this.merchantSettleVO.cityCode
+      getSmallbankList(listQuery).then(response => {
+        this.smallBankData = response.data.obj.result
+        this.showModelSub = true
+      })
+    },
+    alertSubBank(index, row) {
+      this.merchantSettleVO.subBankCode = row.bankCode
+      this.merchantSettleVO.subBankName = row.bankName
+      this.showModelSub = false
+    },
+    alertBank(index, row) {
+      this.merchantSettleVO.headBankCode = row.bankCode
+      this.merchantSettleVO.headBankName = row.bankName
+      this.empetySubData()
+      this.showModel = false
     },
     // 模糊搜索
     changeInput() {
@@ -706,11 +744,6 @@ export default {
     },
     merchantCharacter(event) {
       this.merchantRetail.merchantCharacter = event
-    },
-    alertBank(index, row) {
-      this.merchantSettleVO.headBankCode = row.bankCode
-      this.merchantSettleVO.headBankName = row.bankName
-      this.showModel = false
     },
     // 删除图片
     handleRemove(file, fileList) {
@@ -850,19 +883,6 @@ export default {
         }
         if (response.data.merchantSettleVO) {
           const settlementCardUrl = response.data.merchantSettleVO.settlementCardUrl
-          const bankProvinceCode = response.data.merchantSettleVO.bankProvinceCode
-          const cityCode = response.data.merchantSettleVO.cityCode
-          if (bankProvinceCode) {
-            const listQuery = this.listQuery
-            listQuery.provinceCode = bankProvinceCode
-            listQuery.headBankCode = response.data.merchantSettleVO.headBankCode
-            listQuery.parentCode = bankProvinceCode
-            this.getBankCityData(listQuery)
-            if (cityCode) {
-              listQuery.cityCode = cityCode
-              this.getSmallbankListData(listQuery)
-            }
-          }
           this.merchantSettleVO = response.data.merchantSettleVO
           if (settlementCardUrl) {
             this.getImageUrl(settlementCardUrl, 'settlementCardUrl')

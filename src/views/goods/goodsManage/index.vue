@@ -1,6 +1,9 @@
 <template>
   <div style="padding:30px;">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
+      <el-form-item label="商品ID">
+        <el-input v-model="formInline.id" placeholder="请输入商品ID"/>
+      </el-form-item>
       <el-form-item label="商品名称">
         <el-input v-model="formInline.name" placeholder="请输入商品名称"/>
       </el-form-item>
@@ -12,7 +15,7 @@
           <el-option label="全部商品" value="">全部商品</el-option>
           <el-option label="待上架" value="0">待上架</el-option>
           <el-option label="上架中" value="1">上架中</el-option>
-          <el-option label="已经下架" value="2">已经下架</el-option>
+          <el-option label="已下架" value="2">已下架</el-option>
           <el-option label="部分上架" value="3">部分上架</el-option>
           <el-option label="没有库存" value="4">没有库存</el-option>
         </el-select>
@@ -39,18 +42,22 @@
         align="center"/>
       <el-table-column
         prop="storeName"
-        label="店铺名称"
+        label="所属店铺"
+        align="center"/>
+      <el-table-column
+        prop="storeId"
+        label="店铺Id"
         align="center"/>
       <el-table-column
         prop="status"
         label="状态"
         align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.status==0">待上架</span>
-          <span v-if="scope.row.status==1">上架中</span>
-          <span v-if="scope.row.status==2">已经下架</span>
-          <span v-if="scope.row.status==3">部分上架</span>
-          <span v-if="scope.row.status==4">没有库存</span>
+          <span v-if="scope.row.status==0" style="color: #E6A23C">待上架</span>
+          <span v-if="scope.row.status==1" style="color: #67C23A">上架中</span>
+          <span v-if="scope.row.status==2" style="color: #43E0D6">已下架</span>
+          <span v-if="scope.row.status==3" style="color: #670ACE">部分上架</span>
+          <span v-if="scope.row.status==4" style="color: #E73E48">没有库存</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -86,6 +93,7 @@ export default {
       imageUrl: this.Const.imageUrl,
       formInline: {
         name: '',
+        id: '',
         storeName: '',
         status: ''
       },

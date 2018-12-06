@@ -196,14 +196,6 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: '/wholesaleList/index',
-        component: () => import('@/views/merchant/wholesaleList/index'),
-        name: 'wholesaleList',
-        meta: {
-          title: 'wholesaleList'
-        }
-      },
-      {
         path: '/retailList/index',
         component: () => import('@/views/merchant/retailList/index'),
         name: 'retailList',

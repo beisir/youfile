@@ -1,15 +1,18 @@
 <template>
   <div style="padding:30px;">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="状态">
+      <el-form-item label="商户编号">
+        <el-input v-model="formInline.merchantNumber" placeholder="请输入商户编号"/>
+      </el-form-item>
+      <el-form-item label="商户类型">
         <el-select v-model="formInline.merchantType" placeholder="请选择">
-          <el-option label="全部店铺" value="">全部店铺</el-option>
-          <el-option label="新批零" value="1">新批零</el-option>
-          <el-option label="新零售" value="2">新零售</el-option>
+          <el-option label="全部商户" value="">全部商户</el-option>
+          <el-option label="批发商" value="1">批零商</el-option>
+          <el-option label="零售商" value="2">零售商</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="店铺名称">
-        <el-input v-model="formInline.merchantName" placeholder="请输入店铺名称"/>
+      <el-form-item label="商户名称">
+        <el-input v-model="formInline.merchantName" placeholder="请输入商户名称"/>
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
@@ -24,12 +27,12 @@
         label="序号"
         align="center"/>
       <el-table-column
-        prop="merchantName"
-        label="店铺名称"
+        prop="merchantNumber"
+        label="商户编号"
         align="center"/>
       <el-table-column
-        prop="merchantNumber"
-        label="店铺编号"
+        prop="merchantName"
+        label="商户名称"
         align="center"/>
       <el-table-column
         prop="linkman"
@@ -51,11 +54,11 @@
       </el-table-column>
       <el-table-column
         prop="merchantType"
-        label="店铺性质"
+        label="商户类型"
         align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.merchantType==&quot;1&quot;">新批零</span>
-          <span v-if="scope.row.merchantType==&quot;2&quot;">新零售</span>
+          <span v-if="scope.row.merchantType==&quot;1&quot;">批发商</span>
+          <span v-if="scope.row.merchantType==&quot;2&quot;">零售商</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -65,12 +68,15 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
+            type="info"
             @click="handleLook(scope.$index, scope.row ,true)">全量资质编辑</el-button>
           <el-button
             size="mini"
+            type="warning"
             @click="handleLookFen(scope.$index, scope.row ,true)">基本资质编辑</el-button>
           <el-button
             size="mini"
+            type="primary"
             @click="getStoreMess(scope.$index, scope.row ,true)">小程序信息编辑</el-button>
         </template>
       </el-table-column>

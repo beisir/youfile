@@ -1,14 +1,18 @@
 <template>
   <div style="padding:30px;">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="店铺名称">
-        <el-input v-model="formInline.merchantName" placeholder="店铺名称"/>
+      <el-form-item label="商户编号">
+        <el-input v-model="formInline.merchantNumber" placeholder="请输入商户编号"/>
       </el-form-item>
-      <el-form-item label="店铺编号">
-        <el-input v-model="formInline.merchantNumber" placeholder="店铺编号"/>
+      <el-form-item label="商户类型">
+        <el-select v-model="formInline.merchantType" placeholder="请选择">
+          <el-option label="全部商户" value="">全部商户</el-option>
+          <el-option label="批发商" value="1">批零商</el-option>
+          <el-option label="零售商" value="2">零售商</el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="手机号">
-        <el-input v-model="formInline.phone" placeholder="手机号"/>
+      <el-form-item label="商户名称">
+        <el-input v-model="formInline.merchantName" placeholder="请输入商户名称"/>
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
@@ -23,12 +27,12 @@
         label="序号"
         align="center"/>
       <el-table-column
-        prop="merchantName"
-        label="店铺名称"
+        prop="merchantNumber"
+        label="商户编号"
         align="center"/>
       <el-table-column
-        prop="merchantNumber"
-        label="店铺编号"
+        prop="merchantName"
+        label="商户名称"
         align="center"/>
       <el-table-column
         prop="linkman"
@@ -50,11 +54,11 @@
       </el-table-column>
       <el-table-column
         prop="merchantType"
-        label="店铺性质"
+        label="商户类型"
         align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.merchantType==&quot;1&quot;">新批零</span>
-          <span v-if="scope.row.merchantType==&quot;2&quot;">新零售</span>
+          <span v-if="scope.row.merchantType==&quot;1&quot;">批发商</span>
+          <span v-if="scope.row.merchantType==&quot;2&quot;">零售商</span>
         </template>
       </el-table-column>
     </el-table>
@@ -71,34 +75,14 @@
   </div>
 </template>
 <script>
-import { getListRetail } from '@/api/merchant'
+import { getListMerchantRetail } from '@/api/merchant'
 export default {
   data() {
     return {
       formLabelWidth: '130px',
-      merchantNumber: '',
-      readonly: false,
       formInline: {
-        name: '',
-        merchantNumber: '',
-        phone: ''
-      },
-      rules: {
-        appId: [
-          { required: true,
-            message: '小程序appID不能为空',
-            trigger: 'blur'
-          }],
-        appName: [
-          { required: true,
-            message: '小程序名称不能为空',
-            trigger: 'blur'
-          }],
-        appSercret: [
-          { required: true,
-            message: '小程序密钥不能为空',
-            trigger: 'blur'
-          }]
+        merchantType: '',
+        merchantName: ''
       },
       listLoading: false,
       total: 0,
@@ -106,7 +90,6 @@ export default {
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
-      storeMes: {},
       tableData: []
     }
   },
@@ -124,7 +107,7 @@ export default {
        */
     getList() {
       this.listLoading = true
-      getListRetail(this.listQuery).then(response => {
+      getListMerchantRetail(this.listQuery).then(response => {
         this.tableData = response.data.result
         this.listLoading = false
         this.total = response.data.totalCount
@@ -147,6 +130,7 @@ export default {
       this.listQuery.pageNum = page
       this.getList()
     }
+
   }
 }
 </script>

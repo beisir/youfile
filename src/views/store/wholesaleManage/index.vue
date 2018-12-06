@@ -5,7 +5,7 @@
         <el-input v-model="formInline.name" placeholder="店铺名称"/>
       </el-form-item>
       <el-form-item label="店铺编号">
-        <el-input v-model="formInline.merchantNumber" placeholder="店铺编号"/>
+        <el-input v-model="formInline.storeId" placeholder="店铺编号"/>
       </el-form-item>
       <el-form-item label="手机号">
         <el-input v-model="formInline.phone" placeholder="手机号"/>
@@ -29,6 +29,10 @@
       <el-table-column
         prop="merchantNumber"
         label="店铺编号"
+        align="center"/>
+      <el-table-column
+        prop="name"
+        label="店铺名称"
         align="center"/>
       <el-table-column
         prop="storeNature"
@@ -76,7 +80,7 @@ export default {
       imageUrl: this.Const.imageUrl,
       formInline: {
         name: '',
-        merchantNumber: '',
+        storeId: '',
         phone: ''
       },
       listLoading: false,

@@ -1,20 +1,6 @@
 import request from '@/utils/request'
 import request_upload_api from '@/utils/request_upload'
 
-export function getList(params) {
-  return request({
-    url: '/merchant/list/wholesale',
-    method: 'post',
-    data: params
-  })
-}
-export function getListRetail(params) {
-  return request({
-    url: '/merchant/list/retail',
-    method: 'post',
-    data: params
-  })
-}
 export function getListMerchantRetail(params) {
   return request({
     url: '/merchant/list',
@@ -90,4 +76,22 @@ export function saveupdate(params) {
     data: params
   })
 }
-
+export function closePay(params) {
+  return request({
+    url: '/merchant/pay/config/close/' + params,
+    method: 'put'
+  })
+}
+export function getPayMes(params) {
+  return request({
+    url: '/merchant/pay/config/' + params,
+    method: 'get'
+  })
+}
+export function savePayMes(params) {
+  return request({
+    url: '/merchant/pay/config',
+    method: 'post',
+    data: params
+  })
+}
