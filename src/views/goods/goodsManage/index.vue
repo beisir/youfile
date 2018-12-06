@@ -32,22 +32,18 @@
       <el-table-column
         prop="name"
         label="商品名称"
-        width="180"
         align="center"/>
       <el-table-column
         prop="goodsId"
-        width="180"
         label="商品ID"
         align="center"/>
       <el-table-column
         prop="storeName"
         label="店铺名称"
-        width="180"
         align="center"/>
       <el-table-column
         prop="status"
         label="状态"
-        width="100"
         align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.status==0">待上架</span>
@@ -60,12 +56,10 @@
       <el-table-column
         prop="categoryName"
         label="分类"
-        width="180"
         align="center"/>
       <el-table-column
         prop="mainImgUrl"
         label="主图"
-        width="100"
         align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.mainImgUrl" width="40" height="40" class="head_pic">
