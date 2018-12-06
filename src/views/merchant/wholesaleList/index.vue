@@ -30,22 +30,22 @@
       <el-table-column
         prop="merchantNumber"
         label="店铺编号"
-        width="120"
+        width="180"
         align="center"/>
       <el-table-column
         prop="linkman"
         label="联系人"
-        width="120"
+        width="180"
         align="center"/>
       <el-table-column
         prop="linkmanPhone"
         label="联系电话"
-        width="120"
+        width="180"
         align="center"/>
       <el-table-column
         prop="merchantCharacter"
         label="商户性质"
-        width="120"
+        width="180"
         align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantCharacter==&quot;1&quot;">个人</span>
