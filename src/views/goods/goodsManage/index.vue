@@ -53,6 +53,14 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="wholesalePrice"
+        label="批发价"
+        align="center"/>
+      <el-table-column
+        prop="sellPrice"
+        label="零售价"
+        align="center"/>
+      <el-table-column
         prop="status"
         label="状态"
         align="center">

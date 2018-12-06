@@ -83,13 +83,9 @@
         prop="onlinePay"
         label="操作"
         width="200"
-        align="center">
+        align="left">
         <template slot-scope="scope">
           <div v-if="scope.row.onlinePay=='0'">
-            <el-button
-              type="info"
-              size="mini"
-            >未开通</el-button>
             <el-button
               size="mini"
               type="primary"
@@ -99,17 +95,13 @@
             <el-button
               size="mini"
               type="warning"
-              @click="closeFun(scope.$index, scope.row )">已开通</el-button>
+              @click="closeFun(scope.$index, scope.row )">关闭</el-button>
             <el-button
               size="mini"
               type="primary"
               @click="getDetailsFun(scope.$index, scope.row )">编辑</el-button>
           </div>
           <div v-if="scope.row.onlinePay=='2'">
-            <el-button
-              size="mini"
-              type="warning"
-            >未设置</el-button>
             <el-button
               size="mini"
               type="primary"
