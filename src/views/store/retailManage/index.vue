@@ -25,17 +25,14 @@
       <el-table-column
         prop="name"
         label="店铺名称"
-        width="180"
         align="center"/>
       <el-table-column
         prop="merchantNumber"
         label="店铺编号"
-        width="180"
         align="center"/>
       <el-table-column
         prop="storeNature"
         label="店铺性质"
-        width="100"
         align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.storeNature==&quot;1&quot;">新批零</span>
@@ -45,12 +42,10 @@
       <el-table-column
         prop="businessScope"
         label="经营范围"
-        width="180"
         align="center"/>
       <el-table-column
         prop="logo"
         label="店铺logo"
-        width="100"
         align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.logo" width="40" height="40" class="head_pic">

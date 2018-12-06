@@ -45,17 +45,14 @@
       <el-table-column
         prop="orderNumber"
         label="订单编号"
-        width="180"
         align="center"/>
       <el-table-column
         prop="expressNumber"
         label="快递编号"
-        width="180"
         align="center"/>
       <el-table-column
         prop="userInfo"
         label="付款方用户编号"
-        width="180"
         align="center">
         <template slot-scope="scope">
           {{ scope.row.userInfo.userId }}
@@ -64,7 +61,6 @@
       <el-table-column
         prop="receiveMerchant"
         label="收款方商户编号"
-        width="180"
         align="center">
         <template slot-scope="scope">
           {{ scope.row.receiveMerchant.merchantNumber }}
@@ -72,13 +68,11 @@
       </el-table-column>
       <el-table-column
         prop="orderAmount"
-        width="180"
         label="订单金额"
         align="center"/>
       <el-table-column
         prop="orderType"
         label="订单类型"
-        width="100"
         align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.orderType=='0'">其他</span>
@@ -89,7 +83,6 @@
       <el-table-column
         prop="orderCategory"
         label="订单分类"
-        width="100"
         align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.orderCategory=='1'">进货单</span>

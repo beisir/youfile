@@ -13,22 +13,18 @@
       <el-table-column
         prop="name"
         label="分类名称"
-        width="180"
         align="center"/>
       <el-table-column
         prop="categoryCode"
         label="分类编码"
-        width="150"
         align="center"/>
       <el-table-column
         prop="sort"
         label="排序"
-        width="180"
         align="center"/>
       <el-table-column
         prop="createDate"
         label="创建时间"
-        width="180"
         align="center">
         <template slot-scope="scope">
           {{ unix2CurrentTime(scope.row.createDate) }}
