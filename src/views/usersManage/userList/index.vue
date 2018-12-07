@@ -4,8 +4,8 @@
       <el-form-item label="用户名称">
         <el-input v-model="formInline.userName" placeholder="请输入用户名"/>
       </el-form-item>
-      <el-form-item label="微信昵称">
-        <el-input v-model="formInline.nickName" placeholder="请输入微信昵称"/>
+      <el-form-item label="昵称">
+        <el-input v-model="formInline.nickName" placeholder="请输入昵称"/>
       </el-form-item>
       <el-form-item label="手机号">
         <el-input v-model="formInline.phone" placeholder="请输入手机号"/>

@@ -1,11 +1,5 @@
 <template>
   <div style="padding:30px;">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="商贸云名称">
-        <el-input v-model="formInline.name" placeholder="商贸云名称"/>
-      </el-form-item>
-      <el-button type="primary" @click="onSubmit">查询</el-button>
-    </el-form>
     <el-table
       v-loading.body="listLoading"
       :data="tableData"
@@ -41,9 +35,6 @@ export default {
   data() {
     return {
       imageUrl: this.Const.imageUrl,
-      formInline: {
-        name: ''
-      },
       listLoading: false,
       total: 0,
       listQuery: '',
