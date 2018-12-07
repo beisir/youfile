@@ -208,6 +208,11 @@ export default {
       getPayMes(merchantNumber).then(response => {
         const merchantMes = response.data
         if (merchantMes) {
+          if (merchantMes.onlinePay) {
+            merchantMes.onlinePay = '1'
+          } else {
+            merchantMes.onlinePay = '0'
+          }
           this.merchantMes = merchantMes
         }
       })
@@ -216,6 +221,12 @@ export default {
       const merchantMes = this.merchantMes
       if (merchantMes.onlinePay) {
         const params = this.merchantMes
+        if (params.onlinePay === '0') {
+          params.onlinePay = false
+        }
+        if (params.onlinePay === '1') {
+          params.onlinePay = true
+        }
         params.payProduct = '小程序支付'
         params.merchantNumber = this.merchantNumber
         savePayMes(params).then(response => {

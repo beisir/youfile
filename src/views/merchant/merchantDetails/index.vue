@@ -258,9 +258,7 @@
               </el-upload>
             </el-form-item>
           </el-col>
-
         </el-row>
-
       </el-form>
     </div>
     <div class="block">
