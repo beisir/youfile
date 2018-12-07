@@ -1,9 +1,9 @@
 <template>
   <div style="padding:30px;">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="订单类型">
+      <el-form-item label="配送方式">
         <el-select v-model="formInline.orderType" placeholder="请选择">
-          <el-option label="全部商品" value="">全部商品</el-option>
+          <el-option label="全部" value="">全部</el-option>
           <el-option label="其他" value="0">其他</el-option>
           <el-option label="门店自提" value="1">门店自提</el-option>
           <el-option label="物流配送" value="2">物流配送</el-option>
@@ -72,7 +72,7 @@
         align="center"/>
       <el-table-column
         prop="orderType"
-        label="订单类型"
+        label="配送方式"
         align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.orderType=='0'">其他</span>
@@ -95,12 +95,12 @@
         label="订单状态"
         align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderStatus=='unpaid'">待支付</span>
-          <span v-if="scope.row.orderStatus=='paid'">已支付/待发货/待取货</span>
-          <span v-if="scope.row.orderStatus=='shipped'">已发货</span>
-          <span v-if="scope.row.orderStatus=='cancelled'">订单取消</span>
-          <span v-if="scope.row.orderStatus=='closed'">订单关闭</span>
-          <span v-if="scope.row.orderStatus=='finish'">已收货_已完成</span>
+          <span v-if="scope.row.orderStatus=='unpaid'" style="color: #E6A23C">待支付</span>
+          <span v-if="scope.row.orderStatus=='paid'" style="color: #67C23A">已支付/待发货/待取货</span>
+          <span v-if="scope.row.orderStatus=='shipped'" style="color: #43E0D6">已发货</span>
+          <span v-if="scope.row.orderStatus=='cancelled'" style="color: #670ACE">订单取消</span>
+          <span v-if="scope.row.orderStatus=='closed'" style="color: #E73E48">订单关闭</span>
+          <span v-if="scope.row.orderStatus=='finish'" style="color: #AF0FB2">已收货_已完成</span>
         </template>
       </el-table-column>
     </el-table>

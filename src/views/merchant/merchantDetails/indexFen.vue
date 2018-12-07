@@ -203,6 +203,11 @@
         <el-form-item label="组织机构代码有效期至" prop="organExpireEndDate">
           <el-date-picker v-model="merchantQualificationVO.organExpireEndDate" type="date" placeholder="选择日期" style="width: 100%;"/>
         </el-form-item>
+        <el-form-item label="组织机构代码证是否长期有效" prop="organType">
+          <el-select v-model="merchantQualificationVO.organType" placeholder="请选择" @change="organTypeDataFun($event)">
+            <el-option v-for="item in organTypeData" :label="item.name" :value="item.code" :key="item.id"/>
+          </el-select>
+        </el-form-item>
         <el-form-item label="身份证正面" prop="idCardFaceUrl">
           <el-upload
             :on-remove="handleRemove"
@@ -282,11 +287,6 @@
             </el-dialog>
             <i class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
-        </el-form-item>
-        <el-form-item label="组织机构代码证是否长期有效" prop="organType">
-          <el-select v-model="merchantQualificationVO.organType" placeholder="请选择" @change="organTypeDataFun($event)">
-            <el-option v-for="item in organTypeData" :label="item.name" :value="item.code" :key="item.id"/>
-          </el-select>
         </el-form-item>
       </el-form>
     </div>
