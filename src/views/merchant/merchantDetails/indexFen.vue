@@ -112,12 +112,12 @@
                     :on-remove="handleRemovePreview"
                     :limit="1"
                     :file-list="taxRegisterCertificateUrlList"
-                    :on-preview="handlePictureCardPreview"
                     :on-success="handleSuccessRegister"
+                    :on-preview="handlePictureCardPreview1"
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                     list-type="picture-card"
                   >
-                    <el-dialog :visible.sync="dialogVisible">
+                    <el-dialog :visible.sync="dialogVisible1">
                       <img :src="taxRegisterCertificateUrl" width="100%" alt="">
                     </el-dialog>
                     <i class="el-icon-plus avatar-uploader-icon"/>
@@ -130,12 +130,12 @@
                     :on-remove="handleRemoveOrgan"
                     :limit="1"
                     :file-list="organCodeCertificateUrlList"
-                    :on-preview="handlePictureCardPreview"
+                    :on-preview="handlePictureCardPreview2"
                     :on-success="handleSuccessOrgan"
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                     list-type="picture-card"
                   >
-                    <el-dialog :visible.sync="dialogVisible">
+                    <el-dialog :visible.sync="dialogVisible2">
                       <img :src="organCodeCertificateUrl" width="100%" alt="">
                     </el-dialog>
                     <i class="el-icon-plus avatar-uploader-icon"/>
@@ -154,13 +154,13 @@
                   <el-upload
                     :on-remove="handleRemoveCertificate"
                     :file-list="unifiedCertificateUrlList"
-                    :on-preview="handlePictureCardPreview"
                     :limit="1"
                     :on-success="handleSuccessCertificate"
+                    :on-preview="handlePictureCardPreview3"
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                     list-type="picture-card"
                   >
-                    <el-dialog :visible.sync="dialogVisible">
+                    <el-dialog :visible.sync="dialogVisible3">
                       <img :src="unifiedCertificateUrl" width="100%" alt="">
                     </el-dialog>
                     <i class="el-icon-plus avatar-uploader-icon"/>
@@ -175,12 +175,12 @@
                 :on-remove="handleRemovePictureCard"
                 :limit="1"
                 :file-list="bankOrganUrlList"
-                :on-preview="handlePictureCardPreview"
                 :on-success="handleSuccessBank"
+                :on-preview="handlePictureCardPreview4"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible">
+                <el-dialog :visible.sync="dialogVisible4">
                   <img :src="bankOrganUrl" width="100%" alt="">
                 </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
@@ -215,12 +215,12 @@
                 :on-remove="handleRemove"
                 :limit="1"
                 :file-list="idCardFaceUrlList"
-                :on-preview="handlePictureCardPreview"
                 :on-success="handleSuccessFace"
+                :on-preview="handlePictureCardPreview5"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible">
+                <el-dialog :visible.sync="dialogVisible5">
                   <img :src="idCardFaceUrl" width="100%" alt="">
                 </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
@@ -233,12 +233,12 @@
                 :on-remove="handleRemovePreviewidCardConUrl"
                 :limit="1"
                 :file-list="idCardConUrlList"
-                :on-preview="handlePictureCardPreview"
+                :on-preview="handlePictureCardPreview6"
                 :on-success="handleSuccessFaceCon"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible">
+                <el-dialog :visible.sync="dialogVisible6">
                   <img :src="idCardConUrl" width="100%" alt="">
                 </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
@@ -253,12 +253,12 @@
                 :on-remove="handleRemovePhoto"
                 :limit="1"
                 :file-list="storePhotoUrlList"
-                :on-preview="handlePictureCardPreview"
                 :on-success="handleSuccessPhoto"
+                :on-preview="handlePictureCardPreview7"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible">
+                <el-dialog :visible.sync="dialogVisible7">
                   <img :src="storePhotoUrl" width="100%" alt="">
                 </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
@@ -271,12 +271,12 @@
                 :on-remove="handleRemovePhone"
                 :limit="1"
                 :file-list="scenePhoneUrlList"
-                :on-preview="handlePictureCardPreview"
                 :on-success="handleSuccessPhone"
+                :on-preview="handlePictureCardPreview8"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible">
+                <el-dialog :visible.sync="dialogVisible8">
                   <img :src="scenePhoneUrl" width="100%" alt="">
                 </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
@@ -289,12 +289,12 @@
             :on-remove="handleRemoveFaceHand"
             :limit="1"
             :file-list="handIdCardUrlList"
-            :on-preview="handlePictureCardPreview"
             :on-success="handleSuccessFaceHand"
+            :on-preview="handlePictureCardPreview9"
             :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
             list-type="picture-card"
           >
-            <el-dialog :visible.sync="dialogVisible">
+            <el-dialog :visible.sync="dialogVisible9">
               <img :src="handIdCardUrl" width="100%" alt="">
             </el-dialog>
             <i class="el-icon-plus avatar-uploader-icon"/>
@@ -385,12 +385,12 @@
               :on-remove="handleRemoveSettlement"
               :limit="1"
               :file-list="settlementCardUrlList"
-              :on-preview="handlePictureCardPreview"
               :on-success="handleSuccesSettlement"
+              :on-preview="handlePictureCardPreview10"
               :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
               list-type="picture-card"
             >
-              <el-dialog :visible.sync="dialogVisible">
+              <el-dialog :visible.sync="dialogVisible10">
                 <img :src="settlementCardUrl" width="100%" alt="">
               </el-dialog>
               <i class="el-icon-plus avatar-uploader-icon"/>
@@ -411,6 +411,16 @@ export default {
     return {
       uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       dialogVisible: false,
+      dialogVisible1: false,
+      dialogVisible2: false,
+      dialogVisible3: false,
+      dialogVisible4: false,
+      dialogVisible5: false,
+      dialogVisible6: false,
+      dialogVisible7: false,
+      dialogVisible8: false,
+      dialogVisible9: false,
+      dialogVisible10: false,
       readonly: false,
       merchantRetail: {},
       merchantQualificationVO: {},
@@ -840,6 +850,51 @@ export default {
       }
       this.merchantRetail.merchantCharacter = event
     },
+    // 查看图片
+    handlePictureCardPreview(file) {
+      this.businessLicenseUrl = file.url
+      this.dialogVisible = true
+    },
+    handlePictureCardPreview1(file) {
+      this.taxRegisterCertificateUrl = file.url
+      this.dialogVisible1 = true
+    },
+    handlePictureCardPreview2(file) {
+      this.organCodeCertificateUrl = file.url
+      this.dialogVisible2 = true
+    },
+    handlePictureCardPreview3(file) {
+      this.unifiedCertificateUrl = file.url
+      this.dialogVisible3 = true
+    },
+    handlePictureCardPreview4(file) {
+      this.bankOrganUrl = file.url
+      this.dialogVisible4 = true
+    },
+    handlePictureCardPreview5(file) {
+      this.idCardFaceUrl = file.url
+      this.dialogVisible5 = true
+    },
+    handlePictureCardPreview6(file) {
+      this.idCardConUrl = file.url
+      this.dialogVisible6 = true
+    },
+    handlePictureCardPreview7(file) {
+      this.storePhotoUrl = file.url
+      this.dialogVisible7 = true
+    },
+    handlePictureCardPreview8(file) {
+      this.scenePhoneUrl = file.url
+      this.dialogVisible5 = true
+    },
+    handlePictureCardPreview9(file) {
+      this.handIdCardUrl = file.url
+      this.dialogVisible6 = true
+    },
+    handlePictureCardPreview10(file) {
+      this.settlementCardUrl = file.url
+      this.dialogVisible7 = true
+    },
     // 删除图片
     handleRemove(file, fileList) {
       this.merchantQualificationVO.idCardFaceUrl = ''
@@ -927,9 +982,6 @@ export default {
     handleSuccesSettlement(response) {
       const imgUrl = response.obj
       this.merchantSettleVO.settlementCardUrl = imgUrl
-    },
-    handlePictureCardPreview(file) {
-      this.dialogVisible = true
     },
     getImageUrl(filePath, name) {
       const params = { filePath: filePath }
@@ -1091,26 +1143,6 @@ export default {
           const merchantRetail = this.merchantRetail
           delete (merchantRetail['createDate'])
           delete (merchantRetail['updateTime'])
-          // if (this.merchantRetail.merchantCharacter === '3') {
-          //   merchantSettleVO.settlementCardUrlList = ''
-          //   merchantQualificationVO.handIdCardUrl = ''
-          //   if (this.activeName === 'second') {
-          //     merchantQualificationVO.businessLicenseNo = ''
-          //     merchantQualificationVO.taxCertificateNo = ''
-          //     merchantQualificationVO.organCertificateNo = ''
-          //   } else {
-          //     merchantQualificationVO.unifiedCertificateNo = ''
-          //     merchantQualificationVO.openCertificateNo = ''
-          //     merchantQualificationVO.organCertificateNo = ''
-          //   }
-          // } else {
-          //   merchantQualificationVO.businessLicenseNo = ''
-          //   merchantQualificationVO.taxCertificateNo = ''
-          //   merchantQualificationVO.organCertificateNo = ''
-          //   merchantQualificationVO.unifiedCertificateNo = ''
-          //   merchantQualificationVO.openCertificateNo = ''
-          //   merchantQualificationVO.organCertificateNo = ''
-          // }
           const merchantDetail = { merchantNumber: this.merchantNumber, merchantQualificationVO: merchantQualificationVO, merchantSettleVO: this.merchantSettleVO, merchantVO: this.merchantRetail }
           editMerchantRetail(merchantDetail).then(response => {
             this.$message({

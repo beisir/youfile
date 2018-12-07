@@ -109,12 +109,12 @@
                     :on-remove="handleRemovePreview"
                     :limit="1"
                     :file-list="taxRegisterCertificateUrlList"
-                    :on-preview="handlePictureCardPreview"
+                    :on-preview="handlePictureCardPreview1"
                     :on-success="handleSuccessRegister"
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                     list-type="picture-card"
                   >
-                    <el-dialog :visible.sync="dialogVisible">
+                    <el-dialog :visible.sync="dialogVisible1">
                       <img :src="taxRegisterCertificateUrl" width="100%" alt="">
                     </el-dialog>
                     <i class="el-icon-plus avatar-uploader-icon"/>
@@ -127,12 +127,12 @@
                     :on-remove="handleRemoveOrgan"
                     :limit="1"
                     :file-list="organCodeCertificateUrlList"
-                    :on-preview="handlePictureCardPreview"
+                    :on-preview="handlePictureCardPreview2"
                     :on-success="handleSuccessOrgan"
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                     list-type="picture-card"
                   >
-                    <el-dialog :visible.sync="dialogVisible">
+                    <el-dialog :visible.sync="dialogVisible2">
                       <img :src="organCodeCertificateUrl" width="100%" alt="">
                     </el-dialog>
                     <i class="el-icon-plus avatar-uploader-icon"/>
@@ -144,13 +144,13 @@
                   <el-upload
                     :on-remove="handleRemovePictureCard"
                     :limit="1"
+                    :on-preview="handlePictureCardPreview3"
                     :file-list="bankOrganUrlList"
-                    :on-preview="handlePictureCardPreview"
                     :on-success="handleSuccessBank"
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                     list-type="picture-card"
                   >
-                    <el-dialog :visible.sync="dialogVisible">
+                    <el-dialog :visible.sync="dialogVisible3">
                       <img :src="bankOrganUrl" width="100%" alt="">
                     </el-dialog>
                     <i class="el-icon-plus avatar-uploader-icon"/>
@@ -165,13 +165,13 @@
                 <el-upload
                   :on-remove="handleRemoveCertificate"
                   :file-list="unifiedCertificateUrlList"
-                  :on-preview="handlePictureCardPreview"
                   :limit="1"
+                  :on-preview="handlePictureCardPreview4"
                   :on-success="handleSuccessCertificate"
                   :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                   list-type="picture-card"
                 >
-                  <el-dialog :visible.sync="dialogVisible">
+                  <el-dialog :visible.sync="dialogVisible4">
                     <img :src="unifiedCertificateUrl" width="100%" alt="">
                   </el-dialog>
                   <i class="el-icon-plus avatar-uploader-icon"/>
@@ -184,12 +184,12 @@
                   :on-remove="handleRemovePictureCard"
                   :limit="1"
                   :file-list="bankOrganUrlList"
-                  :on-preview="handlePictureCardPreview"
+                  :on-preview="handlePictureCardPreview5"
                   :on-success="handleSuccessBank"
                   :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                   list-type="picture-card"
                 >
-                  <el-dialog :visible.sync="dialogVisible">
+                  <el-dialog :visible.sync="dialogVisible5">
                     <img :src="bankOrganUrl" width="100%" alt="">
                   </el-dialog>
                   <i class="el-icon-plus avatar-uploader-icon"/>
@@ -227,13 +227,13 @@
               <el-upload
                 :on-remove="handleRemove"
                 :limit="1"
+                :on-preview="handlePictureCardPreview6"
                 :file-list="idCardFaceUrlList"
-                :on-preview="handlePictureCardPreview"
                 :on-success="handleSuccessFace"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible">
+                <el-dialog :visible.sync="dialogVisible6">
                   <img :src="idCardFaceUrl" width="100%" alt="">
                 </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
@@ -246,12 +246,12 @@
                 :on-remove="handleRemovePreviewidCardConUrl"
                 :limit="1"
                 :file-list="idCardConUrlList"
-                :on-preview="handlePictureCardPreview"
+                :on-preview="handlePictureCardPreview7"
                 :on-success="handleSuccessFaceCon"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible">
+                <el-dialog :visible.sync="dialogVisible7">
                   <img :src="idCardConUrl" width="100%" alt="">
                 </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
@@ -348,6 +348,13 @@ export default {
     return {
       uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       dialogVisible: false,
+      dialogVisible1: false,
+      dialogVisible2: false,
+      dialogVisible3: false,
+      dialogVisible4: false,
+      dialogVisible5: false,
+      dialogVisible6: false,
+      dialogVisible7: false,
       readonly: false,
       merchantRetail: {},
       merchantQualificationVO: {},
@@ -743,6 +750,39 @@ export default {
     merchantCharacter(event) {
       this.merchantRetail.merchantCharacter = event
     },
+    // 查看图片
+    handlePictureCardPreview(file) {
+      this.businessLicenseUrl = file.url
+      this.dialogVisible = true
+    },
+    handlePictureCardPreview1(file) {
+      this.taxRegisterCertificateUrl = file.url
+      this.dialogVisible1 = true
+    },
+    handlePictureCardPreview2(file) {
+      this.organCodeCertificateUrl = file.url
+      this.dialogVisible2 = true
+    },
+    handlePictureCardPreview3(file) {
+      this.bankOrganUrl = file.url
+      this.dialogVisible3 = true
+    },
+    handlePictureCardPreview4(file) {
+      this.unifiedCertificateUrl = file.url
+      this.dialogVisible4 = true
+    },
+    handlePictureCardPreview5(file) {
+      this.bankOrganUrl = file.url
+      this.dialogVisible5 = true
+    },
+    handlePictureCardPreview6(file) {
+      this.idCardFaceUrl = file.url
+      this.dialogVisible6 = true
+    },
+    handlePictureCardPreview7(file) {
+      this.idCardConUrl = file.url
+      this.dialogVisible7 = true
+    },
     // 删除图片
     handleRemove(file, fileList) {
       this.merchantQualificationVO.idCardFaceUrl = ''
@@ -752,6 +792,7 @@ export default {
     },
     handleRemoveSuccess(file, fileList) {
       this.merchantQualificationVO.businessLicenseUrl = ''
+      this.dialogVisible1 = false
     },
     handleRemoveCertificate(file, fileList) {
       this.merchantQualificationVO.unifiedCertificateUrl = ''
@@ -800,9 +841,6 @@ export default {
     handleSuccesSettlement(response) {
       const imgUrl = response.obj
       this.merchantSettleVO.settlementCardUrl = imgUrl
-    },
-    handlePictureCardPreview(file) {
-      this.dialogVisible = true
     },
     getImageUrl(filePath, name) {
       const params = { filePath: filePath }
