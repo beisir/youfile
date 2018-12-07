@@ -27,18 +27,6 @@
         label="用户名称"
         align="center"/>
       <el-table-column
-        prop="nickName"
-        label="微信昵称"
-        align="center"/>
-      <el-table-column
-        prop="mobile"
-        label="手机号"
-        align="center"/>
-      <el-table-column
-        prop="weixinNumber"
-        label="微信号"
-        align="center"/>
-      <el-table-column
         prop="headPic"
         label="用户头像"
         align="center">
@@ -46,6 +34,28 @@
           <img :src="imageUrl+scope.row.headPic" width="40" height="40" class="head_pic">
         </template>
       </el-table-column>
+      <el-table-column
+        prop="mobile"
+        label="手机号"
+        align="center"/>
+      <el-table-column
+        prop="gender"
+        label="性别"
+        align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.gender==&quot;0&quot;">未知</span>
+          <span v-if="scope.row.gender==&quot;1&quot;">男</span>
+          <span v-if="scope.row.gender==&quot;2&quot;">女</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="nickName"
+        label="微信昵称"
+        align="center"/>
+      <el-table-column
+        prop="weixinNumber"
+        label="微信号"
+        align="center"/>
     </el-table>
     <el-pagination
       :current-page="listQuery.page"

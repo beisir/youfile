@@ -1,17 +1,11 @@
 <template>
   <div style="padding:30px;">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="店铺名称">
-        <el-input v-model="formInline.storeName" placeholder="请输入店铺名称"/>
-      </el-form-item>
-      <el-form-item label="店铺ID">
-        <el-input v-model="formInline.storeId" placeholder="请输入店铺ID"/>
+      <el-form-item label="供应商名称">
+        <el-input v-model="formInline.storeName" placeholder="请输入供应商名称"/>
       </el-form-item>
       <el-form-item label="手机号">
         <el-input v-model="formInline.purchaserPhone" placeholder="请输入手机号"/>
-      </el-form-item>
-      <el-form-item label="商户编号">
-        <el-input v-model="formInline.merchantNumber" placeholder="请输入商户编号"/>
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
@@ -26,24 +20,24 @@
         label="序号"
         align="center"/>
       <el-table-column
-        prop="storeName"
-        label="店铺名称"
-        align="center"/>
-      <el-table-column
-        prop="storeId"
-        label="店铺ID"
-        align="center"/>
-      <el-table-column
-        prop="merchantNumber"
-        label="商户编号"
-        align="center"/>
-      <el-table-column
         prop="nickName"
-        label="微信昵称"
+        label="昵称"
         align="center"/>
+      <el-table-column
+        prop="headPic"
+        label="用户头像"
+        align="center">
+        <template slot-scope="scope">
+          <img :src="imageUrl+scope.row.headPic" width="40" height="40" class="head_pic">
+        </template>
+      </el-table-column>
       <el-table-column
         prop="phone"
         label="手机号"
+        align="center"/>
+      <el-table-column
+        prop="storeName"
+        label="供应商"
         align="center"/>
     </el-table>
     <el-pagination
@@ -63,10 +57,9 @@ import { getPurchaserList } from '@/api/users'
 export default {
   data() {
     return {
+      imageUrl: this.Const.imageUrl,
       formInline: {
         storeName: '',
-        storeId: '',
-        merchantNumber: '',
         purchaserPhone: ''
       },
       listLoading: false,

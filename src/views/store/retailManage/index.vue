@@ -35,6 +35,14 @@
         label="店铺名称"
         align="center"/>
       <el-table-column
+        prop="logo"
+        label="店铺logo"
+        align="center">
+        <template slot-scope="scope">
+          <img :src="imageUrl+scope.row.logo" width="40" height="40" class="head_pic">
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="storeNature"
         label="店铺性质"
         align="center">
@@ -47,14 +55,6 @@
         prop="businessScope"
         label="经营范围"
         align="center"/>
-      <el-table-column
-        prop="logo"
-        label="店铺logo"
-        align="center">
-        <template slot-scope="scope">
-          <img :src="imageUrl+scope.row.logo" width="40" height="40" class="head_pic">
-        </template>
-      </el-table-column>
       <el-table-column
         prop="address"
         label="店铺地址"

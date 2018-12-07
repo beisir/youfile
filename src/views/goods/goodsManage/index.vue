@@ -41,10 +41,6 @@
         label="商品名称"
         align="center"/>
       <el-table-column
-        prop="categoryName"
-        label="分类"
-        align="center"/>
-      <el-table-column
         prop="mainImgUrl"
         label="主图"
         align="center">
@@ -72,6 +68,10 @@
           <span v-if="scope.row.status==4" style="color: #E73E48">没有库存</span>
         </template>
       </el-table-column>
+      <el-table-column
+        prop="categoryName"
+        label="分类"
+        align="center"/>
     </el-table>
     <el-pagination
       :current-page="listQuery.page"
