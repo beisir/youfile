@@ -13,6 +13,31 @@ const orderRouter = {
   },
   children: [
     {
+      path: 'yibaoBranchOnline',
+      name: 'YibaoBranchOnline',
+      component: () => import('@/views/pay/yibaoBranchOnline/index'), // Parent router-view
+      meta: { title: 'yibaoBranchOnline' }
+    },
+    {
+      path: 'yibaoPaySet',
+      name: 'YibaoPaySet',
+      component: () => import('@/views/pay/yibaoPaySet/index'), // Parent router-view
+      meta: { title: 'yibaoPaySet' }
+    },
+    {
+      path: 'yibaoMerchantsOnline',
+      name: 'YibaoMerchantsOnline',
+      component: () => import('@/views/pay/yibaoMerchantsOnline/index'), // Parent router-view
+      meta: { title: 'yibaoMerchantsOnline' }
+    },
+    {
+      path: 'yibaoOnlineDetails',
+      name: 'YibaoOnlineDetails',
+      component: () => import('@/views/pay/yibaoMerchantsOnline/details'), // Parent router-view
+      meta: { title: 'yibaoOnlineDetails' },
+      hidden: true
+    },
+    {
       path: 'network',
       name: 'Network',
       component: () => import('@/views/pay/network/index'), // Parent router-view
