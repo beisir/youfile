@@ -239,6 +239,7 @@ export const asyncRouterMap = [
       }
     ]
   },
+  payRouter,
   /** 小云店**/
   {
     path: '/store',
@@ -349,7 +350,6 @@ export const asyncRouterMap = [
   /** When your routing table is too long, you can split it into small modules**/
   goodsRouter,
   orderRouter,
-  payRouter,
   // componentsRouter,
   // chartsRouter,
   // nestedRouter,

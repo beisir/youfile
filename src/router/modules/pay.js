@@ -13,18 +13,6 @@ const orderRouter = {
   },
   children: [
     {
-      path: 'yibaoBranchOnline',
-      name: 'YibaoBranchOnline',
-      component: () => import('@/views/pay/yibaoBranchOnline/index'), // Parent router-view
-      meta: { title: 'yibaoBranchOnline' }
-    },
-    {
-      path: 'yibaoPaySet',
-      name: 'YibaoPaySet',
-      component: () => import('@/views/pay/yibaoPaySet/index'), // Parent router-view
-      meta: { title: 'yibaoPaySet' }
-    },
-    {
       path: 'yibaoMerchantsOnline',
       name: 'YibaoMerchantsOnline',
       component: () => import('@/views/pay/yibaoMerchantsOnline/index'), // Parent router-view
@@ -36,6 +24,18 @@ const orderRouter = {
       component: () => import('@/views/pay/yibaoMerchantsOnline/details'), // Parent router-view
       meta: { title: 'yibaoOnlineDetails' },
       hidden: true
+    },
+    {
+      path: 'yibaoBranchOnline',
+      name: 'YibaoBranchOnline',
+      component: () => import('@/views/pay/yibaoBranchOnline/index'), // Parent router-view
+      meta: { title: 'yibaoBranchOnline' }
+    },
+    {
+      path: 'yibaoPaySet',
+      name: 'YibaoPaySet',
+      component: () => import('@/views/pay/yibaoPaySet/index'), // Parent router-view
+      meta: { title: 'yibaoPaySet' }
     },
     {
       path: 'network',

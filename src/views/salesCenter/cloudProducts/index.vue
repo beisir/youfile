@@ -31,7 +31,7 @@
       <el-table-column prop="createDate" label="下单时间" width="180" align="center"/>
       <el-table-column prop="orderNumber" label="订单号" width="180" align="center"/>
       <el-table-column prop="yunStoreGoodsSnapshot.discountAmount" label="优惠码支付" width="180" align="center"/>
-      <el-table-column prop="orderAmount" label="金额" width="180" align="center"/>
+      <el-table-column prop="orderAmount" label="订单金额" width="180" align="center"/>
       <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
           <el-button type="primary" @click="toDetail(scope)">详情</el-button>

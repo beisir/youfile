@@ -6,7 +6,7 @@
       </el-form-item>
       <el-form-item label="入网状态">
         <el-select v-model="formInline.registerStatus" placeholder="请选择">
-          <el-option label="全部" value="">全部商品</el-option>
+          <el-option label="全部" value>全部商品</el-option>
           <el-option label="入网失败" value="0">入网失败</el-option>
           <el-option label="入网成功" value="1">入网成功</el-option>
         </el-select>
@@ -14,44 +14,20 @@
       <el-button type="primary" @click="onSubmit">查询</el-button>
       <el-button type="primary" @click="addData">添加分账方</el-button>
     </el-form>
-    <el-table
-      v-loading.body="listLoading"
-      :data="tableData"
-      border
-      style="width: 100%">
-      <el-table-column
-        type="index"
-        width="50"
-        label="序号"
-        align="center"/>
-      <el-table-column
-        prop="tInnerNumber"
-        label="第三方支付内部流水号"
-        align="center"/>
-      <el-table-column
-        prop="requestNumber"
-        label="入网请求编号"
-        align="center"/>
-      <el-table-column
-        prop="merchantNumber"
-        label="商户编号"
-        align="center"/>
-      <el-table-column
-        prop="tpMerchantNumber"
-        label="第三方支付父商户编号"
-        align="center"/>
-      <el-table-column
-        prop="tMerchantNumber"
-        label="第三方支付商户编号"
-        align="center"/>
-      <el-table-column
-        prop="tMerchantRole"
-        label="第三方支付商户角色"
-        align="center"/>
-      <el-table-column
-        prop="registerStatus"
-        label="入网状态"
-        align="center">
+    <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
+      <el-table-column type="index" width="50" label="序号" align="center"/>
+      <el-table-column prop="tInnerNumber" label="第三方支付内部流水号" align="center"/>
+      <el-table-column prop="requestNumber" label="入网请求编号" align="center"/>
+      <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
+      <el-table-column prop="tpMerchantNumber" label="第三方支付父商户编号" align="center"/>
+      <el-table-column prop="tMerchantNumber" label="第三方支付商户编号" align="center"/>
+      <el-table-column prop="tMerchantRole" label="第三方支付商户角色" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.tMerchantRole=='SUB_MERCHANT'" style="color: #E73E48">子商户</span>
+          <span v-if="scope.row.tMerchantRole=='LEDGER_MERCHANT'" style="color: #E6A23C">分账方</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="registerStatus" label="入网状态" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.registerStatus=='UNKNOWN'" style="color: #E73E48">未知</span>
           <span v-if="scope.row.registerStatus=='INIT'" style="color: #E6A23C">初始化</span>
@@ -60,25 +36,15 @@
           <span v-if="scope.row.registerStatus=='REGIST_PROCESSING'" style="color: #670ACE">审核中</span>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="registerChannel"
-        label="入网渠道"
-        align="center">
+      <el-table-column prop="registerChannel" label="入网渠道" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.registerChannel=='WX_PAY'" style="color: #E73E48">微信支付</span>
           <span v-if="scope.row.registerChannel=='YEEPAY'" style="color: #E6A23C">易宝支付</span>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="onlinePay"
-        label="操作"
-        width="200"
-        align="center">
+      <el-table-column prop="onlinePay" label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            @click="getDetails(scope.$index, scope.row )">详情</el-button>
+          <el-button size="mini" type="primary" @click="getDetails(scope.$index, scope.row )">详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -105,7 +71,30 @@
       </el-form>
     </el-dialog>
     <el-dialog :visible.sync="dialogTableVisible" title="商户信息">
-      <div>基本信息：{{ merchantMes }}</div>
+      <!-- <el-form :model="rowData" >
+        <el-form-item :label-width="formLabelWidth"  label="入网请求编号">
+          <el-input v-model="rowData.requestNumber" placeholder=""/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth"  label="第三方支付内部流水号">
+          <el-input v-model="rowData.tInnerNumber" placeholder=""/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth"  label="商户编号">
+          <el-input v-model="rowData.merchantNumber" placeholder="商户编号"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth"  label="第三方支付父商户编号">
+          <el-input v-model="rowData.tpMerchantNumber" placeholder=""/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth"  label="第三方支付商户编号">
+          <el-input v-model="rowData.tMerchantNumber" placeholder=""/>
+        </el-form-item>
+         <el-form-item :label-width="formLabelWidth"  label="第三方支付商户角色">
+          <el-input v-model="rowData.tMerchantRole" placeholder=""/>
+          <template slot-scope="scope">
+            <span v-if="scope.row.tMerchantRole=='SUB_MERCHANT'" style="color: #E73E48">子商户</span>
+            <span v-if="scope.row.tMerchantRole=='LEDGER_MERCHANT'" style="color: #E6A23C">分账方</span>
+          </template>
+        </el-form-item>
+      </el-form> -->
       <div>商户资质信息：{{ certificationInfo }}</div>
       <div>商户资质图片信息：{{ pictureInfo }}</div>
       <div>商户结算信息：{{ settleInfo }}</div>
@@ -128,10 +117,8 @@ export default {
       },
       rules: {
         merchantSign: [
-          { required: true,
-            message: '商户编号不能为空',
-            trigger: 'blur'
-          }]
+          { required: true, message: '商户编号不能为空', trigger: 'blur' }
+        ]
       },
       listLoading: false,
       merchantSignShow: false,
@@ -148,6 +135,7 @@ export default {
       certificationInfo: '',
       settleInfo: '',
       pictureInfo: '',
+      rowData: {},
       productInfo: ''
     }
   },
@@ -161,8 +149,8 @@ export default {
       this.getList()
     },
     /**
-       * 获取列表
-       */
+     * 获取列表
+     */
     getList() {
       this.listLoading = true
       getMerchantList(this.listQuery).then(response => {
@@ -179,7 +167,7 @@ export default {
     },
     getDetailsData(index, row, sign) {
       const formData = this.formData
-      this.$refs[formData].validate((valid) => {
+      this.$refs[formData].validate(valid => {
         if (valid) {
           const merchantSign = this.formData.merchantSign
           this.$router.push({
@@ -193,6 +181,7 @@ export default {
     },
     getDetails(index, row) {
       const requestNumber = row.requestNumber
+      this.rowData = row
       getMerchantDetails(requestNumber).then(response => {
         const data = response.data
         if (data) {
@@ -207,18 +196,18 @@ export default {
       })
     },
     /**
-       * 改变每页数量
-       * @param size 页大小
-       */
+     * 改变每页数量
+     * @param size 页大小
+     */
     handleSizeChange(size) {
       this.listQuery.pageSize = size
       this.listQuery.pageNum = 1
       this.getList()
     },
     /**
-       * 改变页码
-       * @param page 页号
-       */
+     * 改变页码
+     * @param page 页号
+     */
     handleCurrentChange(page) {
       this.listQuery.pageNum = page
       this.getList()
@@ -227,11 +216,11 @@ export default {
 }
 </script>
 <style>
-  .el-dialog .el-dialog__body{
-    overflow-x: auto
-  }
-  .el-dialog .el-dialog__body input{
-    width:240px;
-  }
+.el-dialog .el-dialog__body {
+  overflow-x: auto;
+}
+.el-dialog .el-dialog__body input {
+  width: 350px;
+}
 </style>
 
