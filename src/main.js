@@ -13,6 +13,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+import JsonViewer from 'vue-json-viewer'
 import i18n from './lang' // Internationalization
 import './icons' // icon
 import './errorLog' // error log
@@ -22,6 +23,7 @@ import { checkPermission } from '@/utils/permission'
 import imageUrl from './components/Const/index.vue'
 import * as filters from './filters' // global filters
 
+Vue.use(JsonViewer)
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)

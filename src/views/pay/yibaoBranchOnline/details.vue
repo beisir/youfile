@@ -356,10 +356,25 @@
             />
           </el-form-item>
         </div>
+        <div class="clearfix">
+          <span>小程序信息</span>
+        </div>
+        <el-form-item label="小程序名称：" prop="appName">
+          <el-input :readonly="readonly" v-model="merchantVOData.appName"/>
+        </el-form-item>
+        <el-form-item label="小程序APPID：" prop="appId">
+          <el-input :readonly="readonly" v-model="merchantVOData.appId"/>
+        </el-form-item>
+        <el-form-item label="小程序秘钥：" prop="appSecret">
+          <el-input :readonly="readonly" v-model="merchantVOData.appSecret"/>
+        </el-form-item>
+        <el-form-item label="平台编号：" prop="platAppId">
+          <el-input :readonly="readonly" v-model="merchantVOData.platAppId"/>
+        </el-form-item>
       </el-form>
     </div>
     <el-row class="submit-btn">
-      <el-button type="primary" @click="eidthData()">分账方入网</el-button>
+      <el-button type="primary" @click="eidthData()">子商户入网</el-button>
     </el-row>
   </div>
 </template>
@@ -372,7 +387,7 @@ import {
   getSmallbankList,
   getImgUrl
 } from '@/api/merchant'
-import { yeepayRegister } from '@/api/pay'
+import { yeepaySubRegister } from '@/api/pay'
 export default {
   data() {
     return {
@@ -381,6 +396,18 @@ export default {
       activeName: 'first',
       // 校验规则
       rules: {
+        appName: [
+          { required: true, message: '小程序名称不能为空', trigger: 'blur' }
+        ],
+        appId: [
+          { required: true, message: '小程序APPID不能为空', trigger: 'blur' }
+        ],
+        appSecret: [
+          { required: true, message: '小程序秘钥不能为空', trigger: 'blur' }
+        ],
+        platAppId: [
+          { required: true, message: '平台编号不能为空', trigger: 'blur' }
+        ],
         linkman: [
           { required: true, message: '联系人不能为空', trigger: 'blur' }
         ],
@@ -817,6 +844,9 @@ export default {
             this.getImageUrl(handIdCardUrl, 'handIdCardUrl')
           }
         }
+        if (response.data.merchantMiniprogramVO) {
+          obj = Object.assign(response.data.merchantMiniprogramVO, obj)
+        }
         if (response.data.merchantSettleVO) {
           this.merchantSettleVOId = response.data.merchantSettleVO.id
           obj = Object.assign(response.data.merchantSettleVO, obj)
@@ -861,8 +891,13 @@ export default {
             registerChannel: 'YEEPAY',
             merchantStyle: merchantStyle,
             fullName: formData.merchantName,
+            shortName: formData.merchantAbbre,
+            address: formData.address,
+            oneCategory: formData.firstCategory,
+            twoCategory: formData.secondCategory,
             legalPersonName: formData.legalPerson,
             provinceCode: formData.provinceCode,
+            districtCode: formData.countyCode,
             cityCode: formData.cityCode,
             contactPersonName: formData.linkman,
             contactPersonPhone: formData.linkmanPhone,
@@ -870,12 +905,22 @@ export default {
             bankCardNo: formData.bankCard,
             bankCardAccName: formData.accountName,
             bankCardStyle: bankCardType,
+            settleType: formData.settleType,
             bankHeadCode: formData.headBankCode,
             bankProvinceCode: formData.bankProvinceCode,
             bankCityCode: formData.bankCityCode,
             legalPersonId: formData.legalIdCard,
             uniCreditNo: formData.unifiedCertificateNo,
             businessLicenseNo: formData.businessLicenseNo,
+            taxRegistCertNo: formData.taxCertificateNo,
+            orgCertNo: formData.organCertificateNo,
+            orgCertNoExpiry: formData.organExpireEndDate,
+            orgCertNoLong: formData.organType,
+            accLicenseNo: formData.openCertificateNo,
+            appName: formData.appName,
+            appId: formData.appId,
+            appSecret: formData.appSecret,
+            platAppId: formData.platAppId,
             merchantPictureInfoMap: {
               HAND_IDCARD: formData.handIdCardUrl,
               IDCARD_FRONT: formData.idCardFaceUrl,
@@ -888,14 +933,15 @@ export default {
               ACC_LICENSE_CODE: formData.bankOrganUrl
             }
           }
-          yeepayRegister(data)
+          console.log(data)
+          yeepaySubRegister(data)
             .then(response => {
               this.$message({
                 message: '入网成功！',
                 type: 'success'
               })
               this.$router.push({
-                path: '/pay/yibaoMerchantsOnline'
+                path: '/pay/yibaoBranchOnline'
               })
             })
             .catch(response => {

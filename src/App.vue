@@ -73,5 +73,11 @@ label {
 .form-input .el-form-item--medium .el-form-item__content {
   width: 180px;
 }
+.jv-container .jv-code {
+  padding: 0;
+}
+.el-input.is-disabled .el-input__inner {
+  color: #333;
+}
 </style>
 

@@ -32,6 +32,13 @@ const orderRouter = {
       meta: { title: 'yibaoBranchOnline' }
     },
     {
+      path: 'yibaoSubDetails',
+      name: 'YibaoSubDetails',
+      component: () => import('@/views/pay/yibaoBranchOnline/details'), // Parent router-view
+      meta: { title: 'yibaoSubDetails' },
+      hidden: true
+    },
+    {
       path: 'yibaoPaySet',
       name: 'YibaoPaySet',
       component: () => import('@/views/pay/yibaoPaySet/index'), // Parent router-view

@@ -71,34 +71,45 @@
       </el-form>
     </el-dialog>
     <el-dialog :visible.sync="dialogTableVisible" title="商户信息">
-      <!-- <el-form :model="rowData" >
-        <el-form-item :label-width="formLabelWidth"  label="入网请求编号">
-          <el-input v-model="rowData.requestNumber" placeholder=""/>
+      <el-form :model="rowData">
+        <el-form-item :label-width="formLabelWidth" label="入网请求编号">
+          <el-input v-model="rowData.requestNumber" disabled="disabled" placeholder/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth"  label="第三方支付内部流水号">
-          <el-input v-model="rowData.tInnerNumber" placeholder=""/>
+        <el-form-item :label-width="formLabelWidth" label="第三方支付内部流水号">
+          <el-input v-model="rowData.tInnerNumber" disabled="disabled" placeholder/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth"  label="商户编号">
-          <el-input v-model="rowData.merchantNumber" placeholder="商户编号"/>
+        <el-form-item :label-width="formLabelWidth" label="商户编号">
+          <el-input v-model="rowData.merchantNumber" disabled="disabled" placeholder="商户编号"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth"  label="第三方支付父商户编号">
-          <el-input v-model="rowData.tpMerchantNumber" placeholder=""/>
+        <el-form-item :label-width="formLabelWidth" label="第三方支付父商户编号">
+          <el-input v-model="rowData.tpMerchantNumber" disabled="disabled" placeholder/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth"  label="第三方支付商户编号">
-          <el-input v-model="rowData.tMerchantNumber" placeholder=""/>
+        <el-form-item :label-width="formLabelWidth" label="第三方支付商户编号">
+          <el-input v-model="rowData.tMerchantNumber" disabled="disabled" placeholder/>
         </el-form-item>
-         <el-form-item :label-width="formLabelWidth"  label="第三方支付商户角色">
-          <el-input v-model="rowData.tMerchantRole" placeholder=""/>
-          <template slot-scope="scope">
-            <span v-if="scope.row.tMerchantRole=='SUB_MERCHANT'" style="color: #E73E48">子商户</span>
-            <span v-if="scope.row.tMerchantRole=='LEDGER_MERCHANT'" style="color: #E6A23C">分账方</span>
-          </template>
+        <el-form-item :label-width="formLabelWidth" label="第三方支付商户角色">
+          <el-select v-model="rowData.tMerchantRole" disabled="disabled" placeholder="请选择">
+            <el-option label="子商户" value="SUB_MERCHANT">子商户</el-option>
+            <el-option label="分账方" value="LEDGER_MERCHANT">分账方</el-option>
+          </el-select>
         </el-form-item>
-      </el-form> -->
-      <div>商户资质信息：{{ certificationInfo }}</div>
-      <div>商户资质图片信息：{{ pictureInfo }}</div>
-      <div>商户结算信息：{{ settleInfo }}</div>
-      <div>商户支付产品信：{{ productInfo }}</div>
+        <el-form-item :label-width="formLabelWidth" label="入网状态">
+          <el-select v-model="rowData.tMerchantRole" disabled="disabled" placeholder="请选择">
+            <el-option label="微信支付" value="UNKNOWN">微信支付</el-option>
+            <el-option label="初始化" value="INIT">初始化</el-option>
+            <el-option label="注册失败" value="REGIST_FAIL">注册失败</el-option>
+            <el-option label="注册成功" value="REGIST_SUCCESS">注册成功</el-option>
+            <el-option label="审核中" value="REGIST_PROCESSING">审核中</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="入网渠道">
+          <el-select v-model="rowData.registerChannel" disabled="disabled" placeholder="请选择">
+            <el-option label="微信支付" value="WX_PAY">微信支付</el-option>
+            <el-option label="易宝支付" value="YEEPAY">易宝支付</el-option>
+          </el-select>
+        </el-form-item>
+        <json-viewer :value="jsonData"/>
+      </el-form>
     </el-dialog>
   </div>
 </template>
@@ -132,11 +143,8 @@ export default {
       },
       tableData: [],
       merchantMes: '',
-      certificationInfo: '',
-      settleInfo: '',
-      pictureInfo: '',
-      rowData: {},
-      productInfo: ''
+      jsonData: {},
+      rowData: {}
     }
   },
   created() {
@@ -185,11 +193,8 @@ export default {
       getMerchantDetails(requestNumber).then(response => {
         const data = response.data
         if (data) {
-          this.merchantMes = response.data.baseInfo
-          this.certificationInfo = response.data.certificationInfo
-          this.settleInfo = response.data.settleInfo
-          this.productInfo = response.data.productInfo
-          this.pictureInfo = response.data.pictureInfo
+          this.jsonData = response.data
+
           // console.log(eval ("(" + response.data.baseInfo + ")"))
         }
         this.dialogTableVisible = true

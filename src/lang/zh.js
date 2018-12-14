@@ -9,6 +9,7 @@ export default {
     supplyManage: '供货单管理',
     pay: '支付配置',
     yibaoOnlineDetails: '易宝分账方入网详情',
+    yibaoSubDetails: '易宝子商户入网详情',
     yibaoMerchantsOnline: '易宝分账方入网',
     yibaoPaySet: '易宝支付设置',
     yibaoBranchOnline: '易宝子商户入网',

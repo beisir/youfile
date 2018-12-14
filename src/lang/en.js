@@ -9,6 +9,7 @@ export default {
     supplyManage: 'Supply Manage',
     pay: 'Pay Set',
     yibaoOnlineDetails: 'Yibao Online Details',
+    yibaoSubDetails: 'Yibao Sub Details',
     yibaoMerchantsOnline: 'Yibao Merchants Online',
     yibaoPaySet: 'Yibao Pay Set',
     yibaoBranchOnline: 'Yibao Branch Online',

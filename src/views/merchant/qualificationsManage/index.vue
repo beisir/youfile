@@ -105,8 +105,8 @@
         <el-form-item :label-width="formLabelWidth" label="小程序名称" prop="appName">
           <el-input :readonly="readonly" v-model="storeMes.appName"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="小程序密钥" prop="appSercret">
-          <el-input :readonly="readonly" v-model="storeMes.appSercret"/>
+        <el-form-item :label-width="formLabelWidth" label="小程序密钥" prop="appSecret">
+          <el-input :readonly="readonly" v-model="storeMes.appSecret"/>
         </el-form-item>
       </el-form>
       <div v-if="isShow" slot="footer" class="dialog-footer">
@@ -140,7 +140,7 @@ export default {
             message: '小程序名称不能为空',
             trigger: 'blur'
           }],
-        appSercret: [
+        appSecret: [
           { required: true,
             message: '小程序密钥不能为空',
             trigger: 'blur'
