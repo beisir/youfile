@@ -137,11 +137,11 @@
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                     list-type="picture-card"
                   >
-                    <el-dialog :visible.sync="dialogVisible">
-                      <img :src="businessLicenseUrl" width="100%" alt>
-                    </el-dialog>
                     <i class="el-icon-plus avatar-uploader-icon"/>
                   </el-upload>
+                  <el-dialog :visible.sync="dialogVisible">
+                    <img :src="businessLicenseUrl" width="100%" alt>
+                  </el-dialog>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -155,11 +155,11 @@
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                     list-type="picture-card"
                   >
-                    <el-dialog :visible.sync="dialogVisible1">
-                      <img :src="taxRegisterCertificateUrl" width="100%" alt>
-                    </el-dialog>
                     <i class="el-icon-plus avatar-uploader-icon"/>
                   </el-upload>
+                  <el-dialog :visible.sync="dialogVisible1">
+                    <img :src="taxRegisterCertificateUrl" width="100%" alt>
+                  </el-dialog>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -173,11 +173,11 @@
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                     list-type="picture-card"
                   >
-                    <el-dialog :visible.sync="dialogVisible2">
-                      <img :src="organCodeCertificateUrl" width="100%" alt>
-                    </el-dialog>
                     <i class="el-icon-plus avatar-uploader-icon"/>
                   </el-upload>
+                  <el-dialog :visible.sync="dialogVisible2">
+                    <img :src="organCodeCertificateUrl" width="100%" alt>
+                  </el-dialog>
                 </el-form-item>
               </el-col>
             </div>
@@ -198,11 +198,11 @@
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                     list-type="picture-card"
                   >
-                    <el-dialog :visible.sync="dialogVisible3">
-                      <img :src="unifiedCertificateUrl" width="100%" alt>
-                    </el-dialog>
                     <i class="el-icon-plus avatar-uploader-icon"/>
                   </el-upload>
+                  <el-dialog :visible.sync="dialogVisible3">
+                    <img :src="unifiedCertificateUrl" width="100%" alt>
+                  </el-dialog>
                 </el-form-item>
               </el-col>
             </div>
@@ -218,11 +218,11 @@
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible4">
-                  <img :src="bankOrganUrl" width="100%" alt>
-                </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
               </el-upload>
+              <el-dialog :visible.sync="dialogVisible4">
+                <img :src="bankOrganUrl" width="100%" alt>
+              </el-dialog>
             </el-form-item>
           </el-col>
         </el-tabs>
@@ -272,11 +272,11 @@
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible5">
-                  <img :src="idCardFaceUrl" width="100%" alt>
-                </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
               </el-upload>
+              <el-dialog :visible.sync="dialogVisible5">
+                <img :src="idCardFaceUrl" width="100%" alt>
+              </el-dialog>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -290,11 +290,11 @@
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible6">
-                  <img :src="idCardConUrl" width="100%" alt>
-                </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
               </el-upload>
+              <el-dialog :visible.sync="dialogVisible6">
+                <img :src="idCardConUrl" width="100%" alt>
+              </el-dialog>
             </el-form-item>
           </el-col>
         </el-row>
@@ -310,11 +310,11 @@
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible7">
-                  <img :src="storePhotoUrl" width="100%" alt>
-                </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
               </el-upload>
+              <el-dialog :visible.sync="dialogVisible7">
+                <img :src="storePhotoUrl" width="100%" alt>
+              </el-dialog>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -328,11 +328,11 @@
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
               >
-                <el-dialog :visible.sync="dialogVisible8">
-                  <img :src="scenePhoneUrl" width="100%" alt>
-                </el-dialog>
                 <i class="el-icon-plus avatar-uploader-icon"/>
               </el-upload>
+              <el-dialog :visible.sync="dialogVisible8">
+                <img :src="scenePhoneUrl" width="100%" alt>
+              </el-dialog>
             </el-form-item>
           </el-col>
         </el-row>
@@ -346,11 +346,11 @@
             :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
             list-type="picture-card"
           >
-            <el-dialog :visible.sync="dialogVisible9">
-              <img :src="handIdCardUrl" width="100%" alt>
-            </el-dialog>
             <i class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
+          <el-dialog :visible.sync="dialogVisible9">
+            <img :src="handIdCardUrl" width="100%" alt>
+          </el-dialog>
         </el-form-item>
         <div class="clearfix">
           <span>商户结算信息</span>
