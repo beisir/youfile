@@ -271,45 +271,43 @@
             </el-form-item>
           </el-col>
         </div>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="身份证正面" prop="idCardFaceUrl">
-              <el-upload
-                :on-remove="handleRemove"
-                :limit="1"
-                :on-preview="handlePictureCardPreview6"
-                :file-list="idCardFaceUrlList"
-                :on-success="handleSuccessFace"
-                :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                list-type="picture-card"
-              >
-                <i class="el-icon-plus avatar-uploader-icon"/>
-              </el-upload>
-              <el-dialog :visible.sync="dialogVisible6">
-                <img :src="idCardFaceUrl" width="100%" alt>
-              </el-dialog>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="身份证反面" prop="idCardConUrl">
-              <el-upload
-                :on-remove="handleRemovePreviewidCardConUrl"
-                :limit="1"
-                :file-list="idCardConUrlList"
-                :on-preview="handlePictureCardPreview7"
-                :on-success="handleSuccessFaceCon"
-                :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-                list-type="picture-card"
-              >
-                <i class="el-icon-plus avatar-uploader-icon"/>
-              </el-upload>
-              <el-dialog :visible.sync="dialogVisible7">
-                <img :src="idCardConUrl" width="100%" alt>
-              </el-dialog>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
+        <el-col :span="12">
+          <el-form-item label="身份证正面" prop="idCardFaceUrl">
+            <el-upload
+              :on-remove="handleRemove"
+              :limit="1"
+              :on-preview="handlePictureCardPreview6"
+              :file-list="idCardFaceUrlList"
+              :on-success="handleSuccessFace"
+              :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+              list-type="picture-card"
+            >
+              <i class="el-icon-plus avatar-uploader-icon"/>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible6">
+              <img :src="idCardFaceUrl" width="100%" alt>
+            </el-dialog>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="身份证反面" prop="idCardConUrl">
+            <el-upload
+              :on-remove="handleRemovePreviewidCardConUrl"
+              :limit="1"
+              :file-list="idCardConUrlList"
+              :on-preview="handlePictureCardPreview7"
+              :on-success="handleSuccessFaceCon"
+              :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+              list-type="picture-card"
+            >
+              <i class="el-icon-plus avatar-uploader-icon"/>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible7">
+              <img :src="idCardConUrl" width="100%" alt>
+            </el-dialog>
+          </el-form-item>
+        </el-col>
+        <el-form-item/>
         <div class="clearfix">
           <span>商户结算信息</span>
         </div>

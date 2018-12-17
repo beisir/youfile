@@ -866,20 +866,20 @@ export default {
         if (valid) {
           let merchantStyle = ''
           if (formData.merchantCharacter === '1') {
-            merchantStyle = 'GR'
+            merchantStyle = 'gr'
           }
           if (formData.merchantCharacter === '2') {
-            merchantStyle = 'QY'
+            merchantStyle = 'qy'
           }
           if (formData.merchantCharacter === '3') {
-            merchantStyle = 'GT'
+            merchantStyle = 'gt'
           }
           let bankCardType = ''
           if (formData.bankCardType === '2') {
-            bankCardType = 'PRIVATE_CASH'
+            bankCardType = 'private_cash'
           }
           if (formData.bankCardType === '1') {
-            bankCardType = 'PUBLIC_CASH'
+            bankCardType = 'public_cash'
           }
           if (formData.bankCardType === '0') {
             this.$message.error('开户卡类型未知！')
