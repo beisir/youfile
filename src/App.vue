@@ -79,5 +79,8 @@ label {
 .el-input.is-disabled .el-input__inner {
   color: #333;
 }
+.el-button--medium{
+  margin-bottom: 22px;
+}
 </style>
 

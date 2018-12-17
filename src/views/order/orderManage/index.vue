@@ -15,18 +15,16 @@
       <el-form-item label="收款方商户编号">
         <el-input v-model="formInline.receiveMerchantNumber" placeholder="请输入收款方商户编号"/>
       </el-form-item>
-      <div>
-        <el-form-item label="订单编号">
-          <el-input v-model="formInline.orderNumber" placeholder="请输入订单编号"/>
-        </el-form-item>
-        <el-form-item label="快递单号">
-          <el-input v-model="formInline.expressNumber" placeholder="请输入快递单号"/>
-        </el-form-item>
-        <el-form-item label="店铺ID">
-          <el-input v-model="formInline.storeId" placeholder="请输入店铺ID"/>
-        </el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
-      </div>
+      <el-form-item label="订单编号">
+        <el-input v-model="formInline.orderNumber" placeholder="请输入订单编号"/>
+      </el-form-item>
+      <el-form-item label="快递单号">
+        <el-input v-model="formInline.expressNumber" placeholder="请输入快递单号"/>
+      </el-form-item>
+      <el-form-item label="店铺ID">
+        <el-input v-model="formInline.storeId" placeholder="请输入店铺ID"/>
+      </el-form-item>
+      <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
     <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
