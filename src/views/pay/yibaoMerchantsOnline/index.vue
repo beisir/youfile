@@ -6,9 +6,12 @@
       </el-form-item>
       <el-form-item label="入网状态">
         <el-select v-model="formInline.registerStatus" placeholder="请选择">
-          <el-option label="全部" value>全部商品</el-option>
-          <el-option label="入网失败" value="0">入网失败</el-option>
-          <el-option label="入网成功" value="1">入网成功</el-option>
+          <el-option label="全部" value>全部</el-option>
+          <el-option label="注册失败" value="regist_fail">注册失败</el-option>
+          <el-option label="注册成功" value="regist_success">注册成功</el-option>
+          <el-option label="初始化" value="init">初始化</el-option>
+          <el-option label="未知" value="unkonown">未知</el-option>
+          <el-option label="审核中" value="regist_processing">审核中</el-option>
         </el-select>
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
