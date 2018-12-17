@@ -887,8 +887,8 @@ export default {
           }
           const data = {
             merchantNumber: this.merchantNumber,
-            tMerchantRole: 'SUB_MERCHANT',
-            registerChannel: 'YEEPAY',
+            tMerchantRole: 'sub_merchant',
+            registerChannel: 'yeepay',
             merchantStyle: merchantStyle,
             fullName: formData.merchantName,
             shortName: formData.merchantAbbre,
@@ -906,7 +906,7 @@ export default {
             bankCardAccName: formData.accountName,
             bankCardStyle: bankCardType,
             settleType: formData.settleType,
-            bankHeadCode: formData.headBankCode,
+            bankHeadCode: formData.headBankName,
             bankProvinceCode: formData.bankProvinceCode,
             bankCityCode: formData.bankCityCode,
             legalPersonId: formData.legalIdCard,
