@@ -183,7 +183,7 @@ export default {
         if (valid) {
           const merchantSign = this.formData.merchantSign
           this.$router.push({
-            path: '/pay/yibaoOnlineDetails',
+            path: '/pay/yibaoSubDetails',
             query: {
               merchantNo: merchantSign
             }
