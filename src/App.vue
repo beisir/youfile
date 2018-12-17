@@ -79,8 +79,14 @@ label {
 .el-input.is-disabled .el-input__inner {
   color: #333;
 }
-.el-button--medium{
+.el-button--medium {
   margin-bottom: 22px;
+}
+.block .el-col-12 {
+  height: 180px;
+}
+.disabled .el-upload--picture-card {
+  display: none;
 }
 </style>
 

@@ -131,6 +131,7 @@
                   <el-upload
                     :on-remove="handleRemoveSuccess"
                     :limit="1"
+                    :class="{disabled:fileListShow}"
                     :file-list="fileList"
                     :on-preview="handlePictureCardPreview"
                     :on-success="handleSuccess"
@@ -149,6 +150,7 @@
                   <el-upload
                     :on-remove="handleRemovePreview"
                     :limit="1"
+                    :class="{disabled:taxRegisterCertificateUrlListShow}"
                     :file-list="taxRegisterCertificateUrlList"
                     :on-success="handleSuccessRegister"
                     :on-preview="handlePictureCardPreview1"
@@ -167,6 +169,7 @@
                   <el-upload
                     :on-remove="handleRemoveOrgan"
                     :limit="1"
+                    :class="{disabled:organCodeCertificateUrlListShow}"
                     :file-list="organCodeCertificateUrlList"
                     :on-preview="handlePictureCardPreview2"
                     :on-success="handleSuccessOrgan"
@@ -193,6 +196,7 @@
                     :on-remove="handleRemoveCertificate"
                     :file-list="unifiedCertificateUrlList"
                     :limit="1"
+                    :class="{disabled:unifiedCertificateUrlListShow}"
                     :on-success="handleSuccessCertificate"
                     :on-preview="handlePictureCardPreview3"
                     :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
@@ -213,6 +217,7 @@
                 :on-remove="handleRemovePictureCard"
                 :limit="1"
                 :file-list="bankOrganUrlList"
+                :class="{disabled:bankOrganUrlListShow}"
                 :on-success="handleSuccessBank"
                 :on-preview="handlePictureCardPreview4"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
@@ -268,6 +273,7 @@
                 :limit="1"
                 :file-list="idCardFaceUrlList"
                 :on-success="handleSuccessFace"
+                :class="{disabled:idCardFaceUrlListShow}"
                 :on-preview="handlePictureCardPreview5"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
@@ -285,6 +291,7 @@
                 :on-remove="handleRemovePreviewidCardConUrl"
                 :limit="1"
                 :file-list="idCardConUrlList"
+                :class="{disabled:idCardConUrlListShow}"
                 :on-preview="handlePictureCardPreview6"
                 :on-success="handleSuccessFaceCon"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
@@ -304,6 +311,7 @@
               <el-upload
                 :on-remove="handleRemovePhoto"
                 :limit="1"
+                :class="{disabled:storePhotoUrlListShow}"
                 :file-list="storePhotoUrlList"
                 :on-success="handleSuccessPhoto"
                 :on-preview="handlePictureCardPreview7"
@@ -322,6 +330,7 @@
               <el-upload
                 :on-remove="handleRemovePhone"
                 :limit="1"
+                :class="{disabled:scenePhoneUrlListShow}"
                 :file-list="scenePhoneUrlList"
                 :on-success="handleSuccessPhone"
                 :on-preview="handlePictureCardPreview8"
@@ -340,6 +349,7 @@
           <el-upload
             :on-remove="handleRemoveFaceHand"
             :limit="1"
+            :class="{disabled:handIdCardUrlListShow}"
             :file-list="handIdCardUrlList"
             :on-success="handleSuccessFaceHand"
             :on-preview="handlePictureCardPreview9"
@@ -456,6 +466,7 @@
             <el-upload
               :on-remove="handleRemoveSettlement"
               :limit="1"
+              :class="{disabled:settlementCardUrlListShow}"
               :file-list="settlementCardUrlList"
               :on-success="handleSuccesSettlement"
               :on-preview="handlePictureCardPreview10"
@@ -714,7 +725,19 @@ export default {
       merchantRetailId: '',
       merchantQualificationVOId: '',
       merchantSettleVOId: '',
-      merchantVOData: {}
+      merchantVOData: {},
+      fileListShow: false,
+      idCardFaceUrlListShow: false,
+      idCardConUrlListShow: false,
+      settlementCardUrlListShow: false,
+      unifiedCertificateUrlListShow: false,
+      taxRegisterCertificateUrlListShow: false,
+      organCodeCertificateUrlListShow: false,
+      bankOrganUrlListShow: false,
+      storePhotoUrlListShow: false,
+      industryLicenseUrlListShow: false,
+      scenePhoneUrlListShow: false,
+      handIdCardUrlListShow: false
     }
   },
   created() {
@@ -747,13 +770,16 @@ export default {
       listQuery.parentCode = event
       this.merchantVOData.provinceCode = event
       this.merchantVOData.province = name
-      this.city = ''
-      this.cityCode = ''
+      this.merchantVOData.city = ''
+      this.merchantVOData.cityCode = ''
+      this.merchantVOData.county = ''
+      this.merchantVOData.countyCode = ''
       getCityChildList(this.listQuery).then(response => {
         this.areaCityData = response.data.obj.result
       })
     },
     onSelectedCity(event) {
+      console.log()
       const name = this.getDataName(this.areaCityData, event)
       const listQuery = this.listQuery
       listQuery.parentCode = event
@@ -803,7 +829,6 @@ export default {
       // listQuery.provinceCode = provinceCode
       // listQuery.cityCode = event
       // this.getSmallbankListData(listQuery)
-      this.empetySubData()
     },
     getDataNankName(arr, event) {
       let obj = {}
@@ -818,7 +843,7 @@ export default {
       listQuery.bankName = bankName
       listQuery.headBankCode = this.merchantVOData.headBankCode
       listQuery.provinceCode = this.merchantVOData.bankProvinceCode
-      listQuery.cityCode = this.merchantVOData.cityCode
+      listQuery.cityCode = this.merchantVOData.bankCityCode
       getSmallbankList(listQuery).then(response => {
         this.smallBankData = response.data.obj.result
         this.showModelSub = true
@@ -917,89 +942,113 @@ export default {
     // 删除图片
     handleRemove(file, fileList) {
       this.merchantVOData.idCardFaceUrl = ''
+      this.idCardFaceUrlListShow = false
     },
     handleRemovePreviewidCardConUrl(file, fileList) {
       this.merchantVOData.idCardConUrl = ''
+      this.idCardConUrlListShow = false
     },
     handleRemoveFaceHand(file, fileList) {
       this.merchantVOData.handIdCardUrl = ''
+      this.handIdCardUrlListShow = false
     },
     handleRemoveSuccess(file, fileList) {
+      this.fileListShow = false
       this.merchantVOData.businessLicenseUrl = ''
     },
     handleRemoveCertificate(file, fileList) {
+      this.unifiedCertificateUrlListShow = false
       this.merchantVOData.unifiedCertificateUrl = ''
     },
     handleRemovePreview(file, fileList) {
+      this.taxRegisterCertificateUrlListShow = false
       this.merchantVOData.taxRegisterCertificateUrl = ''
     },
     handleRemoveOrgan(file, fileList) {
+      this.organCodeCertificateUrlListShow = false
       this.merchantVOData.organCodeCertificateUrl = ''
     },
     handleRemovePictureCard(file, fileList) {
+      this.bankOrganUrlListShow = false
       this.merchantVOData.bankOrganUrl = ''
     },
     handleRemovePhoto(file, fileList) {
+      this.storePhotoUrlListShow = false
       this.merchantVOData.storePhotoUrl = ''
     },
     handleRemovePhone(file, fileList) {
+      this.scenePhoneUrlListShow = false
       this.merchantVOData.scenePhoneUrl = ''
     },
     handleRemoveLicense(file, fileList) {
+      this.industryLicenseUrlListShow = false
       this.merchantVOData.industryLicenseUrl = ''
     },
     handleRemoveSettlement(file, fileList) {
+      this.settlementCardUrlListShow = false
       this.merchantVOData.settlementCardUrl = ''
     },
     // 图片上传
     handleSuccess(response) {
       const imgUrl = response.obj
+      this.fileListShow = true
       this.merchantVOData.businessLicenseUrl = imgUrl
     },
     handleSuccessFace(response) {
       const imgUrl = response.obj
+      this.idCardFaceUrlListShow = true
       this.merchantVOData.idCardFaceUrl = imgUrl
     },
     handleSuccessFaceCon(response) {
       const imgUrl = response.obj
+      this.idCardConUrlListShow = true
       this.merchantVOData.idCardConUrl = imgUrl
     },
     handleSuccessFaceHand(response) {
       const imgUrl = response.obj
+      this.handIdCardUrlListShow = true
       this.merchantVOData.handIdCardUrl = imgUrl
     },
     handleSuccessCertificate(response) {
       const imgUrl = response.obj
+      this.unifiedCertificateUrlListShow = true
       this.merchantVOData.unifiedCertificateUrl = imgUrl
     },
     handleSuccessRegister(response) {
       const imgUrl = response.obj
+      this.taxRegisterCertificateUrlListShow = true
       this.merchantVOData.taxRegisterCertificateUrl = imgUrl
     },
     handleSuccessOrgan(response) {
       const imgUrl = response.obj
+      this.organCodeCertificateUrlListShow = true
       this.merchantVOData.organCodeCertificateUrl = imgUrl
     },
     handleSuccessBank(response) {
       const imgUrl = response.obj
+      this.bankOrganUrlListShow = true
       this.merchantVOData.bankOrganUrl = imgUrl
     },
 
     handleSuccessPhoto(response) {
       const imgUrl = response.obj
+      this.storePhotoUrlListShow = true
       this.merchantVOData.storePhotoUrl = imgUrl
     },
 
     handleSuccessPhone(response) {
       const imgUrl = response.obj
+      this.scenePhoneUrlListShow = true
       this.merchantVOData.scenePhoneUrl = imgUrl
     },
     handleSuccessLicense(response) {
       const imgUrl = response.obj
+      this.industryLicenseUrlListShow = true
       this.merchantVOData.industryLicenseUrl = imgUrl
     },
     handleSuccesSettlement(response) {
       const imgUrl = response.obj
+      this.settlementCardUrlListShow = true
       this.merchantVOData.settlementCardUrl = imgUrl
     },
     getImageUrl(filePath, name) {
@@ -1010,50 +1059,62 @@ export default {
         if (name === 'businessLicenseUrl') {
           this.businessLicenseUrl = response.obj
           this.fileList = fileList
+          this.fileListShow = true
         }
         if (name === 'idCardFaceUrl') {
           this.idCardFaceUrl = response.obj
           this.idCardFaceUrlList = fileList
+          this.idCardFaceUrlListShow = true
         }
         if (name === 'idCardConUrl') {
           this.idCardConUrl = response.obj
           this.idCardConUrlList = fileList
+          this.idCardConUrlListShow = true
         }
         if (name === 'settlementCardUrl') {
           this.settlementCardUrl = response.obj
           this.settlementCardUrlList = fileList
+          this.settlementCardUrlListShow = true
         }
         if (name === 'unifiedCertificateUrl') {
           this.unifiedCertificateUrl = response.obj
           this.unifiedCertificateUrlList = fileList
+          this.unifiedCertificateUrlListShow = true
         }
         if (name === 'taxRegisterCertificateUrl') {
           this.taxRegisterCertificateUrl = response.obj
           this.taxRegisterCertificateUrlList = fileList
+          this.taxRegisterCertificateUrlListShow = true
         }
         if (name === 'organCodeCertificateUrl') {
           this.organCodeCertificateUrl = response.obj
           this.organCodeCertificateUrlList = fileList
+          this.organCodeCertificateUrlListShow = true
         }
         if (name === 'bankOrganUrl') {
           this.bankOrganUrl = response.obj
           this.bankOrganUrlList = fileList
+          this.bankOrganUrlListShow = true
         }
         if (name === 'storePhotoUrl') {
           this.storePhotoUrl = response.obj
           this.storePhotoUrlList = fileList
+          this.storePhotoUrlListShow = true
         }
         if (name === 'scenePhoneUrl') {
           this.scenePhoneUrl = response.obj
           this.scenePhoneUrlList = fileList
+          this.scenePhoneUrlListShow = true
         }
         if (name === 'industryLicenseUrl') {
           this.industryLicenseUrl = response.obj
           this.industryLicenseUrlList = fileList
+          this.industryLicenseUrlListShow = true
         }
         if (name === 'handIdCardUrl') {
           this.handIdCardUrl = response.obj
           this.handIdCardUrlList = fileList
+          this.handIdCardUrlListShow = true
         }
       })
     },
@@ -1242,3 +1303,4 @@ export default {
   }
 }
 </script>
+

@@ -162,6 +162,7 @@
               <el-upload
                 :on-remove="handleRemoveSuccess"
                 :limit="1"
+                :class="{disabled:fileListShow}"
                 :file-list="fileList"
                 :on-preview="handlePictureCardPreview"
                 :on-success="handleSuccess"
@@ -180,6 +181,7 @@
               <el-upload
                 :on-remove="handleRemovePreview"
                 :limit="1"
+                :class="{disabled:taxRegisterCertificateUrlListShow}"
                 :file-list="taxRegisterCertificateUrlList"
                 :on-preview="handlePictureCardPreview1"
                 :on-success="handleSuccessRegister"
@@ -200,6 +202,7 @@
                 :limit="1"
                 :file-list="organCodeCertificateUrlList"
                 :on-preview="handlePictureCardPreview2"
+                :class="{disabled:organCodeCertificateUrlListShow}"
                 :on-success="handleSuccessOrgan"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
                 list-type="picture-card"
@@ -216,6 +219,7 @@
               <el-upload
                 :on-remove="handleRemovePictureCard"
                 :limit="1"
+                :class="{disabled:bankOrganUrlListShow}"
                 :on-preview="handlePictureCardPreview3"
                 :file-list="bankOrganUrlList"
                 :on-success="handleSuccessBank"
@@ -240,6 +244,7 @@
                 :on-remove="handleRemoveCertificate"
                 :file-list="unifiedCertificateUrlList"
                 :limit="1"
+                :class="{disabled:unifiedCertificateUrlListShow}"
                 :on-preview="handlePictureCardPreview4"
                 :on-success="handleSuccessCertificate"
                 :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
@@ -257,6 +262,7 @@
               <el-upload
                 :on-remove="handleRemovePictureCard"
                 :limit="1"
+                :class="{disabled:bankOrganUrlListShow}"
                 :file-list="bankOrganUrlList"
                 :on-preview="handlePictureCardPreview5"
                 :on-success="handleSuccessBank"
@@ -276,6 +282,7 @@
             <el-upload
               :on-remove="handleRemove"
               :limit="1"
+              :class="{disabled:idCardFaceUrlListShow}"
               :on-preview="handlePictureCardPreview6"
               :file-list="idCardFaceUrlList"
               :on-success="handleSuccessFace"
@@ -295,6 +302,7 @@
               :on-remove="handleRemovePreviewidCardConUrl"
               :limit="1"
               :file-list="idCardConUrlList"
+              :class="{disabled:idCardConUrlListShow}"
               :on-preview="handlePictureCardPreview7"
               :on-success="handleSuccessFaceCon"
               :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
@@ -629,7 +637,14 @@ export default {
       bankOrganUrlList: [],
       settlementCardUrlList: [],
       enterpriseShow: true,
-      showModelSub: false
+      showModelSub: false,
+      fileListShow: false,
+      taxRegisterCertificateUrlListShow: false,
+      organCodeCertificateUrlListShow: false,
+      bankOrganUrlListShow: false,
+      unifiedCertificateUrlListShow: false,
+      idCardFaceUrlListShow: false,
+      idCardConUrlListShow: false
     }
   },
   created() {
@@ -662,6 +677,10 @@ export default {
       listQuery.parentCode = event
       this.merchantVOData.provinceCode = event
       this.merchantVOData.province = name
+      this.merchantVOData.city = ''
+      this.merchantVOData.cityCode = ''
+      this.merchantVOData.county = ''
+      this.merchantVOData.countyCode = ''
       getCityChildList(this.listQuery).then(response => {
         this.areaCityData = response.data.obj.result
       })
@@ -692,6 +711,7 @@ export default {
       this.merchantVOData.bankProvince = name
       this.merchantVOData.bankCityCode = ''
       this.merchantVOData.bankCity = ''
+      this.empetySubData()
       const listQuery = this.listQuery
       listQuery.parentCode = event
       this.getBankCityData(listQuery)
@@ -715,7 +735,6 @@ export default {
       // listQuery.provinceCode = provinceCode
       // listQuery.cityCode = event
       // this.getSmallbankListData(listQuery)
-      this.empetySubData()
     },
     getDataNankName(arr, event) {
       let obj = {}
@@ -812,61 +831,76 @@ export default {
     // 删除图片
     handleRemove(file, fileList) {
       this.merchantVOData.idCardFaceUrl = ''
+      this.idCardFaceUrlListShow = false
     },
     handleRemovePreviewidCardConUrl(file, fileList) {
       this.merchantVOData.idCardConUrl = ''
+      this.idCardConUrlListShow = false
     },
     handleRemoveSuccess(file, fileList) {
       this.merchantVOData.businessLicenseUrl = ''
-      this.dialogVisible1 = false
+      this.fileListShow = false
     },
     handleRemoveCertificate(file, fileList) {
       this.merchantVOData.unifiedCertificateUrl = ''
+      this.unifiedCertificateUrlListShow = false
     },
     handleRemovePreview(file, fileList) {
       this.merchantVOData.taxRegisterCertificateUrl = ''
+      this.taxRegisterCertificateUrlListShow = false
     },
     handleRemoveOrgan(file, fileList) {
       this.merchantVOData.organCodeCertificateUrl = ''
+      this.organCodeCertificateUrlListShow = false
     },
     handleRemovePictureCard(file, fileList) {
       this.merchantVOData.bankOrganUrl = ''
+      this.bankOrganUrlListShow = false
     },
     handleRemoveSettlement(file, fileList) {
       this.merchantVOData.settlementCardUrl = ''
+      this.settlementCardUrlListShow = false
     },
     // 图片上传
     handleSuccess(response) {
       const imgUrl = response.obj
       this.merchantVOData.businessLicenseUrl = imgUrl
+      this.businessLicenseUrlListShow = true
     },
     handleSuccessFace(response) {
       const imgUrl = response.obj
       this.merchantVOData.idCardFaceUrl = imgUrl
+      this.idCardFaceUrlListShow = true
     },
     handleSuccessFaceCon(response) {
       const imgUrl = response.obj
       this.merchantVOData.idCardConUrl = imgUrl
+      this.idCardConUrlListShow = true
     },
     handleSuccessCertificate(response) {
       const imgUrl = response.obj
       this.merchantVOData.unifiedCertificateUrl = imgUrl
+      this.unifiedCertificateUrlListShow = true
     },
     handleSuccessRegister(response) {
       const imgUrl = response.obj
       this.merchantVOData.taxRegisterCertificateUrl = imgUrl
+      this.taxRegisterCertificateUrlListShow = true
     },
     handleSuccessOrgan(response) {
       const imgUrl = response.obj
       this.merchantVOData.organCodeCertificateUrl = imgUrl
+      this.organCodeCertificateUrlListShow = true
     },
     handleSuccessBank(response) {
       const imgUrl = response.obj
       this.merchantVOData.bankOrganUrl = imgUrl
+      this.bankOrganUrlListShow = true
     },
     handleSuccesSettlement(response) {
       const imgUrl = response.obj
       this.merchantVOData.settlementCardUrl = imgUrl
+      this.settlementCardUrlListShow = true
     },
     getImageUrl(filePath, name) {
       const params = { filePath: filePath }
@@ -876,34 +910,42 @@ export default {
         if (name === 'businessLicenseUrl') {
           this.businessLicenseUrl = response.obj
           this.fileList = fileList
+          this.fileListShow = true
         }
         if (name === 'idCardFaceUrl') {
           this.idCardFaceUrl = response.obj
           this.idCardFaceUrlList = fileList
+          this.idCardFaceUrlListShow = true
         }
         if (name === 'idCardConUrl') {
           this.idCardConUrl = response.obj
           this.idCardConUrlList = fileList
+          this.idCardConUrlListShow = true
         }
         if (name === 'settlementCardUrl') {
           this.settlementCardUrl = response.obj
           this.settlementCardUrlList = fileList
+          this.settlementCardUrlListShow = true
         }
         if (name === 'unifiedCertificateUrl') {
           this.unifiedCertificateUrl = response.obj
           this.unifiedCertificateUrlList = fileList
+          this.unifiedCertificateUrlListShow = true
         }
         if (name === 'taxRegisterCertificateUrl') {
           this.taxRegisterCertificateUrl = response.obj
           this.taxRegisterCertificateUrlList = fileList
+          this.taxRegisterCertificateUrlListShow = true
         }
         if (name === 'organCodeCertificateUrl') {
           this.organCodeCertificateUrl = response.obj
           this.organCodeCertificateUrlList = fileList
+          this.organCodeCertificateUrlListShow = true
         }
         if (name === 'bankOrganUrl') {
           this.bankOrganUrl = response.obj
           this.bankOrganUrlList = fileList
+          this.bankOrganUrlListShow = true
         }
       })
     },

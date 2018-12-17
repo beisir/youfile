@@ -887,7 +887,7 @@ export default {
           }
           const data = {
             merchantNumber: this.merchantNumber,
-            tMerchantRole: 'sub_merchant',
+            thirdMerchantRole: 'sub_merchant',
             registerChannel: 'yeepay',
             merchantStyle: merchantStyle,
             fullName: formData.merchantName,
