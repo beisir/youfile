@@ -16,30 +16,30 @@
     </el-form>
     <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="tInnerNumber" label="第三方支付内部流水号" align="center"/>
+      <el-table-column prop="thirdInnerNumber" label="第三方支付内部流水号" align="center"/>
       <el-table-column prop="requestNumber" label="入网请求编号" align="center"/>
       <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
-      <el-table-column prop="tpMerchantNumber" label="第三方支付父商户编号" align="center"/>
-      <el-table-column prop="tMerchantNumber" label="第三方支付商户编号" align="center"/>
-      <el-table-column prop="tMerchantRole" label="第三方支付商户角色" align="center">
+      <el-table-column prop="thirdParentMerchantNumber" label="第三方支付父商户编号" align="center"/>
+      <el-table-column prop="thirdMerchantNumber" label="第三方支付商户编号" align="center"/>
+      <el-table-column prop="thirdMerchantRole" label="第三方支付商户角色" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.tMerchantRole=='SUB_MERCHANT'" style="color: #E73E48">子商户</span>
-          <span v-if="scope.row.tMerchantRole=='LEDGER_MERCHANT'" style="color: #E6A23C">分账方</span>
+          <span v-if="scope.row.thirdMerchantRole=='sub_merchant'" style="color: #E73E48">子商户</span>
+          <span v-if="scope.row.thirdMerchantRole=='ledger_merchant'" style="color: #E6A23C">分账方</span>
         </template>
       </el-table-column>
       <el-table-column prop="registerStatus" label="入网状态" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.registerStatus=='UNKNOWN'" style="color: #E73E48">未知</span>
-          <span v-if="scope.row.registerStatus=='INIT'" style="color: #E6A23C">初始化</span>
-          <span v-if="scope.row.registerStatus=='REGIST_FAIL'" style="color: #67C23A">注册失败</span>
-          <span v-if="scope.row.registerStatus=='REGIST_SUCCESS'" style="color: #43E0D6">注册成功</span>
-          <span v-if="scope.row.registerStatus=='REGIST_PROCESSING'" style="color: #670ACE">审核中</span>
+          <span v-if="scope.row.registerStatus=='unkonown'" style="color: #E73E48">未知</span>
+          <span v-if="scope.row.registerStatus=='init'" style="color: #E6A23C">初始化</span>
+          <span v-if="scope.row.registerStatus=='regist_fail'" style="color: #67C23A">注册失败</span>
+          <span v-if="scope.row.registerStatus=='regist_success'" style="color: #43E0D6">注册成功</span>
+          <span v-if="scope.row.registerStatus=='regist_processing'" style="color: #670ACE">审核中</span>
         </template>
       </el-table-column>
       <el-table-column prop="registerChannel" label="入网渠道" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.registerChannel=='WX_PAY'" style="color: #E73E48">微信支付</span>
-          <span v-if="scope.row.registerChannel=='YEEPAY'" style="color: #E6A23C">易宝支付</span>
+          <span v-if="scope.row.registerChannel=='wx_pay'" style="color: #E73E48">微信支付</span>
+          <span v-if="scope.row.registerChannel=='yeepay'" style="color: #E6A23C">易宝支付</span>
         </template>
       </el-table-column>
       <el-table-column prop="onlinePay" label="操作" width="200" align="center">
@@ -76,36 +76,36 @@
           <el-input v-model="rowData.requestNumber" disabled="disabled" placeholder/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="第三方支付内部流水号">
-          <el-input v-model="rowData.tInnerNumber" disabled="disabled" placeholder/>
+          <el-input v-model="rowData.thirdInnerNumber" disabled="disabled" placeholder/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="商户编号">
           <el-input v-model="rowData.merchantNumber" disabled="disabled" placeholder="商户编号"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="第三方支付父商户编号">
-          <el-input v-model="rowData.tpMerchantNumber" disabled="disabled" placeholder/>
+          <el-input v-model="rowData.thirdParentMerchantNumber" disabled="disabled" placeholder/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="第三方支付商户编号">
-          <el-input v-model="rowData.tMerchantNumber" disabled="disabled" placeholder/>
+          <el-input v-model="rowData.thirdMerchantNumber" disabled="disabled" placeholder/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="第三方支付商户角色">
-          <el-select v-model="rowData.tMerchantRole" disabled="disabled" placeholder="请选择">
-            <el-option label="子商户" value="SUB_MERCHANT">子商户</el-option>
-            <el-option label="分账方" value="LEDGER_MERCHANT">分账方</el-option>
+          <el-select v-model="rowData.thirdMerchantRole" disabled="disabled" placeholder="请选择">
+            <el-option label="子商户" value="sub_merchant">子商户</el-option>
+            <el-option label="分账方" value="ledger_merchant">分账方</el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="入网状态">
-          <el-select v-model="rowData.tMerchantRole" disabled="disabled" placeholder="请选择">
-            <el-option label="微信支付" value="UNKNOWN">微信支付</el-option>
-            <el-option label="初始化" value="INIT">初始化</el-option>
-            <el-option label="注册失败" value="REGIST_FAIL">注册失败</el-option>
-            <el-option label="注册成功" value="REGIST_SUCCESS">注册成功</el-option>
-            <el-option label="审核中" value="REGIST_PROCESSING">审核中</el-option>
+          <el-select v-model="rowData.registerStatus" disabled="disabled" placeholder="请选择">
+            <el-option label="微信支付" value="unkonown">微信支付</el-option>
+            <el-option label="初始化" value="init">初始化</el-option>
+            <el-option label="注册失败" value="regist_fail">注册失败</el-option>
+            <el-option label="注册成功" value="regist_success">注册成功</el-option>
+            <el-option label="审核中" value="regist_processing">审核中</el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="入网渠道">
           <el-select v-model="rowData.registerChannel" disabled="disabled" placeholder="请选择">
-            <el-option label="微信支付" value="WX_PAY">微信支付</el-option>
-            <el-option label="易宝支付" value="YEEPAY">易宝支付</el-option>
+            <el-option label="微信支付" value="wx_pay">微信支付</el-option>
+            <el-option label="易宝支付" value="yeepay">易宝支付</el-option>
           </el-select>
         </el-form-item>
         <json-viewer :value="jsonData"/>
@@ -138,6 +138,7 @@ export default {
       dialogTableVisible: false,
       listQuery: {
         registerChannel: 'YEEPAY',
+        thirdMerchantRole: 'ledger_merchant',
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
