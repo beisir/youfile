@@ -1,5 +1,5 @@
 <template>
-  <div style="padding:30px;">
+  <div v-loading.body="listLoading" style="padding:30px;">
     <div class="block">
       <el-form
         :inline="true"
@@ -500,6 +500,7 @@ import {
 export default {
   data() {
     return {
+      listLoading: false,
       uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       dialogVisible: false,
       dialogVisible1: false,
@@ -779,7 +780,7 @@ export default {
       })
     },
     onSelectedCity(event) {
-      console.log()
+      console.log(event)
       const name = this.getDataName(this.areaCityData, event)
       const listQuery = this.listQuery
       listQuery.parentCode = event
@@ -1210,6 +1211,7 @@ export default {
     },
     eidthData() {
       const formData1 = this.merchantVOData
+      this.listLoading = true
       this.$refs[formData1].validate(valid => {
         if (valid) {
           const merchantQualificationVO = {
@@ -1259,6 +1261,7 @@ export default {
             merchantNumber: this.merchantNumber,
             address: formData1.address,
             city: formData1.city,
+            cityCode: formData1.cityCode,
             completionStatus: formData1.completionStatus,
             county: formData1.county,
             countyCode: formData1.countyCode,
@@ -1284,13 +1287,20 @@ export default {
           }
           editMerchantRetail(merchantDetail)
             .then(response => {
-              this.$message({
-                message: '修改成功！',
-                type: 'success'
-              })
-              this.$router.push({
-                path: '/qualificationsManage/index'
-              })
+              const message = response.data.message
+              const code = response.data.code
+              if (code === '0') {
+                this.$message({
+                  message: message,
+                  type: 'success'
+                })
+                this.$router.push({
+                  path: '/qualificationsManage/index'
+                })
+              } else {
+                this.$message.error(message)
+              }
+              this.listLoading = false
             })
             .catch(response => {
               this.$message.error('修改失败！')

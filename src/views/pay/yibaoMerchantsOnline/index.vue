@@ -34,9 +34,9 @@
         <template slot-scope="scope">
           <span v-if="scope.row.registerStatus=='unkonown'" style="color: #E73E48">未知</span>
           <span v-if="scope.row.registerStatus=='init'" style="color: #E6A23C">初始化</span>
-          <span v-if="scope.row.registerStatus=='regist_fail'" style="color: #67C23A">注册失败</span>
-          <span v-if="scope.row.registerStatus=='regist_success'" style="color: #43E0D6">注册成功</span>
-          <span v-if="scope.row.registerStatus=='regist_processing'" style="color: #670ACE">审核中</span>
+          <span v-if="scope.row.registerStatus=='register_fail'" style="color: #67C23A">注册失败</span>
+          <span v-if="scope.row.registerStatus=='register_success'" style="color: #43E0D6">注册成功</span>
+          <span v-if="scope.row.registerStatus=='register_processing'" style="color: #670ACE">审核中</span>
         </template>
       </el-table-column>
       <el-table-column prop="registerChannel" label="入网渠道" align="center">

@@ -1,5 +1,5 @@
 <template>
-  <div style="padding:30px;">
+  <div v-loading.body="listLoading" style="padding:30px;">
     <div class="block">
       <el-form
         :inline="true"
@@ -435,6 +435,7 @@ import {
 export default {
   data() {
     return {
+      listLoading: false,
       uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       dialogVisible: false,
       dialogVisible1: false,
@@ -1016,6 +1017,7 @@ export default {
     },
     eidthData() {
       const formData1 = this.merchantVOData
+      this.listLoading = true
       this.$refs[formData1].validate(valid => {
         if (valid) {
           const merchantQualificationVO = {
@@ -1090,13 +1092,20 @@ export default {
           }
           editMerchantRetail(merchantDetail)
             .then(response => {
-              this.$message({
-                message: '修改成功！',
-                type: 'success'
-              })
-              this.$router.push({
-                path: '/qualificationsManage/index'
-              })
+              const message = response.data.message
+              const code = response.data.code
+              if (code === '0') {
+                this.$message({
+                  message: message,
+                  type: 'success'
+                })
+                this.$router.push({
+                  path: '/qualificationsManage/index'
+                })
+              } else {
+                this.$message.error(message)
+              }
+              this.listLoading = false
             })
             .catch(response => {
               this.$message.error('修改失败！')

@@ -1,5 +1,5 @@
 <template>
-  <div style="padding:30px;">
+  <div v-loading.body="listLoading" style="padding:30px;">
     <div class="block yb-lable">
       <el-form
         :inline="true"
@@ -379,6 +379,7 @@ export default {
       uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       readonly: true,
       activeName: 'first',
+      listLoading: false,
       // 校验规则
       rules: {
         linkman: [
@@ -832,6 +833,7 @@ export default {
     },
     eidthData() {
       const formData = this.merchantVOData
+      this.listLoading = true
       this.$refs[formData].validate(valid => {
         if (valid) {
           let merchantStyle = ''
@@ -839,10 +841,10 @@ export default {
             merchantStyle = 'gr'
           }
           if (formData.merchantCharacter === '2') {
-            merchantStyle = 'qy'
+            merchantStyle = 'gr'
           }
           if (formData.merchantCharacter === '3') {
-            merchantStyle = 'gt'
+            merchantStyle = 'qy'
           }
           let bankCardType = ''
           if (formData.bankCardType === '2') {
@@ -855,54 +857,98 @@ export default {
             this.$message.error('开户卡类型未知！')
             return
           }
-          const data = {
-            merchantNumber: this.merchantNumber,
-            thirdMerchantRole: 'ledger_merchant',
-            registerChannel: 'yeepay',
-            merchantStyle: merchantStyle,
-            fullName: formData.merchantName,
-            legalPersonName: formData.legalPerson,
-            provinceCode: formData.provinceCode,
-            cityCode: formData.cityCode,
-            contactPersonName: formData.linkman,
-            contactPersonPhone: formData.linkmanPhone,
-            contactPersonEmail: formData.linkmanEmail,
-            bankCardNo: formData.bankCard,
-            bankCardAccName: formData.accountName,
-            bankCardStyle: bankCardType,
-            bankHeadCode: formData.headBankName,
-            bankProvinceCode: formData.bankProvinceCode,
-            bankCityCode: formData.bankCityCode,
-            legalPersonId: formData.legalIdCard,
-            uniCreditNo: formData.unifiedCertificateNo,
-            businessLicenseNo: formData.businessLicenseNo,
-            merchantPictureInfoMap: {
-              HAND_IDCARD: formData.handIdCardUrl,
-              IDCARD_FRONT: formData.idCardFaceUrl,
-              IDCARD_BACK: formData.idCardConUrl,
-              SETTLE_BANKCARD: formData.settlementCardUrl,
-              CORP_CODE: formData.businessLicenseUrl,
-              UNI_CREDIT_CODE: formData.unifiedCertificateUrl,
-              TAX_CODE: formData.taxRegisterCertificateUrl,
-              ORG_CODE: formData.organCodeCertificateUrl,
-              ACC_LICENSE_CODE: formData.bankOrganUrl
+          let data = {}
+          if (formData.merchantCharacter === '3') {
+            data = {
+              merchantNumber: this.merchantNumber,
+              thirdMerchantRole: 'ledger_merchant',
+              channel: 'yeepay',
+              merchantStyle: merchantStyle,
+              fullName: formData.merchantName,
+              legalPersonName: formData.legalPerson,
+              provinceCode: formData.provinceCode,
+              cityCode: formData.cityCode,
+              contactPersonName: formData.linkman,
+              contactPersonPhone: formData.linkmanPhone,
+              contactPersonEmail: formData.linkmanEmail,
+              bankCardNo: formData.bankCard,
+              bankCardAccName: formData.accountName,
+              bankCardStyle: bankCardType,
+              bankHeadCode: formData.headBankName,
+              bankProvinceCode: formData.bankProvinceCode,
+              bankCityCode: formData.bankCityCode,
+              legalPersonId: formData.legalIdCard,
+              uniCreditNo: formData.unifiedCertificateNo,
+              businessLicenseNo: formData.businessLicenseNo,
+              merchantPictureInfoMap: {
+                idcard_front: formData.idCardFaceUrl,
+                idcard_back: formData.idCardConUrl,
+                settle_bankcard: formData.settlementCardUrl,
+                corp_code: formData.businessLicenseUrl,
+                uni_credit_code: formData.unifiedCertificateUrl,
+                tax_code: formData.taxRegisterCertificateUrl,
+                org_code: formData.organCodeCertificateUrl,
+                acc_license_code: formData.bankOrganUrl
+              }
+            }
+          } else {
+            data = {
+              bankCardAccName: formData.accountName,
+              bankCardNo: formData.bankCard,
+              bankCardStyle: bankCardType,
+              bankCityCode: formData.bankCityCode,
+              bankHeadCode: formData.headBankName,
+              bankProvinceCode: formData.bankProvinceCode,
+              businessLicenseNo: formData.businessLicenseNo,
+              channel: 'yeepay',
+              cityCode: formData.cityCode,
+              contactPersonEmail: formData.linkmanEmail,
+              contactPersonName: formData.linkman,
+              contactPersonPhone: formData.linkmanPhone,
+              fullName: formData.merchantName,
+              legalPersonId: formData.legalIdCard,
+              legalPersonName: formData.legalPerson,
+              merchantNumber: this.merchantNumber,
+              merchantPictureInfoMap: {
+                hand_idcard: formData.handIdCardUrl,
+                idcard_front: formData.idCardFaceUrl,
+                idcard_back: formData.idCardConUrl,
+                settle_bankcard: formData.settlementCardUrl
+              },
+              merchantStyle: merchantStyle,
+              provinceCode: formData.provinceCode,
+              uniCreditNo: formData.unifiedCertificateNo
             }
           }
+
           yeepayRegister(data)
             .then(response => {
-              this.$message({
-                message: '入网成功！',
-                type: 'success'
-              })
-              this.$router.push({
-                path: '/pay/yibaoMerchantsOnline'
-              })
+              const message = response.data.message
+              const code = response.data.code
+              if (code === '1') {
+                this.$message({
+                  message: message,
+                  type: 'success'
+                })
+              } else {
+                this.$message({
+                  message: message,
+                  type: 'success'
+                })
+                this.$router.push({
+                  path: '/pay/yibaoMerchantsOnline'
+                })
+              }
+              this.listLoading = false
             })
             .catch(response => {
-              this.$message.error('入网失败！')
+              this.listLoading = false
+              const message = response.data.message
+              this.$message.error(message)
             })
         } else {
           this.$message.error('请在商户资质管理补全信息！')
+          this.listLoading = false
         }
       })
     }

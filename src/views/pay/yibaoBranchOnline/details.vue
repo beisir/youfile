@@ -1,5 +1,5 @@
 <template>
-  <div style="padding:30px;">
+  <div v-loading.body="listLoading" style="padding:30px;">
     <div class="block yb-lable">
       <el-form
         :inline="true"
@@ -391,6 +391,7 @@ import { yeepaySubRegister } from '@/api/pay'
 export default {
   data() {
     return {
+      listLoading: false,
       uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       readonly: true,
       activeName: 'first',
@@ -617,7 +618,8 @@ export default {
       merchantRetailId: '',
       merchantQualificationVOId: '',
       merchantSettleVOId: '',
-      merchantVOData: {}
+      merchantVOData: {},
+      onlinePayConfigShow: false
     }
   },
   created() {
@@ -856,12 +858,20 @@ export default {
             this.getImageUrl(settlementCardUrl, 'settlementCardUrl')
           }
         }
+        if (response.data.merchantOnlinePayConfigVO) {
+          obj = Object.assign(response.data.merchantOnlinePayConfigVO, obj)
+          this.onlinePayConfigShow = true
+        }
         this.merchantVOData = obj
         this.merchantNumber = response.data.merchantNumber
       })
     },
+    hideloadimg() {
+      this.listLoading = false
+    },
     eidthData() {
       const formData = this.merchantVOData
+      this.listLoading = true
       this.$refs[formData].validate(valid => {
         if (valid) {
           let merchantStyle = ''
@@ -874,80 +884,103 @@ export default {
           if (formData.merchantCharacter === '3') {
             merchantStyle = 'gt'
           }
-          let bankCardType = ''
-          if (formData.bankCardType === '2') {
-            bankCardType = 'private_cash'
-          }
-          if (formData.bankCardType === '1') {
-            bankCardType = 'public_cash'
-          }
-          if (formData.bankCardType === '0') {
-            this.$message.error('开户卡类型未知！')
+          // let bankCardType = ''
+          // if (formData.bankCardType === '2') {
+          //   bankCardType = 'private_cash'
+          // }
+          // if (formData.bankCardType === '1') {
+          //   bankCardType = 'public_cash'
+          // }
+          // if (formData.bankCardType === '0') {
+          //   this.$message.error('开户卡类型未知！')
+          //   return
+          // }
+          if (this.onlinePayConfigShow) {
+            if (formData.onlinePay) {
+              const payProduct = formData.payProduct
+              if (payProduct !== '小程序支付') {
+                this.$message.error('请在商户资质管理补全信息！')
+                this.hideloadimg()
+                return
+              }
+            } else {
+              this.$message.error('请开通支付！')
+              this.hideloadimg()
+              return
+            }
+          } else {
+            this.$message.error('请不全支付配置！')
+            this.hideloadimg()
             return
           }
           const data = {
-            merchantNumber: this.merchantNumber,
-            thirdMerchantRole: 'sub_merchant',
-            registerChannel: 'yeepay',
-            merchantStyle: merchantStyle,
-            fullName: formData.merchantName,
-            shortName: formData.merchantAbbre,
+            accLicenseNo: formData.openCertificateNo,
             address: formData.address,
-            oneCategory: formData.firstCategory,
-            twoCategory: formData.secondCategory,
-            legalPersonName: formData.legalPerson,
-            provinceCode: formData.provinceCode,
-            districtCode: formData.countyCode,
-            cityCode: formData.cityCode,
-            contactPersonName: formData.linkman,
-            contactPersonPhone: formData.linkmanPhone,
-            contactPersonEmail: formData.linkmanEmail,
-            bankCardNo: formData.bankCard,
+            appName: formData.appName,
+            bankBranchCode: formData.subBankName,
             bankCardAccName: formData.accountName,
-            bankCardStyle: bankCardType,
-            settleType: formData.settleType,
+            bankCardNo: formData.bankCard,
+            bankCityCode: formData.bankCityCode,
             bankHeadCode: formData.headBankName,
             bankProvinceCode: formData.bankProvinceCode,
-            bankCityCode: formData.bankCityCode,
-            legalPersonId: formData.legalIdCard,
-            uniCreditNo: formData.unifiedCertificateNo,
             businessLicenseNo: formData.businessLicenseNo,
-            taxRegistCertNo: formData.taxCertificateNo,
+            channel: 'yeepay',
+            cityCode: formData.cityCode,
+            contactPersonEmail: formData.linkmanEmail,
+            contactPersonName: formData.linkman,
+            contactPersonPhone: formData.linkmanPhone,
+            districtCode: formData.countyCode,
+            fullName: formData.merchantName,
+            legalPersonId: formData.legalIdCard,
+            legalPersonName: formData.legalPerson,
+            merchantNumber: this.merchantNumber,
+            merchantPictureInfoMap: {
+              idcard_front: formData.idCardFaceUrl,
+              idcard_back: formData.idCardConUrl,
+              settle_bankcard: formData.settlementCardUrl,
+              corp_code: formData.businessLicenseUrl
+            },
+            merchantScope: formData.merchantScope,
+            merchantStyle: merchantStyle,
+            oneCategory: formData.firstCategory,
             orgCertNo: formData.organCertificateNo,
             orgCertNoExpiry: formData.organExpireEndDate,
             orgCertNoLong: formData.organType,
-            accLicenseNo: formData.openCertificateNo,
-            appName: formData.appName,
-            appId: formData.appId,
-            appSecret: formData.appSecret,
-            platAppId: formData.platAppId,
-            merchantPictureInfoMap: {
-              HAND_IDCARD: formData.handIdCardUrl,
-              IDCARD_FRONT: formData.idCardFaceUrl,
-              IDCARD_BACK: formData.idCardConUrl,
-              SETTLE_BANKCARD: formData.settlementCardUrl,
-              CORP_CODE: formData.businessLicenseUrl,
-              UNI_CREDIT_CODE: formData.unifiedCertificateUrl,
-              TAX_CODE: formData.taxRegisterCertificateUrl,
-              ORG_CODE: formData.organCodeCertificateUrl,
-              ACC_LICENSE_CODE: formData.bankOrganUrl
-            }
+            payProduct: formData.payProduct,
+            payScenario: 'wechatminipro', // 暂时写死
+            provinceCode: formData.provinceCode,
+            shortName: formData.merchantAbbre,
+            taxRegistCertNo: formData.taxCertificateNo,
+            twoCategory: formData.secondCategory,
+            uniCreditNo: formData.unifiedCertificateNo
           }
-          console.log(data)
           yeepaySubRegister(data)
             .then(response => {
-              this.$message({
-                message: '入网成功！',
-                type: 'success'
-              })
-              this.$router.push({
-                path: '/pay/yibaoBranchOnline'
-              })
+              const message = response.data.message
+              const code = response.data.code
+              if (code === '1') {
+                this.$message({
+                  message: message,
+                  type: 'success'
+                })
+              } else {
+                this.$message({
+                  message: message,
+                  type: 'success'
+                })
+                this.$router.push({
+                  path: '/pay/yibaoBranchOnline'
+                })
+              }
+              this.listLoading = false
             })
             .catch(response => {
-              this.$message.error('入网失败！')
+              this.listLoading = false
+              const message = response.data.message
+              this.$message.error(message)
             })
         } else {
+          this.listLoading = false
           this.$message.error('请在商户资质管理补全信息！')
         }
       })
