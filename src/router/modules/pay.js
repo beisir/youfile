@@ -45,6 +45,12 @@ const orderRouter = {
       meta: { title: 'yibaoPaySet' }
     },
     {
+      path: 'accountManage',
+      name: 'AccountManage',
+      component: () => import('@/views/pay/accountManage/index'), // Parent router-view
+      meta: { title: 'accountManage' }
+    },
+    {
       path: 'network',
       name: 'Network',
       component: () => import('@/views/pay/network/index'), // Parent router-view

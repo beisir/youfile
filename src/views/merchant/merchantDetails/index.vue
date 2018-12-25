@@ -1111,7 +1111,7 @@ export default {
               this.$message.error('修改失败！')
             })
         } else {
-          this.$message.error('请不全信息！')
+          this.$message.error('请补全信息！')
         }
       })
     }

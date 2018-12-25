@@ -1,10 +1,10 @@
 <template>
   <div style="padding:30px;">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="配送方式">
-        <el-select v-model="formInline.orderType" placeholder="请选择">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline form-input">
+      <el-form-item label="物流方式">
+        <el-select v-model="formInline.logisticsMode" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
-          <el-option label="其他" value="0">其他</el-option>
+          <el-option label="其他" value="0">没有物流</el-option>
           <el-option label="门店自提" value="1">门店自提</el-option>
           <el-option label="物流配送" value="2">物流配送</el-option>
         </el-select>
@@ -29,36 +29,32 @@
     <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="orderNumber" label="订单编号" align="center"/>
-      <el-table-column prop="expressNumber" label="快递编号" align="center"/>
-      <el-table-column prop="userInfo" label="付款方用户编号" align="center">
-        <template slot-scope="scope">{{ scope.row.userInfo.userId }}</template>
-      </el-table-column>
-      <el-table-column prop="receiveMerchant" label="收款方商户编号" align="center">
-        <template slot-scope="scope">{{ scope.row.receiveMerchant.merchantNumber }}</template>
-      </el-table-column>
+      <el-table-column prop="expressNumber" label="快递单号" align="center"/>
+      <el-table-column prop="customerUserNo" label="付款方用户编号" align="center"/>
+      <el-table-column prop="receiveMerchantNumber" label="收款方商户编号" align="center"/>
       <el-table-column prop="orderAmount" label="订单金额" align="center"/>
       <el-table-column prop="orderType" label="配送方式" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderType=='0'">其他</span>
+          <span v-if="scope.row.orderType=='0'">没有物流</span>
           <span v-if="scope.row.orderType=='1'">门店自提</span>
           <span v-if="scope.row.orderType=='2'">物流配送</span>
         </template>
       </el-table-column>
       <el-table-column prop="orderCategory" label="订单分类" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderCategory=='1'">进货单</span>
+          <span v-if="scope.row.orderCategory=='1'">批发订单</span>
           <span v-if="scope.row.orderCategory=='2'">小云店订单</span>
-          <span v-if="scope.row.orderCategory=='3'">普通订单</span>
+          <span v-if="scope.row.orderCategory=='3'">零售订单</span>
+          <span v-if="scope.row.orderCategory=='4'">门店订单</span>
         </template>
       </el-table-column>
       <el-table-column prop="orderStatus" label="订单状态" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderStatus=='unpaid'" style="color: #E6A23C">待支付</span>
-          <span v-if="scope.row.orderStatus=='paid'" style="color: #67C23A">已支付/待发货/待取货</span>
-          <span v-if="scope.row.orderStatus=='shipped'" style="color: #43E0D6">已发货</span>
-          <span v-if="scope.row.orderStatus=='cancelled'" style="color: #670ACE">订单取消</span>
-          <span v-if="scope.row.orderStatus=='closed'" style="color: #E73E48">订单关闭</span>
-          <span v-if="scope.row.orderStatus=='finish'" style="color: #AF0FB2">已收货_已完成</span>
+          <span v-if="scope.row.orderStatus=='unpaid'" style="color: #E6A23C">待付款</span>
+          <span v-if="scope.row.orderStatus=='paid'" style="color: #67C23A">已付款</span>
+          <span v-if="scope.row.orderStatus=='delivered'" style="color: #43E0D6">已发货/待收货</span>
+          <span v-if="scope.row.orderStatus=='canceled'" style="color: #670ACE">订单已取消/订单关闭</span>
+          <span v-if="scope.row.orderStatus=='finish'" style="color: #E73E48">已完成</span>
         </template>
       </el-table-column>
     </el-table>

@@ -47,3 +47,43 @@ export function addYeepay(params) {
     data: params
   })
 }
+// 账户管理
+export function addAccountNumber(params) {
+  return request({
+    url: '/account',
+    method: 'post',
+    data: params
+  })
+}
+export function getAccountList(params) {
+  return request({
+    url: '/account/list',
+    method: 'get',
+    params
+  })
+}
+export function freezeTrue(accountNumber) {
+  return request({
+    url: '/account/freeze/' + accountNumber,
+    method: 'put'
+  })
+}
+export function freezeFalse(accountNumber) {
+  return request({
+    url: '/account/unfreeze/' + accountNumber,
+    method: 'put'
+  })
+}
+export function openStatus(accountNumber) {
+  return request({
+    url: '/account/on/' + accountNumber,
+    method: 'put'
+  })
+}
+export function closeStatus(accountNumber) {
+  return request({
+    url: '/account/off/' + accountNumber,
+    method: 'put'
+  })
+}
+

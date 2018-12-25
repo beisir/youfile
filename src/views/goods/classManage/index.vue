@@ -1,6 +1,25 @@
 <template>
   <div style="padding:30px;">
-    <el-table
+    <el-tree
+      :data="tableData"
+      :props="defaultProps"
+      :expand-on-click-node="false"
+      node-key="id">
+      <div slot-scope="{ node, data }" class="custom-tree-node">
+        <tr>
+          <td>{{ data.name }}</td>
+          <td>{{ data.categoryCode }}</td>
+          <td>{{ data.sort }}</td>
+          <td>{{ unix2CurrentTime(data.createDate) }}</td>
+        </tr>
+
+        <!-- <div>{{ data.name }}</div>
+        <div>{{ data.categoryCode }}</div>
+        <div>{{ data.sort }}</div>
+        <div> {{ unix2CurrentTime(data.createDate) }}</div> -->
+      </div>
+    </el-tree>
+    <!-- <el-table
       v-loading.body="listLoading"
       :data="tableData"
       border
@@ -38,7 +57,7 @@
           <el-tree :data="scope.row.subGoodsCategoryList" :props="defaultProps" @node-click="handleNodeClick"/>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> -->
   </div>
 </template>
 <script>
@@ -70,6 +89,7 @@ export default {
       this.listLoading = true
       getClassList(this.parentCategoryCode).then(response => {
         this.tableData = response.data.obj
+        console.log(response.data.obj)
         this.listLoading = false
       })
     }
@@ -77,3 +97,24 @@ export default {
   }
 }
 </script>
+<style>
+.custom-tree-node td{
+  width:200px;border:1px solid #ebeef5;border-right:0;height: 50px;text-align: center;line-height: 50px;border-bottom: 0
+}
+.el-tree-node__content{
+  height:50px;
+}
+.custom-tree-node{
+  border-right:1px solid #ebeef5;
+}
+.custom-tree-node tr:hover{
+      background-color: #f5f7fa;
+}
+.el-tree-node__content>.el-tree-node__expand-icon{
+  padding:58px 10px;
+}
+.el-tree-node__content:hover,.el-tree-node is-focusable{
+  background:#fff;
+}
+</style>
+

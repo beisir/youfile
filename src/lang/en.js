@@ -14,6 +14,7 @@ export default {
     yibaoPaySet: 'Yibao Pay Set',
     yibaoBranchOnline: 'Yibao Branch Online',
     network: 'Network',
+    accountManage: 'Account Manage',
     billList: 'BillList',
     rateSet: 'RateSet',
     accountSet: 'AccountSet',

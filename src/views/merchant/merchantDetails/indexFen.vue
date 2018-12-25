@@ -780,7 +780,6 @@ export default {
       })
     },
     onSelectedCity(event) {
-      console.log(event)
       const name = this.getDataName(this.areaCityData, event)
       const listQuery = this.listQuery
       listQuery.parentCode = event
@@ -1306,7 +1305,7 @@ export default {
               this.$message.error('修改失败！')
             })
         } else {
-          this.$message.error('请不全信息！')
+          this.$message.error('请补全信息！')
         }
       })
     }

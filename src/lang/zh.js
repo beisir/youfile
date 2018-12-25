@@ -14,6 +14,7 @@ export default {
     yibaoPaySet: '易宝支付设置',
     yibaoBranchOnline: '易宝子商户入网',
     network: '入网报备',
+    accountManage: '账户管理',
     billList: '对账单列表',
     rateSet: '费率设置',
     accountSet: '分账设置',
