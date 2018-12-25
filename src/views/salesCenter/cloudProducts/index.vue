@@ -23,7 +23,7 @@
         <template scope="scope">
           <span v-if="scope.row.orderStatus==='unpaid'" style="color: #E6A23C">待付款</span>
           <span v-else-if="scope.row.orderStatus==='paid'" style="color: #67C23A">已付款</span>
-          <span v-else-if="scope.row.orderStatus==='cancelled'" style="color: #909399">已取消</span>
+          <span v-else-if="scope.row.orderStatus==='canceled'" style="color: #909399">已取消</span>
         </template>
       </el-table-column>
       <el-table-column prop="yunStoreGoodsSnapshot.serviceReriodMonth" label="服务时间（月）" width="180" align="center"/>
@@ -76,7 +76,7 @@ export default {
         value: 'paid'
       }, {
         label: '已取消',
-        value: 'cancelled'
+        value: 'canceled'
       }]
     }
   },
@@ -84,7 +84,7 @@ export default {
     this.getAllList()
   },
   methods: {
-    getAllList(re) {
+    getAllList() {
       this.listQuery.keyWords = this.serchKey
       getAllList(this.type, this.listQuery).then(res => {
         this.tableData = res.data.result
@@ -92,13 +92,13 @@ export default {
       })
     },
     toDetail(d) {
-      console.log(d)
       this.$router.push({ path: '/cloudProducts/detail', query: {
         id: d.row.orderNumber
       }})
     },
     onSubmit() {
-      this.getAllList(true)
+      this.listQuery.pageNum = 1
+      this.getAllList()
     },
     /**
        * 改变每页数量
@@ -107,7 +107,7 @@ export default {
     handleSizeChange(size) {
       this.listQuery.pageSize = size
       this.listQuery.pageNum = 1
-      this.getAllList(true)
+      this.getAllList()
     },
     /**
        * 改变页码

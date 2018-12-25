@@ -60,7 +60,7 @@
     />
     <!-- 添加支付配置 -->
     <el-dialog :visible.sync="merchantShow" title="商户编号">
-      <el-form :model="merchantData" :rules="rulesM" :ref="formData">
+      <el-form :model="merchantData">
         <el-form-item :label-width="formLabelWidth" prop="merchantNumber" label="商户编号">
           <el-input v-model="merchantData.merchantNumber" placeholder="请输入商户编号"/>
         </el-form-item>
@@ -73,6 +73,22 @@
     </el-dialog>
     <el-dialog :visible.sync="dialogTableVisible" title="添加支付配置">
       <el-form :inline="true" :label-width="formLabelWidth" :model="storeMes" :rules="rules" :ref="storeMes" >
+        <el-form-item label="第三方支付的商户编号" prop="thirdMerchantNumber">
+          <el-input v-model="storeMes.thirdMerchantNumber" placeholder="请输入第三方支付的商户编号"/>
+        </el-form-item>
+        <el-form-item label="支付通道" prop="payChannel">
+          <el-select v-model="storeMes.payChannel" placeholder="请选择">
+            <el-option label="全部" value>全部</el-option>
+            <el-option label="微信支付" value="wx_pay">微信支付</el-option>
+            <el-option label="易宝支付" value="yeepay">易宝支付</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="支付方式" prop="payWay" >
+          <el-select v-model="storeMes.payWay" placeholder="请选择">
+            <el-option label="全部" value>全部</el-option>
+            <el-option label="微信小程序支付" value="wx_mini_app_pay">微信小程序支付</el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="商户编号" prop="merchantNumber">
           <el-input v-model="merchantData.merchantNumber" disabled="disabled"/>
         </el-form-item>
@@ -88,22 +104,7 @@
         <el-form-item :label-width="formLabelWidth" label="小程序密钥" prop="appSecret">
           <el-input v-model="storeMes.appSecret" disabled="disabled"/>
         </el-form-item>
-        <el-form-item label="第三方支付的商户编号" prop="thirdMerchantNumber">
-          <el-input v-model="storeMes.thirdMerchantNumber" placeholder="请输入第三方支付的商户编号"/>
-        </el-form-item>
-        <el-form-item label="支付通道" prop="payChannel">
-          <el-select v-model="storeMes.payChannel" placeholder="请选择">
-            <el-option label="全部" value>全部</el-option>
-            <el-option label="微信支付" value="wx_pay">微信支付</el-option>
-            <el-option label="易宝支付" value="yeepay">易宝支付</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="支付方式" prop="payWay">
-          <el-select v-model="storeMes.payWay" placeholder="请选择">
-            <el-option label="全部" value>全部</el-option>
-            <el-option label="微信小程序支付" value="wx_mini_app_pay">微信小程序支付</el-option>
-          </el-select>
-        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="addYeepayFunc">确 定</el-button>
@@ -111,6 +112,22 @@
     </el-dialog>
     <el-dialog :visible.sync="merchantSignShow" title="易宝支付配置详情">
       <el-form :model="formData" :rules="rules" :ref="formData">
+        <el-form-item :label-width="formLabelWidth" prop="thirdMerchantNumber" label="第三方支付的商户编号">
+          <el-input v-model="formData.thirdMerchantNumber" placeholder="请输入第三方支付的商户编号"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" prop="payChannel" label="支付通道">
+          <el-select v-model="formData.payChannel" placeholder="请选择">
+            <el-option label="全部" value>全部</el-option>
+            <el-option label="微信支付" value="wx_pay">微信支付</el-option>
+            <el-option label="易宝支付" value="yeepay">易宝支付</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" prop="payWay" label="支付方式">
+          <el-select v-model="formData.payWay" placeholder="请选择" >
+            <el-option label="全部" value>全部</el-option>
+            <el-option label="微信小程序支付" value="wx_mini_app_pay">微信小程序支付</el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item :label-width="formLabelWidth" prop="platAppId" label="平台定义的app编号">
           <el-input v-model="formData.platAppId" disabled="disabled" placeholder="请输入平台定义的app编号"/>
         </el-form-item>
@@ -126,22 +143,7 @@
         <el-form-item :label-width="formLabelWidth" label="小程序秘钥" prop="appSecret">
           <el-input v-model="formData.appSecret" disabled="disabled" placeholder="请输入小程序秘钥"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" prop="thirdMerchantNumber" label="第三方支付的商户编号">
-          <el-input v-model="formData.thirdMerchantNumber" placeholder="请输入第三方支付的商户编号"/>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" prop="payChannel" label="支付通道">
-          <el-select v-model="formData.payChannel" placeholder="请选择">
-            <el-option label="全部" value>全部</el-option>
-            <el-option label="微信支付" value="wx_pay">微信支付</el-option>
-            <el-option label="易宝支付" value="yeepay">易宝支付</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" prop="payWay" label="支付方式">
-          <el-select v-model="formData.payWay" placeholder="请选择">
-            <el-option label="全部" value>全部</el-option>
-            <el-option label="微信小程序支付" value="wx_mini_app_pay">微信小程序支付</el-option>
-          </el-select>
-        </el-form-item>
+
         <el-form-item align="center">
           <template slot-scope="scope">
             <el-button type="primary" @click="eidthData()">确定</el-button>
@@ -166,11 +168,6 @@ export default {
       formLabelWidth: '180px',
       formData: {},
       merchantData: {},
-      rulesM: {
-        merchantNumber: [
-          { required: true, message: '商户编号不能为空', trigger: 'blur' }
-        ]
-      },
       rules: {
         thirdMerchantNumber: [
           { required: true, message: '第三方支付的商户编号不能为空', trigger: 'blur' }
@@ -239,6 +236,8 @@ export default {
     getDetails(index, row) {
       this.formData = {}
       this.formData = row
+      this.formData.payChannel = 'yeepay'
+      this.formData.payWay = 'wx_mini_app_pay'
       this.merchantSignShow = true
     },
     eidthData() {
@@ -261,21 +260,23 @@ export default {
     },
     getDetailsData() {
       const merchantData = this.merchantData
-      this.$refs[merchantData].validate(valid => {
-        if (valid) {
-          const merchantNumber = merchantData.merchantNumber
-          getStoreMes(merchantNumber).then(response => {
-            const storeMes = response.data
-            if (storeMes) {
-              this.dialogTableVisible = true
-              this.merchantShow = false
-              this.storeMes = storeMes[0]
-            } else {
-              this.$message.error('未查询到该商户，请输入正确的商户编号！')
-            }
-          })
-        }
-      })
+      const merchantNumber = merchantData.merchantNumber
+      if (merchantNumber) {
+        getStoreMes(merchantNumber).then(response => {
+          const storeMes = response.data
+          if (storeMes) {
+            this.dialogTableVisible = true
+            this.merchantShow = false
+            this.storeMes = storeMes[0]
+            this.storeMes.payChannel = 'yeepay'
+            this.storeMes.payWay = 'wx_mini_app_pay'
+          } else {
+            this.$message.error('未查询到该商户，请输入正确的商户编号！')
+          }
+        })
+      } else {
+        this.$message.error('请输入商户编号！')
+      }
     },
     addYeepayFunc() {
       const storeMes = this.storeMes

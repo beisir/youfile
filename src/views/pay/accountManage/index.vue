@@ -54,11 +54,7 @@
           <span v-if="scope.row.merchantNature=='2'" style="color: #43E0D6">零售商</span>
         </template>
       </el-table-column>
-      <el-table-column prop="merchantType" label=" 商户类型" align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.merchantType=='0'" style="color: #43E0D6">优生活平台</span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="balance" label="账户余额" align="center"/>
       <el-table-column prop="accountType" label=" 账户类型" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.accountType=='balance'" style="color: #E6A23C">余额账户</span>

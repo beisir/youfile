@@ -135,7 +135,7 @@ export default {
           case 'unpaid':
             sta = '待支付'
             break
-          case 'cancelled':
+          case 'canceled':
             sta = '已取消'
             break
         }
