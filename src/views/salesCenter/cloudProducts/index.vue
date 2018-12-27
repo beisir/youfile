@@ -19,19 +19,19 @@
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="yunStoreGoodsSnapshot.classifyName" label="订单" width="180" align="center"/>
-      <el-table-column label="状态" width="180" align="center">
+      <el-table-column label="状态" align="center">
         <template scope="scope">
           <span v-if="scope.row.orderStatus==='unpaid'" style="color: #E6A23C">待付款</span>
           <span v-else-if="scope.row.orderStatus==='paid'" style="color: #67C23A">已付款</span>
           <span v-else-if="scope.row.orderStatus==='canceled'" style="color: #909399">已取消</span>
         </template>
       </el-table-column>
-      <el-table-column prop="yunStoreGoodsSnapshot.serviceReriodMonth" label="服务时间（月）" width="180" align="center"/>
-      <el-table-column prop="userInfoVO.mobile" label="客户手机" align="center"/>
-      <el-table-column prop="createDate" label="下单时间" width="180" align="center"/>
+      <el-table-column prop="yunStoreGoodsSnapshot.serviceReriodMonth" label="服务时间（月）" align="center"/>
+      <el-table-column prop="userInfoVO.mobile" label="客户手机" width="180" align="center"/>
+      <el-table-column :formatter="formatTime" prop="createDate" label="下单时间" width="180" align="center"/>
       <el-table-column prop="orderNumber" label="订单号" width="180" align="center"/>
-      <el-table-column prop="yunStoreGoodsSnapshot.discountAmount" label="优惠码支付" width="180" align="center"/>
-      <el-table-column prop="orderAmount" label="订单金额" width="180" align="center"/>
+      <el-table-column prop="yunStoreGoodsSnapshot.discountAmount" label="优惠码支付(元)" width="180" align="center"/>
+      <el-table-column prop="orderAmount" label="订单金额(元)" width="180" align="center"/>
       <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
           <el-button type="primary" @click="toDetail(scope)">详情</el-button>
@@ -51,6 +51,7 @@
   </div>
 </template>
 <script>
+import { unix2CurrentTime } from '@/utils'
 import { getAllList } from '@/api/cloudOrder'
 export default {
   data() {
@@ -84,6 +85,9 @@ export default {
     this.getAllList()
   },
   methods: {
+    formatTime(row, column, cellValue) {
+      return unix2CurrentTime(cellValue)
+    },
     getAllList() {
       this.listQuery.keyWords = this.serchKey
       getAllList(this.type, this.listQuery).then(res => {

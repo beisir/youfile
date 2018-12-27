@@ -124,6 +124,10 @@ export default {
   methods: {
     getData() {
       getDetail(this.num).then(res => {
+        if (!res.data.yunStore) {
+          res.data.yunStore = {}
+        }
+
         this.msg = res.data
         this.showPage = true
 
