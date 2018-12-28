@@ -19,6 +19,13 @@ const orderRouter = {
       meta: { title: 'orderManage' }
     },
     {
+      path: 'orderDetails',
+      name: 'OrderDetails',
+      component: () => import('@/views/order/orderManage/details'), // Parent router-view
+      meta: { title: 'orderDetails' },
+      hidden: true
+    },
+    {
       path: 'supplyManage',
       name: 'SupplyManage',
       component: () => import('@/views/order/supplyManage/index'),

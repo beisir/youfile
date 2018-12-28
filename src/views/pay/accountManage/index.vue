@@ -50,14 +50,14 @@
       </el-table-column>
       <el-table-column prop="merchantNature" label="商户类型" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.merchantNature=='1'" style="color: #E6A23C">批发商</span>
-          <span v-if="scope.row.merchantNature=='2'" style="color: #43E0D6">零售商</span>
+          <span v-if="scope.row.merchantNature=='1'">批发商</span>
+          <span v-if="scope.row.merchantNature=='2'">零售商</span>
         </template>
       </el-table-column>
       <el-table-column prop="balance" label="账户余额" align="center"/>
       <el-table-column prop="accountType" label=" 账户类型" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.accountType=='balance'" style="color: #E6A23C">余额账户</span>
+          <span v-if="scope.row.accountType=='balance'">余额账户</span>
         </template>
       </el-table-column>
       <el-table-column prop="status" label=" 账户状态" align="center">
@@ -90,6 +90,15 @@
             type="warning"
             @click="freezeTrue(scope.$index, scope.row )"
           >冻结</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label=" 操作" align="center">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="primary"
+            @click="lookHistoryDetails(scope.$index, scope.row )"
+          >查看明细</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -214,47 +223,89 @@ export default {
       this.listQuery.pageNum = page
       this.getList()
     },
-    // 解冻 冻结
-    freezeFalse(index, row) {
+    // 查看历史明细
+    lookHistoryDetails(index, row) {
       const accountNumber = row.accountNumber
-      freezeFalse(accountNumber).then(response => {
-        this.$message({
-          message: response.data,
-          type: 'success'
-        })
-        this.getList()
+      this.$router.push({
+        path: '/pay/historyList',
+        query: {
+          accountNumber: accountNumber
+        }
       })
     },
-    freezeTrue(index, row) {
-      const accountNumber = row.accountNumber
-      freezeTrue(accountNumber).then(response => {
-        this.$message({
-          message: response.data,
-          type: 'success'
-        })
-        this.getList()
+    // 解冻 冻结
+    freezeFalse(index, row) {
+      this.$confirm('是否要解冻账户?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(() => {
+          const accountNumber = row.accountNumber
+          freezeFalse(accountNumber).then(response => {
+            this.$message({
+              message: response.data,
+              type: 'success'
+            })
+            this.getList()
+          })
+        })
+        .catch(() => {})
+    },
+    freezeTrue(index, row) {
+      this.$confirm('是否要冻结账户?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          const accountNumber = row.accountNumber
+          freezeTrue(accountNumber).then(response => {
+            this.$message({
+              message: response.data,
+              type: 'success'
+            })
+            this.getList()
+          })
+        })
+        .catch(() => {})
     },
     // 开通关闭
     closeStatus(index, row) {
-      const accountNumber = row.accountNumber
-      closeStatus(accountNumber).then(response => {
-        this.$message({
-          message: response.data,
-          type: 'success'
-        })
-        this.getList()
+      this.$confirm('是否要关闭账户?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(() => {
+          const accountNumber = row.accountNumber
+          closeStatus(accountNumber).then(response => {
+            this.$message({
+              message: response.data,
+              type: 'success'
+            })
+            this.getList()
+          })
+        })
+        .catch(() => {})
     },
     openStatus(index, row) {
-      const accountNumber = row.accountNumber
-      openStatus(accountNumber).then(response => {
-        this.$message({
-          message: response.data,
-          type: 'success'
-        })
-        this.getList()
+      this.$confirm('是否要开通账户?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(() => {
+          const accountNumber = row.accountNumber
+          openStatus(accountNumber).then(response => {
+            this.$message({
+              message: response.data,
+              type: 'success'
+            })
+            this.getList()
+          })
+        })
+        .catch(() => {})
     },
     // 添加账户
     showAddModel() {

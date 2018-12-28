@@ -51,6 +51,13 @@ const orderRouter = {
       meta: { title: 'accountManage' }
     },
     {
+      path: 'historyList',
+      name: 'HistoryList',
+      component: () => import('@/views/pay/accountManage/historyList'), // Parent router-view
+      meta: { title: 'historyList' },
+      hidden: true
+    },
+    {
       path: 'network',
       name: 'Network',
       component: () => import('@/views/pay/network/index'), // Parent router-view

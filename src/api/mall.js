@@ -7,3 +7,23 @@ export function getList(params) {
     data: params
   })
 }
+export function getMallMes(mallCode) {
+  return request({
+    url: '/mall/info/' + mallCode,
+    method: 'get'
+  })
+}
+export function updateMall(params) {
+  return request({
+    url: '/mall',
+    method: 'put',
+    data: params
+  })
+}
+export function saveMall(params) {
+  return request({
+    url: '/mall',
+    method: 'post',
+    data: params
+  })
+}

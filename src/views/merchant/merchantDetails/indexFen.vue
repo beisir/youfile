@@ -388,7 +388,7 @@
             v-model="merchantVOData.headBankName"
             @input="changeInput"
           />
-          <div v-if="showModel" class="ser-sel">
+          <div v-if="showModel" class="ser-sel ser-sel-z">
             <el-table :data="bankData" style="width: 100%">
               <el-table-column prop="bankName" width="180">
                 <template slot-scope="scope">

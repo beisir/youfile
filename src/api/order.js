@@ -13,3 +13,10 @@ export function getPurchaseList(params) {
     params
   })
 }
+export function getOrderDetails(orderNumber) {
+  return request({
+    url: '/order/' + orderNumber,
+    method: 'get'
+  })
+}
+

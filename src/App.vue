@@ -54,6 +54,9 @@ label {
 .block .ser-sel .has-gutter {
   display: none;
 }
+.block .ser-sel-z{
+  z-index: 1000
+}
 .block .el-tabs__nav-scroll {
   padding-left: 30px;
 }

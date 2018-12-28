@@ -86,4 +86,10 @@ export function closeStatus(accountNumber) {
     method: 'put'
   })
 }
-
+export function getHistoryList(params) {
+  return request({
+    url: '/account/history/list',
+    method: 'get',
+    params
+  })
+}

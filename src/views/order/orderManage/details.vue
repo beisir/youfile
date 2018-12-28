@@ -129,11 +129,11 @@ export default {
      * 查看详情
      */
     getOrderDetails(index, row) {
-      // const orderNumber = row.orderNumber
+      // const accountNumber = row.accountNumber;
       // this.$router.push({
-      //   path: "/order/orderDetails",
+      //   path: "/pay/historyList",
       //   query: {
-      //     orderNumber: orderNumber
+      //     accountNumber: accountNumber
       //   }
       // });
     },
