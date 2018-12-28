@@ -32,14 +32,15 @@
       <el-table-column prop="orderNumber" label="订单号" width="180" align="center"/>
       <el-table-column prop="yunStoreGoodsSnapshot.discountAmount" label="优惠码支付(元)" width="180" align="center"/>
       <el-table-column prop="orderAmount" label="订单金额(元)" width="180" align="center"/>
-      <el-table-column label="操作" width="100" align="center">
+      <el-table-column label="操作" width="180" align="left">
         <template slot-scope="scope">
           <el-button type="primary" @click="toDetail(scope)">详情</el-button>
+          <el-button v-if="scope.row.orderStatus==='paid' && (!scope.row.yunStore || !scope.row.yunStore.id)" type="success" @click="openStore(scope)">开店</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
-      :current-page="listQuery.page"
+      :current-page="listQuery.pageNum"
       :page-size="listQuery.size"
       :total="total"
       :page-sizes="[10, 30, 50, 100]"
@@ -52,7 +53,7 @@
 </template>
 <script>
 import { unix2CurrentTime } from '@/utils'
-import { getAllList } from '@/api/cloudOrder'
+import { getAllList, openStore } from '@/api/cloudOrder'
 export default {
   data() {
     return {
@@ -99,6 +100,12 @@ export default {
       this.$router.push({ path: '/cloudProducts/detail', query: {
         id: d.row.orderNumber
       }})
+    },
+    openStore(d) {
+      openStore(d.row.orderNumber).then(res => {
+        this.$message(res.data)
+        this.getAllList()
+      })
     },
     onSubmit() {
       this.listQuery.pageNum = 1

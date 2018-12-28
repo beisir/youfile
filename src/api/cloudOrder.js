@@ -16,3 +16,11 @@ export function getDetail(code) {
     method: 'get'
   })
 }
+
+export function openStore(code) {
+  if (!code) { alert('缺少orderNumber') }
+  return request({
+    url: '/yunstore/order/admin/yunstore/' + code + '/open/store',
+    method: 'post'
+  })
+}
