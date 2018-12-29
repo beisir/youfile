@@ -143,6 +143,11 @@ export default {
             sta = '已取消'
             break
         }
+        if (this.msg.yunStore.status === true) {
+          this.msg.yunStore.status = '已开通'
+        } else {
+          this.msg.yunStore.status = '未开通'
+        }
         this.status = sta
       })
     }

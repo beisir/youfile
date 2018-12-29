@@ -2,8 +2,8 @@
 <template>
   <div style="padding:30px;">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="订单号">
-        <el-input v-model="serchKey" placeholder="订单号"/>
+      <el-form-item label="关键字">
+        <el-input v-model="serchKey" placeholder="关键字"/>
       </el-form-item>
       <el-form-item label="订单种类">
         <el-select v-model="type" placeholder="请选择">
@@ -14,9 +14,16 @@
             :value="item.value"/>
         </el-select>
       </el-form-item>
+      <el-form-item label="开始日期">
+        <el-date-picker v-model="startDate" :picker-options="pickerOptions" type="date" placeholder="支付开始" value-format="timestamp"/>
+      </el-form-item>
+      <el-form-item label="结束日期">
+        <el-date-picker v-model="endDate" :picker-options="pickerOptions" type="date" placeholder="支付截至" value-format="timestamp"/>
+      </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
+      <el-button type="success" @click="exportExcel">导出</el-button>
     </el-form>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table id="out-table" :data="tableData" border style="width: 100%" highlight-current-row>
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="yunStoreGoodsSnapshot.classifyName" label="订单" width="180" align="center"/>
       <el-table-column label="状态" align="center">
@@ -26,6 +33,7 @@
           <span v-else-if="scope.row.orderStatus==='canceled'" style="color: #909399">已取消</span>
         </template>
       </el-table-column>
+      <el-table-column prop="yunStore.name" label="店名" align="center"/>
       <el-table-column prop="yunStoreGoodsSnapshot.serviceReriodMonth" label="服务时间（月）" align="center"/>
       <el-table-column prop="userInfoVO.mobile" label="客户手机" width="180" align="center"/>
       <el-table-column :formatter="formatTime" prop="createDate" label="下单时间" width="180" align="center"/>
@@ -52,6 +60,8 @@
   </div>
 </template>
 <script>
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 import { unix2CurrentTime } from '@/utils'
 import { getAllList, openStore } from '@/api/cloudOrder'
 export default {
@@ -79,18 +89,52 @@ export default {
       }, {
         label: '已取消',
         value: 'canceled'
-      }]
+      }],
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now()
+        }
+      },
+      startDate: '',
+      endDate: ''
     }
   },
   created() {
     this.getAllList()
   },
   methods: {
+    exportExcel() {
+      /* generate workbook object from table */
+      var wb = XLSX.utils.table_to_book(document.querySelector('#out-table'))
+      /* get binary string as output */
+      var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+      try {
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'sheetjs.xlsx')
+      } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
+      return wbout
+    },
     formatTime(row, column, cellValue) {
       return unix2CurrentTime(cellValue)
     },
     getAllList() {
       this.listQuery.keyWords = this.serchKey
+      // if(this.startDate){
+      //   this.listQuery.payDateBeginStr = this.startDate;
+      // }else{
+      //   this.listQuery.payDateBeginStr = ""
+      // }
+      // if(this.endDate){
+      //   this.listQuery.payDateEndStr = this.endDate;
+      // }else{
+      //   this.listQuery.payDateEndStr = ""
+      // }
+      // if(this.startDate > this.endDate){
+      //   this.$message({
+      //     message:'开始时间应小于截止时间',
+      //     type: 'warning'
+      //   });
+      //   return
+      // }
       getAllList(this.type, this.listQuery).then(res => {
         this.tableData = res.data.result
         this.total = res.data.totalCount
