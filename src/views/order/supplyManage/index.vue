@@ -1,6 +1,6 @@
 <template>
-  <div style="padding:30px;">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline form-input">
+  <div class="body-cont">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
       <el-form-item label="物流方式">
         <el-select v-model="formInline.logisticsMode" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
@@ -26,7 +26,7 @@
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
+    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="orderNumber" label="订单编号" align="center"/>
       <el-table-column prop="expressNumber" label="快递单号" align="center"/>
