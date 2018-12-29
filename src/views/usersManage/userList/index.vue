@@ -1,6 +1,6 @@
 <template>
-  <div style="padding:30px;">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+  <div class="body-cont">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
       <el-form-item label="用户名称">
         <el-input v-model="formInline.userName" placeholder="请输入用户名"/>
       </el-form-item>

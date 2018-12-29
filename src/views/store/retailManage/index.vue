@@ -1,6 +1,6 @@
 <template>
-  <div style="padding:30px;">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+  <div class="body-cont">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
       <el-form-item label="店铺名称">
         <el-input v-model="formInline.name" placeholder="店铺名称"/>
       </el-form-item>
@@ -12,7 +12,7 @@
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
+    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="id" label="店铺编号" align="center"/>
       <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
@@ -90,10 +90,21 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" class="addres-i" label="店铺地址" prop="address">
+        <el-form-item :label-width="formLabelWidth" label="店铺地址" prop="address">
           <el-input v-model="formData.address"/>
         </el-form-item>
         <div>
+          <el-form-item class="miniClass" label="小程序码" prop="coverUrl">
+            <el-upload
+              :limit="1"
+              :class="{disabled:true}"
+              :file-list="miniProgramCodeList"
+              :action="uploadImgUrl+'/base/image?type=OTHER'"
+              list-type="picture-card"
+            >
+              <i class="el-icon-plus avatar-uploader-icon"/>
+            </el-upload>
+          </el-form-item>
           <el-form-item label="LOGO" prop="logo">
             <el-upload
               :on-remove="handleRemove"
@@ -107,20 +118,10 @@
               <i class="el-icon-plus avatar-uploader-icon"/>
             </el-upload>
           </el-form-item>
-          <el-button class="up-btn" type="primary" @click="UpdateStoreLogo()">修改LOGO</el-button>
-          <div/>
-          <el-form-item label="小程序码" prop="coverUrl">
-            <el-upload
-              :limit="1"
-              :class="{disabled:coveUrlListShow}"
-              :file-list="miniProgramCodeList"
-              :action="uploadImgUrl+'/base/image?type=OTHER'"
-              list-type="picture-card"
-            >
-              <i class="el-icon-plus avatar-uploader-icon"/>
-            </el-upload>
-          </el-form-item>
-          <el-form-item label="封面图" prop="coverUrl">
+          <el-button class="up-btn" size="mini" type="warning" @click="UpdateStoreLogo()">修改LOGO</el-button>
+        </div>
+        <div>
+          <el-form-item class="cove-img" label="封面图" prop="coverUrl">
             <el-upload
               :on-remove="handleRemoveCove"
               :limit="1"
@@ -353,10 +354,16 @@ export default {
   margin-top: 50px;
 }
 .inline-f input {
-  width: 160px;
+  width: 200px;
 }
-.inline-f .addres-i input {
-  width: 400px;
+.cove-img .el-upload-list--picture-card .el-upload-list__item{
+  width: 500px;height: auto;line-height: 0
+}
+.el-dialog__body{
+  padding-bottom: 0
+}
+.miniClass .el-upload-list--picture-card .el-upload-list__item-actions{
+  position: relative;
 }
 </style>
 

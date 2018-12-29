@@ -21,7 +21,7 @@
       <el-button type="primary" @click="onSubmit">查询</el-button>
       <el-button type="primary" @click="addData">添加支付配置</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
+    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="platAppId" label="平台定义的app编号" align="center"/>
       <el-table-column prop="merchantNumber" label="商户编号" align="center"/>

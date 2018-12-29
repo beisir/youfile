@@ -10,6 +10,20 @@ export default {
 }
 </script>
 <style>
+.body-cont{
+  padding: 30px;
+  padding-top: 0;
+}
+.border-form{
+  border: 1px solid #ebeef5;
+  padding-top: 20px;
+  margin: 10px 0;
+  padding-left:10px;
+}
+.el-dialog{
+  width: 60%;
+  margin-top: 10vh;
+}
 .el-pagination {
   padding: 30px 0;
 }

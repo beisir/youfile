@@ -1,6 +1,6 @@
 <template>
-  <div style="padding:30px;">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+  <div class="body-cont">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
       <el-form-item label="账户编号">
         <el-input v-model="formInline.accountNumber" placeholder="请输入账户编号"/>
       </el-form-item>
@@ -36,7 +36,7 @@
       <el-button type="primary" @click="onSubmit">查询</el-button>
       <el-button type="warning" @click="showAddModel">添加账户</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
+    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="accountNumber" label="账户编号" align="center"/>
       <el-table-column prop="merchantNumber" label="商户编号" align="center"/>

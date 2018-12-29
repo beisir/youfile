@@ -1,7 +1,7 @@
 
 <template>
-  <div style="padding:30px;">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+  <div class="body-cont">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
       <el-form-item label="订单号">
         <el-input v-model="serchKey" placeholder="订单号"/>
       </el-form-item>
@@ -16,7 +16,7 @@
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table :data="tableData" border style="width: 100%" highlight-current-row>
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="yunStoreGoodsSnapshot.classifyName" label="订单" width="180" align="center"/>
       <el-table-column label="状态" align="center">
