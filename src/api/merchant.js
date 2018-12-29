@@ -95,3 +95,16 @@ export function savePayMes(params) {
     data: params
   })
 }
+export function updateDetails(params) {
+  return request({
+    url: '/merchant/update',
+    method: 'post',
+    data: params
+  })
+}
+export function merchantNumberDetails(merchantNumber) {
+  return request({
+    url: '/merchant/info/' + merchantNumber,
+    method: 'get'
+  })
+}

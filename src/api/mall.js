@@ -20,10 +20,3 @@ export function updateMall(params) {
     data: params
   })
 }
-export function saveMall(params) {
-  return request({
-    url: '/mall',
-    method: 'post',
-    data: params
-  })
-}

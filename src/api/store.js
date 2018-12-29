@@ -14,3 +14,23 @@ export function getListRetail(params) {
     data: params
   })
 }
+export function getStoreMes(storeId) {
+  return request({
+    url: '/store/' + storeId,
+    method: 'get'
+  })
+}
+export function UpdateStoreMes(params) {
+  return request({
+    url: '/store',
+    method: 'put',
+    data: params
+  })
+}
+export function UpdateStoreLogo(params) {
+  return request({
+    url: '/store/' + params.storeId + '/logo',
+    method: 'put',
+    params
+  })
+}

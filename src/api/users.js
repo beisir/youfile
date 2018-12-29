@@ -14,4 +14,17 @@ export function getPurchaserList(params) {
     data: params
   })
 }
+export function getUserDetails(userId) {
+  return request({
+    url: '/puser/info/' + userId,
+    method: 'get'
+  })
+}
+export function updateUserPhone(params) {
+  return request({
+    url: '/puser',
+    method: 'put',
+    data: params
+  })
+}
 

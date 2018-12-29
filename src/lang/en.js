@@ -6,6 +6,7 @@ export default {
     classManage: 'Class Manage',
     order: 'Order',
     orderManage: 'Order Manage',
+    payManage: 'Pay Manage',
     orderDetails: 'Order Details',
     supplyManage: 'Supply Manage',
     pay: 'Pay Set',

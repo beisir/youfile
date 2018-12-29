@@ -12,53 +12,34 @@
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
-    <el-table
-      v-loading.body="listLoading"
-      :data="tableData"
-      border
-      style="width: 100%">
-      <el-table-column
-        type="index"
-        width="50"
-        label="序号"
-        align="center"/>
-      <el-table-column
-        prop="id"
-        label="店铺编号"
-        align="center"/>
-      <el-table-column
-        prop="merchantNumber"
-        label="商户编号"
-        align="center"/>
-      <el-table-column
-        prop="name"
-        label="店铺名称"
-        align="center"/>
-      <el-table-column
-        prop="logo"
-        label="店铺logo"
-        align="center">
+    <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
+      <el-table-column type="index" width="50" label="序号" align="center"/>
+      <el-table-column prop="id" label="店铺编号" align="center"/>
+      <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
+      <el-table-column prop="name" label="店铺名称" align="center"/>
+      <el-table-column prop="logo" label="店铺logo" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.logo" width="40" height="40" class="head_pic">
         </template>
       </el-table-column>
-      <el-table-column
-        prop="storeNature"
-        label="店铺性质"
-        align="center">
+      <el-table-column prop="coverUrl" label="店铺封面图" align="center">
+        <template slot-scope="scope">
+          <img :src="imageUrl+scope.row.coverUrl" width="40" height="40" class="head_pic">
+        </template>
+      </el-table-column>
+      <el-table-column prop="storeNature" label="店铺性质" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.storeNature==&quot;1&quot;">新批零</span>
           <span v-if="scope.row.storeNature==&quot;2&quot;">新零售</span>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="businessScope"
-        label="经营范围"
-        align="center"/>
-      <el-table-column
-        prop="address"
-        label="店铺地址"
-        align="center"/>
+      <el-table-column prop="businessScope" label="经营范围" align="center"/>
+      <el-table-column prop="address" label="店铺地址" align="center"/>
+      <el-table-column label=" 操作" align="center">
+        <template slot-scope="scope">
+          <el-button size="mini" type="primary" @click="getStoreDetails(scope.$index, scope.row)">编辑</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       :current-page="listQuery.page"
@@ -70,26 +51,183 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+    <el-dialog :visible.sync="dialogShow" title="编辑小云店信息">
+      <el-form
+        :inline="true"
+        :label-width="formLabelWidth"
+        :model="formData"
+        :rules="rules"
+        :ref="formData"
+        class="inline-f"
+      >
+        <el-form-item :label-width="formLabelWidth" label="店铺编号">
+          <el-input :readonly="true" v-model="formData.id"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="商户编号">
+          <el-input :readonly="true" v-model="formData.merchantNumber"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="名称" prop="name">
+          <el-input v-model="formData.name"/>
+        </el-form-item>
+        <el-form-item label="店铺性质" prop="storeNature">
+          <el-select v-model="formData.storeNature" placeholder="请选择">
+            <el-option label="全部" value>全部</el-option>
+            <el-option label="新批零" value="1">新批零</el-option>
+            <el-option label="新零售" value="2">新零售</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="经营范围" prop="businessScope">
+          <el-select
+            v-model="formData.businessScope"
+            placeholder="请选择"
+            @change="onSelectedDrug($event)"
+          >
+            <el-option
+              v-for="item in itemData"
+              :label="item.name"
+              :value="item.name"
+              :key="item.name"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" class="addres-i" label="店铺地址" prop="address">
+          <el-input v-model="formData.address"/>
+        </el-form-item>
+        <div>
+          <el-form-item label="LOGO" prop="logo">
+            <el-upload
+              :on-remove="handleRemove"
+              :limit="1"
+              :class="{disabled:logoUrlListShow}"
+              :file-list="logoList"
+              :on-success="handleSuccess"
+              :action="uploadImgUrl+'/base/image?type=OTHER'"
+              list-type="picture-card"
+            >
+              <i class="el-icon-plus avatar-uploader-icon"/>
+            </el-upload>
+          </el-form-item>
+          <el-button class="up-btn" type="primary" @click="UpdateStoreLogo()">修改LOGO</el-button>
+          <div/>
+          <el-form-item label="小程序码" prop="coverUrl">
+            <el-upload
+              :limit="1"
+              :class="{disabled:coveUrlListShow}"
+              :file-list="miniProgramCodeList"
+              :action="uploadImgUrl+'/base/image?type=OTHER'"
+              list-type="picture-card"
+            >
+              <i class="el-icon-plus avatar-uploader-icon"/>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="封面图" prop="coverUrl">
+            <el-upload
+              :on-remove="handleRemoveCove"
+              :limit="1"
+              :class="{disabled:coveUrlListShow}"
+              :file-list="coveList"
+              :on-success="handleSuccessCove"
+              :action="uploadImgUrl+'/base/image?type=OTHER'"
+              list-type="picture-card"
+            >
+              <i class="el-icon-plus avatar-uploader-icon"/>
+            </el-upload>
+          </el-form-item>
+        </div>
+        <el-row class="submit-btn">
+          <el-button type="primary" @click="editStoreMes()">确定</el-button>
+        </el-row>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { getListRetail } from '@/api/store'
+import {
+  getListRetail,
+  getStoreMes,
+  UpdateStoreMes,
+  UpdateStoreLogo
+} from '@/api/store'
 export default {
   data() {
     return {
+      uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       imageUrl: this.Const.imageUrl,
+      logoUrlListShow: false,
+      coveUrlListShow: false,
+      dialogShow: false,
+      logoList: [],
+      coveList: [],
+      miniProgramCodeList: [],
+      formLabelWidth: '90px',
       formInline: {
         name: '',
         storeId: '',
         phone: ''
       },
+      itemData: [
+        {
+          name: '服饰内衣'
+        },
+        {
+          name: '母婴玩具'
+        },
+        {
+          name: '鞋类箱包'
+        },
+        {
+          name: '运动户外'
+        },
+        {
+          name: '珠宝配饰'
+        },
+        {
+          name: '化妆品'
+        },
+        {
+          name: '家居家纺'
+        },
+        {
+          name: '日用百货'
+        },
+        {
+          name: '电子产品'
+        },
+        {
+          name: '礼品婚庆'
+        },
+        {
+          name: '仿真花艺'
+        }
+      ],
+      formData: {},
       listLoading: false,
       total: 0,
       listQuery: {
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
-      tableData: []
+      tableData: [],
+      rules: {
+        name: [
+          { required: true, message: '商贸云名称不能为空', trigger: 'blur' }
+        ],
+        storeNature: [
+          { required: true, message: '店铺性质不能为空', trigger: 'blur' }
+        ],
+        businessScope: [
+          { required: true, message: '经营范围不能为空', trigger: 'blur' }
+        ],
+        address: [
+          { required: true, message: '店铺地址不能为空', trigger: 'blur' }
+        ],
+        logo: [
+          { required: true, message: '小云店LOGO不能为空', trigger: 'blur' }
+        ],
+        coverUrl: [
+          { required: true, message: '小云店封面图不能为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   created() {
@@ -101,9 +239,12 @@ export default {
       this.listQuery.pageNum = 1
       this.getList()
     },
+    onSelectedDrug(e) {
+      this.formData.businessScope = e
+    },
     /**
-       * 获取列表
-       */
+     * 获取列表
+     */
     getList() {
       this.listLoading = true
       getListRetail(this.listQuery).then(response => {
@@ -113,22 +254,109 @@ export default {
       })
     },
     /**
-       * 改变每页数量
-       * @param size 页大小
-       */
+     * 改变每页数量
+     * @param size 页大小
+     */
     handleSizeChange(size) {
       this.listQuery.pageSize = size
       this.listQuery.pageNum = 1
       this.getList()
     },
     /**
-       * 改变页码
-       * @param page 页号
-       */
+     * 改变页码
+     * @param page 页号
+     */
     handleCurrentChange(page) {
       this.listQuery.pageNum = page
       this.getList()
+    },
+    handleRemove(file, fileList) {
+      this.formData.logo = ''
+      this.logoUrlListShow = false
+    },
+    handleSuccess(response) {
+      const logoUrl = response.obj
+      this.logoUrlListShow = true
+      this.formData.logo = logoUrl
+    },
+    handleRemoveCove(file, fileList) {
+      this.formData.coverUrl = ''
+      this.coveUrlListShow = false
+    },
+    handleSuccessCove(response) {
+      const coveUrl = response.obj
+      this.coveUrlListShow = true
+      this.formData.coverUrl = coveUrl
+    },
+    // 修改LOGO
+    UpdateStoreLogo() {
+      const logo = this.formData.logo
+      const storeId = this.formData.storeId
+      if (logo) {
+        const params = { storeId: storeId, logo: logo }
+        UpdateStoreLogo(params).then(response => {
+          this.$message({
+            message: response.data,
+            type: 'success'
+          })
+          const rowData = this.rowData
+          this.getStoreDetails(1, rowData)
+        })
+      } else {
+        this.$message.error('请上传图片！')
+      }
+    },
+    // 编辑信息
+    getStoreDetails(index, row) {
+      this.rowData = row
+      const storeId = row.storeId
+      getStoreMes(storeId).then(response => {
+        this.formData = response.data[0]
+        this.dialogShow = true
+        const miniProgramCodeList = []
+        miniProgramCodeList.push({
+          url: this.imageUrl + response.data[0].miniProgramCode
+        })
+        this.miniProgramCodeList = miniProgramCodeList
+        const fileList = []
+        fileList.push({ url: this.imageUrl + response.data[0].logo })
+        this.logoList = fileList
+        const coveList = []
+        coveList.push({ url: this.imageUrl + response.data[0].coverUrl })
+        this.coveList = coveList
+        this.logoUrlListShow = true
+        this.coveUrlListShow = true
+      })
+    },
+    editStoreMes() {
+      const formData = this.formData
+      this.$refs[formData].validate(valid => {
+        if (valid) {
+          delete formData['logo']
+          delete formData['miniProgramCode']
+          UpdateStoreMes(formData).then(response => {
+            this.dialogShow = false
+            this.getList()
+            this.$message({
+              message: response.data,
+              type: 'success'
+            })
+          })
+        }
+      })
     }
   }
 }
 </script>
+<style>
+.up-btn {
+  margin-top: 50px;
+}
+.inline-f input {
+  width: 160px;
+}
+.inline-f .addres-i input {
+  width: 400px;
+}
+</style>
+

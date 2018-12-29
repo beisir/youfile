@@ -1,159 +1,231 @@
 <template>
   <div style="padding:30px;">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline form-input">
-      <el-form-item label="物流方式">
-        <el-select v-model="formInline.logisticsMode" placeholder="请选择">
-          <el-option label="全部" value>全部</el-option>
-          <el-option label="其他" value="0">没有物流</el-option>
-          <el-option label="门店自提" value="1">门店自提</el-option>
-          <el-option label="物流配送" value="2">物流配送</el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="付款方用户编号">
-        <el-input v-model="formInline.customerUserNo" placeholder="请输入付款方用户编号"/>
-      </el-form-item>
-      <el-form-item label="收款方商户编号">
-        <el-input v-model="formInline.receiveMerchantNumber" placeholder="请输入收款方商户编号"/>
-      </el-form-item>
-      <el-form-item label="订单编号">
-        <el-input v-model="formInline.orderNumber" placeholder="请输入订单编号"/>
-      </el-form-item>
-      <el-form-item label="快递单号">
-        <el-input v-model="formInline.expressNumber" placeholder="请输入快递单号"/>
-      </el-form-item>
-      <el-form-item label="店铺ID">
-        <el-input v-model="formInline.storeId" placeholder="请输入店铺ID"/>
-      </el-form-item>
-      <el-button type="primary" @click="onSubmit">查询</el-button>
-    </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
-      <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="orderNumber" label="订单编号" align="center"/>
-      <el-table-column prop="expressNumber" label="快递单号" align="center"/>
-      <el-table-column prop="customerUserNo" label="付款方用户编号" align="center"/>
-      <el-table-column prop="receiveMerchantNumber" label="收款方商户编号" align="center"/>
-      <el-table-column prop="orderAmount" label="订单金额" align="center"/>
-      <el-table-column prop="orderType" label="配送方式" align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.orderType=='0'">没有物流</span>
-          <span v-if="scope.row.orderType=='1'">门店自提</span>
-          <span v-if="scope.row.orderType=='2'">物流配送</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="orderCategory" label="订单分类" align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.orderCategory=='1'">批发订单</span>
-          <span v-if="scope.row.orderCategory=='2'">小云店订单</span>
-          <span v-if="scope.row.orderCategory=='3'">零售订单</span>
-          <span v-if="scope.row.orderCategory=='4'">门店订单</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="orderStatus" label="订单状态" align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.orderStatus=='unpaid'" style="color: #E6A23C">待付款</span>
-          <span v-if="scope.row.orderStatus=='paid'" style="color: #67C23A">已付款</span>
-          <span v-if="scope.row.orderStatus=='delivered'" style="color: #43E0D6">已发货/待收货</span>
-          <span v-if="scope.row.orderStatus=='canceled'" style="color: #670ACE">订单已取消/订单关闭</span>
-          <span v-if="scope.row.orderStatus=='finish'" style="color: #E73E48">已完成</span>
-        </template>
-      </el-table-column>
-      <el-table-column label=" 操作" align="center">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            @click="getOrderDetails(scope.$index, scope.row )"
-          >查看详情</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      :current-page="listQuery.page"
-      :page-size="listQuery.size"
-      :total="total"
-      :page-sizes="[10, 30, 50, 100]"
-      background
-      layout="total, sizes, prev, pager, next, jumper"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
+    <div class="block">
+      <div class="clearfix">
+        <span>订单详情</span>
+      </div>
+      <el-form
+        :inline="true"
+        :label-width="formLabelWidth"
+        :model="consigneeInfo"
+        class="demo-form-inline"
+      >
+        <el-form-item label="收货人姓名">
+          <el-input v-model="consigneeInfo.userName" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="收货人电话">
+          <el-input v-model="consigneeInfo.userPhone" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="收货人地址">
+          <el-input v-model="consigneeInfo.detailAddress" disabled="disabled"/>
+        </el-form-item>
+      </el-form>
+      <el-form
+        :inline="true"
+        :label-width="formLabelWidth"
+        :model="orderDetailVOList"
+        class="demo-form-inline"
+      >
+        <el-form-item label="商品名称">
+          <el-input v-model="orderDetailVOList.goodsName" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="商品数量">
+          <el-input v-model="orderDetailVOList.num" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="商品ID">
+          <el-input v-model="orderDetailVOList.goodsId" disabled="disabled"/>
+        </el-form-item>
+      </el-form>
+      <el-form
+        :inline="true"
+        :label-width="formLabelWidth"
+        :model="formInline"
+        class="demo-form-inline"
+      >
+        <el-form-item label="店铺ID">
+          <el-input v-model="formInline.storeId" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="订单编号">
+          <el-input v-model="formInline.orderNumber" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="订单金额">
+          <el-input v-model="formInline.orderAmount" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="物流方式">
+          <el-select v-model="formInline.logisticsMode" disabled="disabled" placeholder="请选择">
+            <el-option label="未知" value="">未知</el-option>
+            <el-option label="其他" value="0">没有物流</el-option>
+            <el-option label="门店自提" value="1">门店自提</el-option>
+            <el-option label="物流配送" value="2">物流配送</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="发票信息">
+          <el-input v-model="formInline.receiptInfo" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="邮费信息">
+          <el-input v-model="postageType" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="订单状态">
+          <el-input v-model="formInline.orderStatus" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="订单分类">
+          <el-select v-model="formInline.orderCategory" disabled="disabled" placeholder="请选择">
+            <el-option label="未知" value="">未知</el-option>
+            <el-option label="批发订单" value="1">批发订单</el-option>
+            <el-option label="小云店订单" value="2">小云店订单</el-option>
+            <el-option label="零售订单" value="3">零售订单</el-option>
+            <el-option label="门店订单" value="4">门店订单</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="收款方商户编号">
+          <el-input v-model="formInline.receiveMerchantNumber" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="付款方用户编号">
+          <el-input v-model="formInline.customerUserNo" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="店铺ID">
+          <el-input v-model="formInline.storeId" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label=" 支付状态">
+          <el-select v-model="formInline.payStatus" disabled="disabled" placeholder="请选择">
+            <el-option label="未知" value="">未知</el-option>
+            <el-option label="已支付" value="0">已支付</el-option>
+            <el-option label="未支付" value="1">未支付</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="支付金额">
+          <el-input v-model="formInline.payAmount" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="支付时间">
+          <template slot-scope="scope">{{ unix2CurrentTime(formInline.payDate) }}</template>
+        </el-form-item>
+        <el-form-item label="支付方式">
+          <el-select v-model="formInline.payWay" disabled="disabled" placeholder="请选择">
+            <el-option label="未知" value="">未知</el-option>
+            <el-option label="线下支付" value="offline_pay">线下支付</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label=" 商品数量">
+          <el-input v-model="formInline.num" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="退款状态">
+          <el-select v-model="formInline.refundStatus" disabled="disabled" placeholder="请选择">
+            <el-option label="未知" value="">未知</el-option>
+            <el-option label="已退款" value="1">已退款</el-option>
+            <el-option label="退款失" value="2">退款失</el-option>
+            <el-option label="退款中" value="0">退款中</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="用户备注">
+          <el-input v-model="formInline.userMemo" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="物流方式">
+          <el-select v-model="formInline.logisticsMode" placeholder="请选择">
+            <el-option label="未知" value="">未知</el-option>
+            <el-option label="门店自提" value="1">门店自提</el-option>
+            <el-option label="物流配送" value="2">物流配送</el-option>
+            <el-option label="没有物流" value="0">没有物流</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label=" 取货状态">
+          <el-select v-model="formInline.claimStatus" disabled="disabled" placeholder="请选择">
+            <el-option label="未知" value="">未知</el-option>
+            <el-option label="待取货" value="0">待取货</el-option>
+            <el-option label="已取货" value="1">已取货</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="取货码">
+          <el-input v-model="formInline.claimGoodsNum" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="快递状态">
+          <el-select v-model="formInline.expressStatus" disabled="disabled" placeholder="请选择">
+            <el-option label="未知" value="">未知</el-option>
+            <el-option label="待发货" value="0">待发货</el-option>
+            <el-option label="已发货" value="1">已发货</el-option>
+            <el-option label="已收货" value="2">已收货</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="快递单号">
+          <el-input v-model="formInline.expressNumber" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label=" 快递公司名称">
+          <el-input v-model="formInline.expressCompany" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="订单取消原因">
+          <el-input v-model="formInline.cancelReason" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="取消时间">
+          <el-input v-model="formInline.cancelDate" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label="商家备注">
+          <el-input v-model="formInline.remark" disabled="disabled"/>
+        </el-form-item>
+        <el-form-item label=" 发货时间">
+          <template slot-scope="scope">{{ unix2CurrentTime(formInline.deliverDate) }}</template>
+        </el-form-item>
+        <el-form-item label="完成时间">
+          <template slot-scope="scope">{{ unix2CurrentTime(formInline.finishDate) }}</template>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <template slot-scope="scope">{{ unix2CurrentTime(formInline.createDate) }}</template>
+        </el-form-item>
+        <el-form-item label="用户删除标识">
+          <el-select v-model="formInline.customerDelFlag" disabled="disabled" placeholder="请选择">
+            <el-option label="未知" value="">未知</el-option>
+            <el-option label="未删除" value="0">未删除</el-option>
+            <el-option label="已删除" value="1">已删除</el-option>
+            <el-option label="彻底删除" value="2">彻底删除</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item class="pay-img" label="支付凭证">
+          <img :src="payVoucher">
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 <script>
-import { getOrderList } from '@/api/order'
+import { getOrderDetails } from '@/api/order'
+import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
-      data: '',
       imageUrl: this.Const.imageUrl,
-      formInline: {
-        storeId: '',
-        orderType: '',
-        customerUserNo: '',
-        expressNumber: '',
-        orderNumber: '',
-        // payDateBegin:'',
-        // payDateEnd:'',
-        receiveMerchantNumber: ''
-      },
-      listLoading: false,
-      total: 0,
-      listQuery: {
-        pageNum: 1, // 页码
-        pageSize: 10 // 每页数量
-      },
-      tableData: []
+      payVoucherShow: true,
+      consigneeInfo: {},
+      postageType: '',
+      orderDetailVOList: {},
+      payVoucher: '',
+      formInline: {},
+      formLabelWidth: '150px',
+      listLoading: false
     }
   },
   created() {
-    this.getList()
+    this.getOrderDetails()
   },
   methods: {
-    onSubmit() {
-      this.listQuery = Object.assign(this.listQuery, this.formInline)
-      this.listQuery.pageNum = 1
-      this.getList()
-    },
-    /**
-     * 获取列表
-     */
-    getList() {
-      this.listLoading = true
-      getOrderList(this.listQuery).then(response => {
-        this.tableData = response.data == null ? [] : response.data.result
-        this.listLoading = false
-        this.total = response.data == null ? 0 : response.data.totalCount
-      })
-    },
+    unix2CurrentTime,
     /**
      * 查看详情
      */
-    getOrderDetails(index, row) {
-      // const accountNumber = row.accountNumber;
-      // this.$router.push({
-      //   path: "/pay/historyList",
-      //   query: {
-      //     accountNumber: accountNumber
-      //   }
-      // });
-    },
-    /**
-     * 改变每页数量
-     * @param size 页大小
-     */
-    handleSizeChange(size) {
-      this.listQuery.pageSize = size
-      this.listQuery.pageNum = 1
-      this.getList()
-    },
-    /**
-     * 改变页码
-     * @param page 页号
-     */
-    handleCurrentChange(page) {
-      this.listQuery.pageNum = page
-      this.getList()
+    getOrderDetails() {
+      this.listLoading = true
+      const orderNumber = this.$route.query.orderNumber
+      getOrderDetails(orderNumber).then(response => {
+        this.formInline = response.data
+        this.consigneeInfo = response.data.consigneeInfo
+        this.orderDetailVOList = response.data.orderDetailVOList[0]
+        this.postageType = response.data.postageinfo.postageType
+        this.payVoucher = this.imageUrl + '/' + response.data.payVoucher
+      })
     }
   }
 }
 </script>
+<style>
+.pay-img img {
+    width: 400px;height: auto;
+}
+</style>
+

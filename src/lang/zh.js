@@ -6,6 +6,7 @@ export default {
     classManage: '分类管理',
     order: '订单/供货单',
     orderManage: '订单管理',
+    payManage: '支付管理',
     orderDetails: '订单详情',
     supplyManage: '供货单管理',
     pay: '支付配置',

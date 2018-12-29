@@ -66,6 +66,15 @@
           >查看详情</el-button>
         </template>
       </el-table-column>
+      <el-table-column label=" 操作" align="center">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="primary"
+            @click="getPayList(scope.$index, scope.row )"
+          >查看支付列表</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       :current-page="listQuery.page"
@@ -129,14 +138,27 @@ export default {
      * 查看详情
      */
     getOrderDetails(index, row) {
-      // const orderNumber = row.orderNumber
-      // this.$router.push({
-      //   path: "/order/orderDetails",
-      //   query: {
-      //     orderNumber: orderNumber
-      //   }
-      // });
+      const orderNumber = row.orderNumber
+      this.$router.push({
+        path: '/order/orderDetails',
+        query: {
+          orderNumber: orderNumber
+        }
+      })
     },
+    /**
+     * 查看支付列表
+     */
+    getPayList(index, row) {
+      const orderNumber = row.orderNumber
+      this.$router.push({
+        path: '/order/payManage',
+        query: {
+          orderNumber: orderNumber
+        }
+      })
+    },
+
     /**
      * 改变每页数量
      * @param size 页大小

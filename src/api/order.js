@@ -19,4 +19,10 @@ export function getOrderDetails(orderNumber) {
     method: 'get'
   })
 }
-
+export function getPayList(params) {
+  return request({
+    url: '/payment/list',
+    method: 'get',
+    params
+  })
+}
