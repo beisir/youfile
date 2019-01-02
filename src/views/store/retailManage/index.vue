@@ -90,7 +90,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="店铺地址" prop="address">
+        <el-form-item :label-width="formLabelWidth" label="店铺地址">
           <el-input v-model="formData.address"/>
         </el-form-item>
         <div>
@@ -218,9 +218,6 @@ export default {
         ],
         businessScope: [
           { required: true, message: '经营范围不能为空', trigger: 'blur' }
-        ],
-        address: [
-          { required: true, message: '店铺地址不能为空', trigger: 'blur' }
         ],
         logo: [
           { required: true, message: '小云店LOGO不能为空', trigger: 'blur' }
