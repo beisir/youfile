@@ -296,6 +296,7 @@ export const asyncRouterMap = [
       }
     ]
   },
+
   /** 商贸云管理**/
   {
     path: '/mallManage',
@@ -304,7 +305,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'mallManage',
-      icon: 'tree'
+      icon: 'table'
     },
     children: [
       {
@@ -313,6 +314,22 @@ export const asyncRouterMap = [
         name: 'mallList',
         meta: {
           title: 'mallList'
+        }
+      },
+      {
+        path: '/bannerManage/index',
+        component: () => import('@/views/mallManage/bannerManage/index'),
+        name: 'bannerManage',
+        meta: {
+          title: 'bannerManage'
+        }
+      },
+      {
+        path: '/floorManage/index',
+        component: () => import('@/views/mallManage/floorManage/index'),
+        name: 'floorManage',
+        meta: {
+          title: 'floorManage'
         }
       }
     ]
