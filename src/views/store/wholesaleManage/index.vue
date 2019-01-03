@@ -4,6 +4,13 @@
       <el-form-item label="店铺名称">
         <el-input v-model="formInline.name" placeholder="店铺名称"/>
       </el-form-item>
+      <el-form-item label="店铺性质">
+        <el-select v-model="formInline.storeNature" placeholder="请选择">
+          <el-option label="全部" value>全部</el-option>
+          <el-option label="新批零" value="1">新批零</el-option>
+          <el-option label="新零售" value="2">新零售</el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="店铺编号">
         <el-input v-model="formInline.storeId" placeholder="店铺编号"/>
       </el-form-item>
@@ -17,6 +24,7 @@
       <el-table-column prop="id" label="店铺编号" align="center"/>
       <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
       <el-table-column prop="name" label="店铺名称" align="center"/>
+      <el-table-column prop="phone" label="手机号" align="center"/>
       <el-table-column prop="logo" label="店铺logo" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.logo" width="40" height="40" class="head_pic">
@@ -35,9 +43,10 @@
       </el-table-column>
       <el-table-column prop="businessScope" label="经营范围" align="center"/>
       <el-table-column prop="address" label="店铺地址" align="center"/>
-      <el-table-column label=" 操作" align="center">
+      <el-table-column label=" 操作" width="210px" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="getStoreDetails(scope.$index, scope.row)">编辑</el-button>
+          <el-button size="mini" type="primary" @click="getReceipt(scope.$index, scope.row)">查询收款码</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,13 +70,16 @@
         class="inline-f"
       >
         <el-form-item :label-width="formLabelWidth" label="店铺编号">
-          <el-input :readonly="true" v-model="formData.id"/>
+          <el-input v-model="formData.id" disabled="disabled"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="商户编号">
-          <el-input :readonly="true" v-model="formData.merchantNumber"/>
+          <el-input v-model="formData.merchantNumber" disabled="disabled"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="名称" prop="name">
           <el-input v-model="formData.name"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="手机号" prop="name">
+          <el-input v-model="formData.phone" disabled="disabled"/>
         </el-form-item>
         <el-form-item label="店铺性质" prop="storeNature">
           <el-select v-model="formData.storeNature" placeholder="请选择">
@@ -76,7 +88,7 @@
             <el-option label="新零售" value="2">新零售</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="经营范围" prop="businessScope">
+        <el-form-item :label-width="formLabelWidth" label="经营范围">
           <el-select
             v-model="formData.businessScope"
             placeholder="请选择"
@@ -140,6 +152,32 @@
         </el-row>
       </el-form>
     </el-dialog>
+    <el-dialog :visible.sync="dialogShowCode" title="编辑收款码">
+      <el-form
+        :inline="true"
+        :label-width="formLabelWidth"
+        class="inline-f"
+      >
+        <div>
+          <el-form-item label="收款码">
+            <el-upload
+              :on-remove="handleRemoveRece"
+              :limit="1"
+              :class="{disabled:receiptUrlShow}"
+              :file-list="receiptUrlList"
+              :on-success="handleSuccessRece"
+              :action="uploadImgUrl+'/base/image?type=OTHER'"
+              list-type="picture-card"
+            >
+              <i class="el-icon-plus avatar-uploader-icon"/>
+            </el-upload>
+          </el-form-item>
+        </div>
+        <el-row class="submit-btn">
+          <el-button type="primary" @click="editReceipt()">确定</el-button>
+        </el-row>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -147,7 +185,9 @@ import {
   getList,
   getStoreMes,
   UpdateStoreMes,
-  UpdateStoreLogo
+  UpdateStoreLogo,
+  getReceipt,
+  updateReceipt
 } from '@/api/store'
 export default {
   data() {
@@ -156,13 +196,18 @@ export default {
       imageUrl: this.Const.imageUrl,
       logoUrlListShow: false,
       coveUrlListShow: false,
+      dialogShowCode: false,
+      receiptUrlShow: false,
       dialogShow: false,
       logoList: [],
       coveList: [],
+      receiptUrl: '',
+      receiptUrlList: [],
       miniProgramCodeList: [],
       formLabelWidth: '90px',
       formInline: {
         name: '',
+        storeNature: '',
         storeId: '',
         phone: ''
       },
@@ -209,6 +254,7 @@ export default {
         pageSize: 10 // 每页数量
       },
       tableData: [],
+      storeId: '',
       rules: {
         name: [
           { required: true, message: '商贸云名称不能为空', trigger: 'blur' }
@@ -216,14 +262,8 @@ export default {
         storeNature: [
           { required: true, message: '店铺性质不能为空', trigger: 'blur' }
         ],
-        businessScope: [
-          { required: true, message: '经营范围不能为空', trigger: 'blur' }
-        ],
         logo: [
           { required: true, message: '小云店LOGO不能为空', trigger: 'blur' }
-        ],
-        coverUrl: [
-          { required: true, message: '小云店封面图不能为空', trigger: 'blur' }
         ]
       }
     }
@@ -264,6 +304,7 @@ export default {
      * 改变页码
      * @param page 页号
      */
+    // 图片上传删除
     handleCurrentChange(page) {
       this.listQuery.pageNum = page
       this.getList()
@@ -286,6 +327,15 @@ export default {
       this.coveUrlListShow = true
       this.formData.coverUrl = coveUrl
     },
+    handleRemoveRece(file, fileList) {
+      this.receiptUrl = ''
+      this.receiptUrlShow = false
+    },
+    handleSuccessRece(response) {
+      const coveUrl = response.obj
+      this.receiptUrlShow = true
+      this.receiptUrl = coveUrl
+    },
     // 修改LOGO
     UpdateStoreLogo() {
       const logo = this.formData.logo
@@ -302,6 +352,41 @@ export default {
         })
       } else {
         this.$message.error('请上传图片！')
+      }
+    },
+    // 查询收款码
+    getReceipt(index, row) {
+      const storeId = row.storeId
+      this.storeId = storeId
+      this.dialogShowCode = true
+      getReceipt(storeId).then(response => {
+        const data = response.data
+        if (data) {
+          this.receiptUrl = data
+          const fileList = []
+          this.receiptUrlShow = true
+          fileList.push({ url: this.imageUrl + data })
+          this.receiptUrlList = fileList
+          this.receiptUrl = data
+        }
+      })
+    },
+    editReceipt() {
+      if (this.receiptUrl) {
+        const data = { storeId: this.storeId, receiptCode: this.receiptUrl }
+        updateReceipt(data).then(response => {
+          this.dialogShowCode = false
+          this.$message({
+            message: response.msg,
+            type: 'success'
+          })
+          this.getList()
+        })
+      } else {
+        this.$message({
+          message: '请上传收款码！',
+          type: 'warning'
+        })
       }
     },
     // 编辑信息

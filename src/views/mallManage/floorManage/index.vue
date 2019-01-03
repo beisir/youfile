@@ -1,333 +1,91 @@
 <template>
-  <div class="bodyCont">
-    <el-button type="primary" @click="onSubmit">添加楼层</el-button>
-    <div class="custom-tree-node tree-header">
-      <tr>
-        <td style="width:32px;border-left:0">#</td>
-        <td>楼座名称</td>
-        <td>楼层</td>
-        <td>排序</td>
-        <td>操作</td>
-      </tr>
-    </div>
-    <el-tree :data="tableData" :props="defaultProps" :expand-on-click-node="false" node-key="id">
-      <div slot-scope="{ node, data }" class="custom-tree-node">
-        <tr>
-          <td>{{ data.name }}</td>
-          <td>{{ data.floorNum==0?"": data.floorNum }}</td>
-          <td>{{ data.sort }}</td>
-          <td>
-            <el-button size="mini" type="primary" @click="editCode(data.code)">编辑</el-button>
-            <el-button size="mini" type="warning" @click="removeCode(data.code)">删除</el-button>
-          </td>
-        </tr>
+  <div v-loading.body="listLoading" style="padding:30px;" class="mall-floor">
+    <div v-for="(items, index) in tableData" :key="index" class="grid-content bg-purple" @click="lookFloor(items.code)">
+      <div class="head_pic">
+        <img :src="imageUrl+items.logo">
       </div>
-    </el-tree>
-    <el-dialog :visible.sync="dialogShow" :title="title">
-      <el-form
-        :inline="true"
-        :label-width="formLabelWidth"
-        :model="formData"
-        :rules="rules"
-        :ref="formData"
-      >
-        <el-row v-if="headerClass">
-          <el-form-item label="添加项" prop="type">
-            <el-radio-group v-model="formData.type" @change="clickitem">
-              <el-radio label="1">楼座</el-radio>
-              <el-radio label="2">楼层</el-radio>
-              <el-radio label="3">区域</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-row>
-        <el-form-item
-          v-if="headerClass"
-          :label-width="formLabelWidth"
-          label="商贸云编码"
-          prop="mallCode"
-        >
-          <el-input v-model="formData.mallCode"/>
-        </el-form-item>
-        <el-form-item v-if="oneClass" label="选择楼座" prop="rootCode">
-          <el-select
-            :label-width="formLabelWidth"
-            v-model="formData.rootCode"
-            placeholder="请选择"
-            @change="changeOneClass($event)"
-          >
-            <el-option
-              v-for="item in tableData"
-              :label="item.name"
-              :value="item.code"
-              :key="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="twoClass" label="选择楼层" prop="parentCode">
-          <el-select
-            :label-width="formLabelWidth"
-            v-model="formData.parentCode"
-            placeholder="请选择"
-            @change="changeTwoClass($event)"
-          >
-            <el-option
-              v-for="item in childList"
-              :label="item.name"
-              :value="item.code"
-              :key="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="名称" prop="name">
-          <el-input v-model="formData.name"/>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="排序" prop="sort">
-          <el-input v-model="formData.sort" type="number"/>
-        </el-form-item>
-      </el-form>
-      <el-row class="submit-btn">
-        <el-button type="primary" @click="addClass">确 定</el-button>
-      </el-row>
-    </el-dialog>
+      {{ items.name }}
+    </div>
   </div>
 </template>
 <script>
-import {
-  getFloorList,
-  saveFloor,
-  getFloorDetails,
-  updateloor,
-  deteleFloor
-} from '@/api/mall'
-import { unix2CurrentTime } from '@/utils'
+import { getList } from '@/api/mall'
 export default {
   data() {
     return {
-      mallCode: '1000',
-      title: '添加分类',
-      addClassData: false,
-      className: '',
-      sort: '0',
-      dialogShow: false,
-      formLabelWidth: '130px',
+      imageUrl: this.Const.imageUrl,
       listLoading: false,
-      tableData: [],
-      childList: [],
-      oneClass: true,
-      headerClass: true,
-      twoClass: true,
-      defaultProps: {
-        children: 'childList',
-        label: 'name'
-      },
-      formData: {
-        type: '',
-        name: '',
-        parentCode: '',
-        mallCode: '',
-        sort: ''
-      },
-      rules: {
-        name: [
-          { required: true, message: '楼层名称不能为空', trigger: 'blur' }
-        ],
-        sort: [{ required: true, message: '排序不能为空', trigger: 'blur' }],
-        type: [{ required: true, message: '添加项不能为空', trigger: 'blur' }],
-        rootCode: [
-          { required: true, message: '楼座信息不能为空', trigger: 'blur' }
-        ],
-        parentCode: [
-          { required: true, message: '楼层信息不能为空', trigger: 'blur' }
-        ],
-        mallCode: [
-          { required: true, message: '商贸云编码不能为空', trigger: 'blur' }
-        ]
-      }
+      total: 0,
+      tableData: []
     }
   },
   created() {
     this.getList()
   },
   methods: {
-    unix2CurrentTime,
-    handleNodeClick(data) {},
     /**
      * 获取列表
      */
     getList() {
       this.listLoading = true
-      getFloorList(this.mallCode).then(response => {
+      getList().then(response => {
         this.tableData = response.data
         this.listLoading = false
       })
     },
-    removeCode(code) {
-      this.$confirm('是否确定删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          deteleFloor(code).then(response => {
-            console.log(response)
-            this.getList()
-            this.$message({
-              type: 'success',
-              message: response.msg
-            })
-          })
-        })
-        .catch(() => {})
-    },
-    // 编辑分类
-    editCode(code) {
-      this.headerClass = false
-      this.oneClass = false
-      this.twoClass = false
-      this.initFormData()
-      this.title = '编辑分类'
-      this.addClassData = true
-      getFloorDetails(code).then(response => {
-        this.formData = response.data
-        this.dialogShow = true
-      })
-    },
-    initFormData() {
-      this.formData = {
-        type: '',
-        name: '',
-        parentCode: '',
-        sort: '',
-        mallCode: ''
-      }
-    },
-    // 添加楼层
-    onSubmit() {
-      this.addClassData = false
-      this.dialogShow = true
-      this.title = '添加楼层'
-      this.isShowAdd = true
-      this.headerClass = true
-      this.initFormData()
-    },
-    addClass() {
-      const formData = this.formData
-      const type = formData.type
-      const isShowAdd = this.addClassData
-      this.$refs[formData].validate(valid => {
-        if (valid) {
-          var params
-          if (isShowAdd) {
-            params = formData
-          } else {
-            params = {
-              type: type,
-              name: formData.name,
-              sort: formData.sort,
-              mallCode: formData.mallCode
-            }
-          }
-          if (type === '1') {
-            params.parentCode = '0'
-          } else {
-            params.parentCode = formData.rootCode
-          }
-          delete params['rootCode']
-          if (isShowAdd) {
-            updateloor(params).then(response => {
-              this.getList()
-              this.dialogShow = false
-              this.$message({
-                type: 'success',
-                message: '编辑成功!'
-              })
-            })
-          } else {
-            saveFloor(params).then(response => {
-              this.getList()
-              this.dialogShow = false
-              this.$message({
-                type: 'success',
-                message: '添加成功!'
-              })
-            })
-          }
+    lookFloor(code) {
+      this.$router.push({
+        path: '/floorMes/index',
+        query: {
+          mallCode: code
         }
       })
-    },
-    clickitem(e) {
-      this.formData.parentCode = ''
-      this.formData.rootCode = ''
-      if (e === '1') {
-        this.oneClass = false
-        this.twoClass = false
-      } else if (e === '2') {
-        this.oneClass = true
-        this.twoClass = false
-      } else {
-        this.oneClass = true
-        this.twoClass = true
-      }
-      this.formData.type = e
-    },
-    changeOneClass(event) {
-      this.formData.rootCode = event
-      const tableData = this.tableData
-      for (var i = 0; i < tableData.length; i++) {
-        if (tableData[i].code === event) {
-          this.childList = tableData[i].childList
-        }
-      }
-    },
-    changeTwoClass(event) {
-      this.formData.parentCode = event
     }
   }
 }
 </script>
 <style>
-.custom-tree-node td {
-  width: 200px;
-  border: 1px solid #ebeef5;
-  border-right: 0;
-  height: 50px;
+.mall-floor .bg-purple {
+  background: -webkit-linear-gradient(#FCC16A, #FF7800);
+  background: -o-linear-gradient(#FCC16A, #FF7800);
+  background: -moz-linear-gradient(#FCC16A, #FF7800);
+  background: linear-gradient(#FCC16A, #FF7800);
+  padding-top: 30px;
+  box-shadow: #ddd 10px 10px 30px 5px;
+  width: 180px;
+  height: 220px;
+  color: #fff;
+  margin: 0 auto;
   text-align: center;
-  line-height: 50px;
-  border-bottom: 0;
+  float: left;
+  margin-left: 20px;margin-right: 30px
 }
-.el-tree-node:focus > .el-tree-node__content {
+.mall-floor .bg-purple:nth-child(2){
+  background: -webkit-linear-gradient(#FF698C, #FF1445);
+  background: -o-linear-gradient(#FF698C, #FF1445);
+  background: -moz-linear-gradient(#FF698C, #FF1445);
+  background: linear-gradient(#FF698C, #FF1445);
+}
+.mall-floor .bg-purple:nth-child(3){
+  background: -webkit-linear-gradient(#2ED7AC, #2FA77A);
+  background: -o-linear-gradient(#2ED7AC, #2FA77A);
+  background: -moz-linear-gradient(#2ED7AC, #2FA77A);
+  background: linear-gradient(#2ED7AC, #2FA77A);
+}
+.mall-floor .head_pic {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 60px;
   background: #fff;
+  padding: 10px;
+  border-radius: 100%;
 }
-.custom-tree-node > td {
-  background: #ebeef5;
+.mall-floor .head_pic img {
+  width: 90%;
+  height: 90%;
 }
-.el-tree-node__content {
-  height: 50px;
-}
-.custom-tree-node tr:hover {
-  background-color: #f5f7fa;
-}
-.custom-tree-node tr td:last-child {
-  border-right: 1px solid #ebeef5;
-}
-.el-tree-node__content > .el-tree-node__expand-icon {
-  padding: 19px 10px;
-  border-top: 1px solid #ebeef5;
-}
-.tree-header tr td {
-  font-weight: bold;
-  font-size: 14px;
-  color: #909399;
-}
-.el-tree-node__content:hover,
-.el-tree-node is-focusable {
-  background: #fff;
-}
-.bodyCont {
-  margin: 30px;
-  border: 1px solid #ebeef5;
-  border-top: 0;
-  border-right: 0;
+.mall-floor .bg-purple:hover {
+  box-shadow: 6px 6px 10px #ddd;
 }
 </style>
 

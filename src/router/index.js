@@ -164,27 +164,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-  /** 结算**/
-  {
-    path: '/settlement',
-    component: Layout,
-    alwaysShow: true,
-    redirect: 'noredirect',
-    meta: {
-      title: 'settlement',
-      icon: 'money'
-    },
-    children: [
-      {
-        path: '/settlementManage/index',
-        component: () => import('@/views/settlement/settlementManage/index'),
-        name: 'settlementManage',
-        meta: {
-          title: 'settlementManage'
-        }
-      }
-    ]
-  },
   /** 商户**/
   {
     path: '/merchant',
@@ -239,35 +218,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-  payRouter,
-  /** 小云店**/
-  {
-    path: '/store',
-    component: Layout,
-    redirect: 'noredirect',
-    meta: {
-      title: 'store',
-      icon: 'tab'
-    },
-    children: [
-      {
-        path: '/wholesaleManage/index',
-        component: () => import('@/views/store/wholesaleManage/index'),
-        name: 'wholesaleManage',
-        meta: {
-          title: 'wholesaleManage'
-        }
-      },
-      {
-        path: '/retailManage/index',
-        component: () => import('@/views/store/retailManage/index'),
-        name: 'retailManage',
-        meta: {
-          title: 'retailManage'
-        }
-      }
-    ]
-  },
   /** 客户**/
   {
     path: '/usersManage',
@@ -292,6 +242,49 @@ export const asyncRouterMap = [
         name: 'buyerList',
         meta: {
           title: 'buyerList'
+        }
+      }
+    ]
+  },
+  /** 结算**/
+  {
+    path: '/settlement',
+    component: Layout,
+    alwaysShow: true,
+    redirect: 'noredirect',
+    meta: {
+      title: 'settlement',
+      icon: 'money'
+    },
+    children: [
+      {
+        path: '/settlementManage/index',
+        component: () => import('@/views/settlement/settlementManage/index'),
+        name: 'settlementManage',
+        meta: {
+          title: 'settlementManage'
+        }
+      }
+    ]
+  },
+  payRouter,
+  /** 小云店**/
+  {
+    path: '/store',
+    component: Layout,
+    alwaysShow: true,
+    redirect: 'noredirect',
+    meta: {
+      title: 'store',
+      icon: 'tab'
+    },
+    children: [
+      {
+        path: '/wholesaleManage/index',
+        component: () => import('@/views/store/wholesaleManage/index'),
+        name: 'wholesaleManage',
+        meta: {
+          title: 'wholesaleManage'
         }
       }
     ]
@@ -323,6 +316,33 @@ export const asyncRouterMap = [
         meta: {
           title: 'bannerManage'
         }
+      },
+      {
+        path: '/mallBanner/index',
+        component: () => import('@/views/mallManage/mallBanner/index'),
+        name: 'mallBanner',
+        meta: {
+          title: 'mallBanner'
+        },
+        hidden: true
+      },
+      {
+        path: '/floorMes/index',
+        component: () => import('@/views/mallManage/floorMes/index'),
+        name: 'floorMes',
+        meta: {
+          title: 'floorMes'
+        },
+        hidden: true
+      },
+      {
+        path: '/floorMes/floorStoreList',
+        component: () => import('@/views/mallManage/floorMes/floorStoreList'),
+        name: 'floorStoreList',
+        meta: {
+          title: 'floorStoreList'
+        },
+        hidden: true
       },
       {
         path: '/floorManage/index',

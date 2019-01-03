@@ -41,6 +41,12 @@ export function updateBanner(params) {
     data: params
   })
 }
+export function removeBanner(id) {
+  return request({
+    url: '/banner/' + id,
+    method: 'delete'
+  })
+}
 export function addBanner(params) {
   return request({
     url: '/banner',
@@ -79,5 +85,12 @@ export function deteleFloor(floorCode) {
   return request({
     url: '/floor/' + floorCode,
     method: 'delete'
+  })
+}
+export function getFloorStore(params) {
+  return request({
+    url: '/floor/store',
+    method: 'get',
+    params
   })
 }
