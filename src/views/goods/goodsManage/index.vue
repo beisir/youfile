@@ -12,7 +12,7 @@
       </el-form-item>
       <el-form-item label="状态">
         <el-select v-model="formInline.status" placeholder="请选择">
-          <el-option label="全部商品" value="">全部商品</el-option>
+          <el-option label="全部商品" value>全部商品</el-option>
           <el-option label="待上架" value="0">待上架</el-option>
           <el-option label="上架中" value="1">上架中</el-option>
           <el-option label="已下架" value="2">已下架</el-option>
@@ -27,40 +27,19 @@
       :data="tableData"
       highlight-current-row
       border
-      style="width: 100%">
-      <el-table-column
-        type="index"
-        width="50"
-        label="序号"
-        align="center"/>
-      <el-table-column
-        prop="goodsId"
-        label="商品ID"
-        align="center"/>
-      <el-table-column
-        prop="name"
-        label="商品名称"
-        align="center"/>
-      <el-table-column
-        prop="mainImgUrl"
-        label="主图"
-        align="center">
+      style="width: 100%"
+    >
+      <el-table-column type="index" width="50" label="序号" align="center"/>
+      <el-table-column prop="goodsId" label="商品ID" align="center"/>
+      <el-table-column prop="name" label="商品名称" align="center"/>
+      <el-table-column prop="mainImgUrl" label="主图" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.mainImgUrl" width="40" height="40" class="head_pic">
         </template>
       </el-table-column>
-      <el-table-column
-        prop="wholesalePrice"
-        label="批发价"
-        align="center"/>
-      <el-table-column
-        prop="sellPrice"
-        label="零售价"
-        align="center"/>
-      <el-table-column
-        prop="status"
-        label="状态"
-        align="center">
+      <el-table-column prop="wholesalePrice" label="批发价" align="center"/>
+      <el-table-column prop="sellPrice" label="零售价" align="center"/>
+      <el-table-column prop="status" label="状态" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.status==0" style="color: #E6A23C">待上架</span>
           <span v-if="scope.row.status==1" style="color: #67C23A">上架中</span>
@@ -69,10 +48,35 @@
           <span v-if="scope.row.status==4" style="color: #E73E48">没有库存</span>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="categoryName"
-        label="分类"
-        align="center"/>
+      <el-table-column prop="isDel" label="是否已删除" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isDel==true" style="color: #E6A23C">已删除</span>
+          <span v-if="scope.row.isDel==false" style="color: #67C23A">未删除</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="categoryName" label="分类" align="center"/>
+      <el-table-column label="操作" width="150px" align="center">
+        <template slot-scope="scope">
+          <el-button
+            v-if="scope.row.status==2"
+            size="mini"
+            type="primary"
+            @click="onGoods(scope.$index, scope.row)"
+          >上架</el-button>
+          <el-button
+            v-if="scope.row.status==1"
+            size="mini"
+            type="info"
+            @click="offGoods(scope.$index, scope.row)"
+          >下架</el-button>
+          <el-button
+            v-if="scope.row.isDel==false"
+            size="mini"
+            type="warning"
+            @click="deteleGoods(scope.$index, scope.row)"
+          >删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       :current-page="listQuery.page"
@@ -87,7 +91,7 @@
   </div>
 </template>
 <script>
-import { getGoodsList } from '@/api/goods'
+import { getGoodsList, offGoods, onGoods, deteleGoods } from '@/api/goods'
 export default {
   data() {
     return {
@@ -117,8 +121,8 @@ export default {
       this.getList()
     },
     /**
-       * 获取列表
-       */
+     * 获取列表
+     */
     getList() {
       this.listLoading = true
       getGoodsList(this.listQuery).then(response => {
@@ -128,21 +132,60 @@ export default {
       })
     },
     /**
-       * 改变每页数量
-       * @param size 页大小
-       */
+     * 改变每页数量
+     * @param size 页大小
+     */
     handleSizeChange(size) {
       this.listQuery.pageSize = size
       this.listQuery.pageNum = 1
       this.getList()
     },
     /**
-       * 改变页码
-       * @param page 页号
-       */
+     * 改变页码
+     * @param page 页号
+     */
     handleCurrentChange(page) {
       this.listQuery.pageNum = page
       this.getList()
+    },
+    // 上下架
+    offGoods(index, row) {
+      const data = { storeId: row.storeId, goodsIdList: [row.goodsId] }
+      offGoods(data).then(response => {
+        this.$message({
+          type: 'success',
+          message: response.data
+        })
+        this.getList()
+      })
+    },
+    onGoods(index, row) {
+      const data = { storeId: row.storeId, goodsIdList: [row.goodsId] }
+      onGoods(data).then(response => {
+        this.$message({
+          type: 'success',
+          message: response.data
+        })
+        this.getList()
+      })
+    },
+    deteleGoods(index, row) {
+      const goodsId = row.goodsId
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          deteleGoods(goodsId).then(response => {
+            this.$message({
+              type: 'success',
+              message: response.data
+            })
+            this.getList()
+          })
+        })
+        .catch(() => {})
     }
   }
 }

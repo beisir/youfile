@@ -1,6 +1,15 @@
 <template>
-  <div style="padding:30px;">
-    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
+  <div class="body-cont">
+    <el-form :inline="true" class="demo-form-inline border-form">
+      <el-button type="warning" @click="addSubmit">添加</el-button>
+    </el-form>
+    <el-table
+      v-loading.body="listLoading"
+      :data="tableData"
+      highlight-current-row
+      border
+      style="width: 100%"
+    >
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="name" label="商贸云名称" align="center"/>
       <el-table-column prop="code" label="code" align="center"/>
@@ -49,7 +58,7 @@
   </div>
 </template>
 <script>
-import { getList, getMallMes, updateMall } from '@/api/mall'
+import { getList, getMallMes, updateMall, addMall } from '@/api/mall'
 export default {
   data() {
     return {
@@ -99,7 +108,7 @@ export default {
     editMall(index, row) {
       const code = row.code
       this.dialogShow = true
-      this.title = '编辑商贸云信息'
+      this.title = '编辑商贸云'
       getMallMes(code).then(response => {
         this.formData = response.data
         const fileList = []
@@ -121,16 +130,35 @@ export default {
       const formData = this.formData
       this.$refs[formData].validate(valid => {
         if (valid) {
-          updateMall(formData).then(response => {
-            this.dialogShow = false
-            this.getList()
-            this.$message({
-              message: response.data,
-              type: 'success'
+          if (this.title === '编辑商贸云') {
+            updateMall(formData).then(response => {
+              this.dialogShow = false
+              this.getList()
+              this.$message({
+                message: response.data,
+                type: 'success'
+              })
             })
-          })
+          } else {
+            addMall(formData).then(response => {
+              this.dialogShow = false
+              this.getList()
+              this.$message({
+                message: response.data,
+                type: 'success'
+              })
+            })
+          }
         }
       })
+    },
+    // 添加商贸云信息
+    addSubmit() {
+      this.formData = {}
+      this.logoList = []
+      this.logoUrlListShow = false
+      this.dialogShow = true
+      this.title = '添加商贸云'
     }
   }
 }

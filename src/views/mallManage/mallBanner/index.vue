@@ -1,15 +1,18 @@
 <template>
-  <div style="padding:30px;">
+  <div class="body-cont">
     <el-form :inline="true" class="demo-form-inline border-form">
       <el-button type="warning" @click="addSubmit">添加</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
+    <el-table
+      v-loading.body="listLoading"
+      :data="tableData"
+      highlight-current-row
+      border
+      style="width: 100%"
+    >
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="mallCode" label="商贸云编码" align="center"/>
-      <el-table-column
-        prop="imageUrl"
-        label="banner图"
-        align="center">
+      <el-table-column prop="imageUrl" label="banner图" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.imageUrl" width="40" height="40" class="head_pic">
         </template>
@@ -56,7 +59,7 @@
         </div>
         <el-form-item label="状态" prop="click">
           <el-select v-model="formData.click" placeholder="是否可点击">
-            <el-option label="全部" value="">全部</el-option>
+            <el-option label="全部" value>全部</el-option>
             <el-option label="不可点击" value="0">不可点击</el-option>
             <el-option label="可点击" value="1">可点击</el-option>
           </el-select>
@@ -75,7 +78,13 @@
   </div>
 </template>
 <script>
-import { getBannerList, getBannerMes, updateBanner, addBanner, removeBanner } from '@/api/mall'
+import {
+  getBannerList,
+  getBannerMes,
+  updateBanner,
+  addBanner,
+  removeBanner
+} from '@/api/mall'
 export default {
   data() {
     return {
@@ -104,7 +113,11 @@ export default {
           { required: true, message: 'Banner描述不能为空', trigger: 'blur' }
         ],
         click: [
-          { required: true, message: 'Banner是否可点击不能为空', trigger: 'blur' }
+          {
+            required: true,
+            message: 'Banner是否可点击不能为空',
+            trigger: 'blur'
+          }
         ]
       }
     }
@@ -144,16 +157,17 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        removeBanner(code).then(response => {
-          this.getList()
-          this.$message({
-            message: response.data,
-            type: 'success'
+      })
+        .then(() => {
+          removeBanner(code).then(response => {
+            this.getList()
+            this.$message({
+              message: response.data,
+              type: 'success'
+            })
           })
         })
-      }).catch(() => {
-      })
+        .catch(() => {})
     },
     // 编辑信息
     editMall(index, row) {

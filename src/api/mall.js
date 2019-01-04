@@ -20,6 +20,13 @@ export function updateMall(params) {
     data: params
   })
 }
+export function addMall(params) {
+  return request({
+    url: '/mall',
+    method: 'post',
+    data: params
+  })
+}
 // banner
 export function getBannerList(params) {
   return request({

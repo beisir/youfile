@@ -63,26 +63,11 @@
         <el-form-item label="联系人" prop="linkman">
           <el-input v-model="merchantVOData.linkman"/>
         </el-form-item>
-        <el-form-item label="商户名称" prop="merchantName">
-          <el-input v-model="merchantVOData.merchantName"/>
-        </el-form-item>
-        <el-form-item label="商户简称" prop="merchantAbbre">
-          <el-input v-model="merchantVOData.merchantAbbre"/>
-        </el-form-item>
-        <el-form-item label="联系电话" prop="linkmanPhone">
-          <el-input v-model="merchantVOData.linkmanPhone"/>
-        </el-form-item>
-        <el-form-item label="联系人邮箱" prop="linkmanEmail">
-          <el-input v-model="merchantVOData.linkmanEmail"/>
-        </el-form-item>
         <el-form-item label="商户编号" prop="merchantNumber">
           <el-input v-model="merchantVOData.merchantNumber"/>
         </el-form-item>
-        <el-form-item label="商户经营范围" prop="merchantScope">
-          <el-input v-model="merchantVOData.merchantScope"/>
-        </el-form-item>
-        <el-form-item label="详细地址" prop="address">
-          <el-input v-model="merchantVOData.address"/>
+        <el-form-item label="商户名称" prop="merchantName">
+          <el-input v-model="merchantVOData.merchantName"/>
         </el-form-item>
         <el-form-item label="商户类型" prop="merchantType">
           <el-select
@@ -107,7 +92,23 @@
             <el-option label="企业" value="3">企业</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="省份" prop="province">
+        <el-form-item label="商户简称">
+          <el-input v-model="merchantVOData.merchantAbbre"/>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="linkmanPhone">
+          <el-input v-model="merchantVOData.linkmanPhone"/>
+        </el-form-item>
+        <el-form-item label="联系人邮箱">
+          <el-input v-model="merchantVOData.linkmanEmail"/>
+        </el-form-item>
+        <el-form-item label="商户经营范围">
+          <el-input v-model="merchantVOData.merchantScope"/>
+        </el-form-item>
+        <el-form-item label="详细地址">
+          <el-input v-model="merchantVOData.address"/>
+        </el-form-item>
+
+        <el-form-item label="省份">
           <el-select
             v-model="merchantVOData.province"
             placeholder="请选择"
@@ -121,7 +122,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="市" prop="city">
+        <el-form-item label="市">
           <el-select
             v-model="merchantVOData.city"
             placeholder="请选择"
@@ -135,7 +136,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="区县" prop="county">
+        <el-form-item label="区县">
           <el-select
             v-model="merchantVOData.county"
             placeholder="请选择"
@@ -184,38 +185,17 @@ export default {
         merchantName: [
           { required: true, message: '商户名称不能为空', trigger: 'blur' }
         ],
-        merchantAbbre: [
-          { required: true, message: '商户简介不能为空', trigger: 'blur' }
-        ],
         linkmanPhone: [
           { required: true, message: '联系电话不能为空', trigger: 'blur' }
-        ],
-        linkmanEmail: [
-          { required: true, message: '联系人邮箱不能为空', trigger: 'blur' }
         ],
         merchantNumber: [
           { required: true, message: '商户编号不能为空', trigger: 'blur' }
         ],
-        merchantScope: [
-          { required: true, message: '商户经营范围不能为空', trigger: 'blur' }
-        ],
         merchantType: [
           { required: true, message: '商户类型不能为空', trigger: 'blur' }
         ],
-        address: [
-          { required: true, message: '详细地址不能为空', trigger: 'blur' }
-        ],
         merchantCharacter: [
           { required: true, message: '商户性质不能为空', trigger: 'blur' }
-        ],
-        province: [
-          { required: true, message: '基础信息省不能为空', trigger: 'blur' }
-        ],
-        city: [
-          { required: true, message: '基础信息市不能为空', trigger: 'blur' }
-        ],
-        county: [
-          { required: true, message: '基础信息区不能为空', trigger: 'blur' }
         ]
       },
       listLoading: false,

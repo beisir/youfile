@@ -1,15 +1,9 @@
 import request from '@/utils/request'
+// 分类
 export function getClassList() {
   return request({
     url: '/shop/category/tree',
     method: 'get'
-  })
-}
-export function getGoodsList(params) {
-  return request({
-    url: '/goods/list',
-    method: 'post',
-    data: params
   })
 }
 export function deteleClass(categoryCode) {
@@ -38,4 +32,31 @@ export function updateClass(params) {
     data: params
   })
 }
-
+// 商品
+export function getGoodsList(params) {
+  return request({
+    url: '/goods/list',
+    method: 'post',
+    data: params
+  })
+}
+export function offGoods(params) {
+  return request({
+    url: '/goods/' + params.storeId + '/goods/status/off',
+    method: 'post',
+    data: params.goodsIdList
+  })
+}
+export function onGoods(params) {
+  return request({
+    url: '/goods/' + params.storeId + '/goods/status/on',
+    method: 'post',
+    data: params.goodsIdList
+  })
+}
+export function deteleGoods(goodsId) {
+  return request({
+    url: '/goods/' + goodsId,
+    method: 'delete'
+  })
+}

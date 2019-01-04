@@ -1,6 +1,6 @@
 <template>
-  <div style="padding:30px;">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+  <div class="body-cont">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
       <el-form-item label="平台定义的app编号">
         <el-input v-model="formInline.platAppId" placeholder="请输入平台定义的app编号"/>
       </el-form-item>

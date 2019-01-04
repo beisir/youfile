@@ -1,7 +1,7 @@
 
 <template>
-  <div style="padding:30px;">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+  <div class="body-cont">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
       <el-form-item label="关键字">
         <el-input v-model="serchKey" placeholder="关键字"/>
       </el-form-item>
