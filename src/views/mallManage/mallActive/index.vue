@@ -1,7 +1,7 @@
 <template>
   <div class="body-cont">
     <el-form :inline="true" class="demo-form-inline border-form">
-      <el-button type="warning" @click="addSubmit">添加Banner</el-button>
+      <el-button type="warning" @click="addSubmit">添加活动</el-button>
     </el-form>
     <el-table
       v-loading.body="listLoading"
@@ -12,7 +12,7 @@
     >
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="mallCode" label="商贸云编码" align="center"/>
-      <el-table-column prop="imageUrl" label="banner图" align="center">
+      <el-table-column prop="imageUrl" label="活动图" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.imageUrl" width="40" height="40" class="head_pic">
         </template>
@@ -24,6 +24,17 @@
         </template>
       </el-table-column>
       <el-table-column prop="url" label="跳转路径" align="center"/>
+      <el-table-column prop="activityDesc" label="描述" align="center"/>
+      <el-table-column prop="createDate" label="创建时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.createDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateDate" label="更新时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.updateDate) }}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="editMall(scope.$index, scope.row)">编辑</el-button>
@@ -31,6 +42,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      :current-page="listQuery.page"
+      :page-size="listQuery.size"
+      :total="total"
+      :page-sizes="[10, 30, 50, 100]"
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
     <el-dialog :visible.sync="dialogShow" :title="title">
       <el-form
         :inline="true"
@@ -43,7 +64,7 @@
           <el-input v-model="mallCode" disabled="disabled"/>
         </el-form-item>
         <div>
-          <el-form-item label="Banner" class="cove-img" prop="imageUrl">
+          <el-form-item label="活动图" class="cove-img" prop="imageUrl">
             <el-upload
               :on-remove="handleRemove"
               :limit="1"
@@ -67,8 +88,8 @@
         <el-form-item :label-width="formLabelWidth" label="跳转URL">
           <el-input v-model="formData.url"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="描述" prop="bannerDesc">
-          <el-input v-model="formData.bannerDesc"/>
+        <el-form-item :label-width="formLabelWidth" label="描述" prop="activityDesc">
+          <el-input v-model="formData.activityDesc"/>
         </el-form-item>
         <el-row class="submit-btn">
           <el-button type="primary" @click="editMallMes()">确定</el-button>
@@ -79,12 +100,13 @@
 </template>
 <script>
 import {
-  getBannerList,
-  getBannerMes,
-  updateBanner,
-  addBanner,
-  removeBanner
+  getActiveList,
+  getActiveMes,
+  updateActive,
+  addActive,
+  removeActive
 } from '@/api/mall'
+import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
@@ -107,15 +129,15 @@ export default {
       },
       rules: {
         imageUrl: [
-          { required: true, message: 'Banner不能为空', trigger: 'blur' }
+          { required: true, message: '活动不能为空', trigger: 'blur' }
         ],
-        bannerDesc: [
-          { required: true, message: 'Banner描述不能为空', trigger: 'blur' }
+        activityDesc: [
+          { required: true, message: '活动描述不能为空', trigger: 'blur' }
         ],
         click: [
           {
             required: true,
-            message: 'Banner是否可点击不能为空',
+            message: '活动是否可点击不能为空',
             trigger: 'blur'
           }
         ]
@@ -126,6 +148,7 @@ export default {
     this.getList()
   },
   methods: {
+    unix2CurrentTime,
     /**
      * 获取列表
      */
@@ -133,8 +156,9 @@ export default {
       this.listLoading = true
       this.mallCode = this.$route.query.mallCode
       this.listQuery.mallCode = this.$route.query.mallCode
-      getBannerList(this.listQuery).then(response => {
+      getActiveList(this.listQuery).then(response => {
         this.tableData = response.data.result
+        this.total = response.data.totalCount
         this.listLoading = false
       })
     },
@@ -148,18 +172,19 @@ export default {
       this.formData.imageUrl = logoUrl
     },
     initData() {
-      this.formData = { imageUrl: '', click: '', url: '', bannerDesc: '' }
+      this.formData = { imageUrl: '', click: '', url: '', activityDesc: '' }
     },
     // 删除
     removeBanner(index, row) {
       const code = row.id
-      this.$confirm('确定要删除此banner吗?', '提示', {
+      this.$confirm('确定要删除此活动吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          removeBanner(code).then(response => {
+          removeActive(code).then(response => {
+            this.listQuery.pageNum = 1
             this.getList()
             this.$message({
               message: response.data,
@@ -175,8 +200,8 @@ export default {
       this.dialogShow = true
       this.showCode = true
       this.initData()
-      this.title = '编辑Banner信息'
-      getBannerMes(code).then(response => {
+      this.title = '编辑活动信息'
+      getActiveMes(code).then(response => {
         const formData = response.data[0]
         if (formData.click === false) {
           formData.click = '0'
@@ -202,8 +227,8 @@ export default {
           } else {
             formData.click = true
           }
-          if (this.title === '添加Banner') {
-            addBanner(formData).then(response => {
+          if (this.title === '添加活动') {
+            addActive(formData).then(response => {
               this.dialogShow = false
               this.getList()
               this.$message({
@@ -212,7 +237,7 @@ export default {
               })
             })
           } else {
-            updateBanner(formData).then(response => {
+            updateActive(formData).then(response => {
               this.dialogShow = false
               this.getList()
               this.$message({
@@ -224,12 +249,29 @@ export default {
         }
       })
     },
+    /**
+     * 改变每页数量
+     * @param size 页大小
+     */
+    handleSizeChange(size) {
+      this.listQuery.pageSize = size
+      this.listQuery.pageNum = 1
+      this.getList()
+    },
+    /**
+     * 改变页码
+     * @param page 页号
+     */
+    handleCurrentChange(page) {
+      this.listQuery.pageNum = page
+      this.getList()
+    },
     addSubmit() {
       this.dialogShow = true
       this.logoUrlListShow = false
       this.initData()
       this.logoList = []
-      this.title = '添加Banner'
+      this.title = '添加活动'
     }
   }
 }

@@ -8,6 +8,7 @@
         <td>分类编码</td>
         <td>排序</td>
         <td>创建时间</td>
+        <td>更新时间</td>
         <td>操作</td>
       </tr>
     </div>
@@ -18,6 +19,7 @@
           <td>{{ data.categoryCode }}</td>
           <td>{{ data.sort }}</td>
           <td>{{ unix2CurrentTime(data.createDate) }}</td>
+          <td>{{ unix2CurrentTime(data.updateDate) }}</td>
           <td>
             <el-button size="mini" type="primary" @click="editCode(data.categoryCode)">编辑</el-button>
             <el-button size="mini" type="warning" @click="removeCode(data.categoryCode)">删除</el-button>

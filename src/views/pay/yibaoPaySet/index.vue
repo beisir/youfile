@@ -23,26 +23,26 @@
     </el-form>
     <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="platAppId" label="平台定义的app编号" align="center"/>
-      <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
-      <el-table-column prop="thirdMerchantNumber" label="第三方支付的商户编号" align="center"/>
-      <el-table-column prop="payChannel" label="支付通道" align="center">
+      <el-table-column prop="platAppId" label="平台定义的app编号" width="180" align="center"/>
+      <el-table-column prop="merchantNumber" label="商户编号" width="180" align="center"/>
+      <el-table-column prop="thirdMerchantNumber" label="第三方支付的商户编号" width="180" align="center"/>
+      <el-table-column prop="payChannel" label="支付通道" width="180" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.payChannel=='wx_pay'" style="color: #E6A23C">微信支付</span>
           <span v-if="scope.row.payChannel=='yeepay'" style="color: #43E0D6">易宝支付</span>
         </template>
       </el-table-column>
-      <el-table-column prop="payWay" label="支付方式" align="center">
+      <el-table-column prop="payWay" label="支付方式" width="180" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.payWay=='wx_mini_app_pay'" style="color: #E6A23C">微信小程序支付</span>
         </template>
       </el-table-column>
-      <el-table-column prop="payConfigContent" label="配置内容" align="center" width="290">
+      <el-table-column prop="payConfigContent" label="配置内容" align="center" width="450">
         <template slot-scope="scope">
           <json-viewer :value="scope.row.payConfigContent"/>
         </template>
       </el-table-column>
-      <el-table-column prop="onlinePay" label="操作" align="center">
+      <el-table-column prop="onlinePay" label="操作" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="getDetails(scope.$index, scope.row )">编辑</el-button>
         </template>
@@ -65,7 +65,7 @@
           <el-input v-model="merchantData.merchantNumber" placeholder="请输入商户编号"/>
         </el-form-item>
         <el-form-item align="center">
-          <template slot-scope="scope">
+          <template>
             <el-button type="primary" @click="getDetailsData">确定</el-button>
           </template>
         </el-form-item>

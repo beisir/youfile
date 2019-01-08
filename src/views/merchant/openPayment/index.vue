@@ -80,6 +80,16 @@
           <span v-if="scope.row.onlinePay==&quot;2&quot;">未设置</span>
         </template>
       </el-table-column>
+      <el-table-column prop="createTime" label="创建时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.createTime) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateTime" label="更新时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.updateTime) }}
+        </template>
+      </el-table-column>
       <el-table-column
         prop="onlinePay"
         label="操作"
@@ -142,6 +152,7 @@
 </template>
 <script>
 import { getListMerchantRetail, closePay, getPayMes, savePayMes } from '@/api/merchant'
+import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
@@ -168,6 +179,7 @@ export default {
     this.getList()
   },
   methods: {
+    unix2CurrentTime,
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1

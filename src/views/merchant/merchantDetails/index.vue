@@ -12,34 +12,34 @@
         <div class="clearfix">
           <span>基本信息</span>
         </div>
-        <el-form-item label="联系人" prop="linkman">
-          <el-input :readonly="readonly" v-model="merchantVOData.linkman"/>
-        </el-form-item>
         <el-form-item label="商户名称" prop="merchantName">
           <el-input :readonly="readonly" v-model="merchantVOData.merchantName"/>
-        </el-form-item>
-        <el-form-item label="商户简称" prop="merchantAbbre">
-          <el-input :readonly="readonly" v-model="merchantVOData.merchantAbbre"/>
-        </el-form-item>
-        <el-form-item label="联系电话" prop="linkmanPhone">
-          <el-input :readonly="readonly" v-model="merchantVOData.linkmanPhone"/>
-        </el-form-item>
-        <el-form-item label="联系人邮箱" prop="linkmanEmail">
-          <el-input :readonly="readonly" v-model="merchantVOData.linkmanEmail"/>
         </el-form-item>
         <el-form-item label="商户编号" prop="merchantNumber">
           <el-input :readonly="true" v-model="merchantVOData.merchantNumber"/>
         </el-form-item>
-        <el-form-item label="商户经营范围" prop="merchantScope">
+        <el-form-item label="商户简称" prop="merchantAbbre">
+          <el-input :readonly="readonly" v-model="merchantVOData.merchantAbbre"/>
+        </el-form-item>
+        <el-form-item label="联系人" prop="linkman">
+          <el-input :readonly="readonly" v-model="merchantVOData.linkman"/>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="linkmanPhone">
+          <el-input :readonly="readonly" v-model="merchantVOData.linkmanPhone"/>
+        </el-form-item>
+        <el-form-item label="联系人邮箱">
+          <el-input :readonly="readonly" v-model="merchantVOData.linkmanEmail"/>
+        </el-form-item>
+        <el-form-item label="商户经营范围">
           <el-input :readonly="readonly" v-model="merchantVOData.merchantScope"/>
         </el-form-item>
-        <el-form-item label="商户一级分类" prop="firstCategory">
+        <el-form-item label="商户一级分类">
           <el-input :readonly="readonly" v-model="merchantVOData.firstCategory"/>
         </el-form-item>
-        <el-form-item label="商户二级分类" prop="secondCategory">
+        <el-form-item label="商户二级分类">
           <el-input :readonly="readonly" v-model="merchantVOData.secondCategory"/>
         </el-form-item>
-        <el-form-item label="详细地址" prop="address">
+        <el-form-item label="详细地址">
           <el-input :readonly="readonly" v-model="merchantVOData.address"/>
         </el-form-item>
         <el-form-item label="商户类型" prop="merchantType">
@@ -122,19 +122,7 @@
         <el-form-item v-if="!tabsHide" label="组织机构代码证" prop="organCertificateNo">
           <el-input :readonly="readonly" v-model="merchantVOData.organCertificateNo"/>
         </el-form-item>
-        <el-form-item label="开户许可证编号" prop="openCertificateNo">
-          <el-input :readonly="readonly" v-model="merchantVOData.openCertificateNo"/>
-        </el-form-item>
-        <el-form-item label="法人姓名" prop="legalPerson">
-          <el-input :readonly="readonly" v-model="merchantVOData.legalPerson"/>
-        </el-form-item>
-        <el-form-item label="法人电话" prop="legalPhone">
-          <el-input :readonly="readonly" v-model="merchantVOData.legalPhone"/>
-        </el-form-item>
-        <el-form-item label="法人身份证号" prop="legalIdCard">
-          <el-input :readonly="readonly" v-model="merchantVOData.legalIdCard"/>
-        </el-form-item>
-        <el-form-item label="组织机构代码有效期至" prop="organExpireEndDate">
+        <el-form-item v-if="!tabsHide" label="组织机构代码有效期至" prop="organExpireEndDate">
           <el-date-picker
             v-model="merchantVOData.organExpireEndDate"
             type="date"
@@ -142,7 +130,7 @@
             style="width: 100%;"
           />
         </el-form-item>
-        <el-form-item label="组织机构代码证是否长期有效" prop="organType">
+        <el-form-item v-if="!tabsHide" label="组织机构代码证是否长期有效" prop="organType">
           <el-select
             v-model="merchantVOData.organType"
             placeholder="请选择"
@@ -155,6 +143,18 @@
               :key="item.id"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item label="开户许可证编号" prop="openCertificateNo">
+          <el-input :readonly="readonly" v-model="merchantVOData.openCertificateNo"/>
+        </el-form-item>
+        <el-form-item label="法人姓名" prop="legalPerson">
+          <el-input :readonly="readonly" v-model="merchantVOData.legalPerson"/>
+        </el-form-item>
+        <el-form-item label="法人电话" prop="legalPhone">
+          <el-input :readonly="readonly" v-model="merchantVOData.legalPhone"/>
+        </el-form-item>
+        <el-form-item label="法人身份证号" prop="legalIdCard">
+          <el-input :readonly="readonly" v-model="merchantVOData.legalIdCard"/>
         </el-form-item>
         <div v-if="!tabsHide">
           <el-col :span="12">
@@ -465,26 +465,11 @@ export default {
         linkmanPhone: [
           { required: true, message: '联系电话不能为空', trigger: 'blur' }
         ],
-        linkmanEmail: [
-          { required: true, message: '联系人邮箱不能为空', trigger: 'blur' }
-        ],
         merchantNumber: [
           { required: true, message: '商户编号不能为空', trigger: 'blur' }
         ],
-        merchantScope: [
-          { required: true, message: '商户经营范围不能为空', trigger: 'blur' }
-        ],
-        firstCategory: [
-          { required: true, message: '商户一级分类不能为空', trigger: 'blur' }
-        ],
-        secondCategory: [
-          { required: true, message: '商户二级分类不能为空', trigger: 'blur' }
-        ],
         merchantType: [
           { required: true, message: '商户类型不能为空', trigger: 'blur' }
-        ],
-        address: [
-          { required: true, message: '详细地址不能为空', trigger: 'blur' }
         ],
         merchantCharacter: [
           { required: true, message: '商户性质不能为空', trigger: 'blur' }
@@ -710,8 +695,8 @@ export default {
       const name = this.getDataName(this.areaData, event)
       this.merchantVOData.bankProvinceCode = event
       this.merchantVOData.bankProvince = name
-      this.merchantVOData.bankCityCode = ''
-      this.merchantVOData.bankCity = ''
+      // this.merchantVOData.bankCityCode = "";
+      // this.merchantVOData.bankCity = "";
       this.empetySubData()
       const listQuery = this.listQuery
       listQuery.parentCode = event

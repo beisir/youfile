@@ -17,33 +17,56 @@
       <el-form-item label="手机号">
         <el-input v-model="formInline.phone" placeholder="手机号"/>
       </el-form-item>
+      <el-form-item label="是否删除">
+        <el-select v-model="formInline.isDel" placeholder="请选择">
+          <el-option label="全部" value>全部</el-option>
+          <el-option label="未删除" value="false">未删除</el-option>
+          <el-option label="已删除" value="true">已删除</el-option>
+        </el-select>
+      </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
     <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="id" label="店铺编号" align="center"/>
-      <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
-      <el-table-column prop="name" label="店铺名称" align="center"/>
-      <el-table-column prop="phone" label="手机号" align="center"/>
-      <el-table-column prop="logo" label="店铺logo" align="center">
+      <el-table-column prop="id" width="120" label="店铺编号" align="center"/>
+      <el-table-column prop="merchantNumber" width="120" label="商户编号" align="center"/>
+      <el-table-column prop="name" label="店铺名称" width="150" align="center"/>
+      <el-table-column prop="phone" label="手机号" width="150" align="center"/>
+      <el-table-column prop="logo" label="店铺logo" width="150" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.logo" width="40" height="40" class="head_pic">
         </template>
       </el-table-column>
-      <el-table-column prop="coverUrl" label="店铺封面图" align="center">
+      <el-table-column prop="coverUrl" label="店铺封面图" width="150" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.coverUrl" width="40" height="40" class="head_pic">
         </template>
       </el-table-column>
-      <el-table-column prop="storeNature" label="店铺性质" align="center">
+      <el-table-column prop="storeNature" label="店铺性质" width="150" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.storeNature==&quot;1&quot;">新批零</span>
           <span v-if="scope.row.storeNature==&quot;2&quot;">新零售</span>
         </template>
       </el-table-column>
-      <el-table-column prop="businessScope" label="经营范围" align="center"/>
-      <el-table-column prop="address" label="店铺地址" align="center"/>
-      <el-table-column label=" 操作" width="210px" align="center">
+      <el-table-column prop="businessScope" label="经营范围" width="150" align="center"/>
+      <el-table-column prop="address" label="店铺地址" width="300" align="center"/>
+      <el-table-column prop="isDel" label="是否删除" width="150" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isDel==false">未删除</span>
+          <span v-if="scope.row.isDel==true">已删除</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="createDate" label="创建时间" width="180" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.createDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateDate" label="更新时间" width="180" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.updateDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column label=" 操作" fixed="right" width="210px" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="getStoreDetails(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="primary" @click="getReceipt(scope.$index, scope.row)">查询收款码</el-button>
@@ -189,6 +212,7 @@ import {
   getReceipt,
   updateReceipt
 } from '@/api/store'
+import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
@@ -207,6 +231,7 @@ export default {
       formLabelWidth: '90px',
       formInline: {
         name: '',
+        isDel: '',
         storeNature: '',
         storeId: '',
         phone: ''
@@ -272,6 +297,7 @@ export default {
     this.getList()
   },
   methods: {
+    unix2CurrentTime,
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1
@@ -437,9 +463,6 @@ export default {
 }
 .inline-f input {
   width: 200px;
-}
-.cove-img .el-upload-list--picture-card .el-upload-list__item{
-  width: 500px;height: auto;line-height: 0
 }
 .el-dialog__body{
   padding-bottom: 0

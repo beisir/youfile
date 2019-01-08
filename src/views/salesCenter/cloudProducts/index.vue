@@ -40,9 +40,14 @@
       <el-table-column prop="orderNumber" label="订单号" width="180" align="center"/>
       <el-table-column prop="yunStoreGoodsSnapshot.discountAmount" label="优惠码支付(元)" width="180" align="center"/>
       <el-table-column prop="orderAmount" label="订单金额(元)" width="180" align="center"/>
-      <el-table-column label="操作" width="180" align="left">
+      <el-table-column label="操作" width="220" align="left">
         <template slot-scope="scope">
-          <el-button type="primary" @click="toDetail(scope)">详情</el-button>
+          <el-button size="mini" type="primary" @click="toDetail(scope)">详情</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="getPayList(scope.$index, scope.row )"
+          >查看支付列表</el-button>
           <el-button v-if="scope.row.orderStatus==='paid' && (!scope.row.yunStore || !scope.row.yunStore.id)" type="success" @click="openStore(scope)">开店</el-button>
         </template>
       </el-table-column>
@@ -154,6 +159,18 @@ export default {
     onSubmit() {
       this.listQuery.pageNum = 1
       this.getAllList()
+    },
+    /**
+     * 查看支付列表
+     */
+    getPayList(index, row) {
+      const orderNumber = row.orderNumber
+      this.$router.push({
+        path: '/order/payManage',
+        query: {
+          orderNumber: orderNumber
+        }
+      })
     },
     /**
        * 改变每页数量

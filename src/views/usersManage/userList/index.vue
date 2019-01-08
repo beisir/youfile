@@ -10,6 +10,13 @@
       <el-form-item label="手机号">
         <el-input v-model="formInline.phone" placeholder="请输入手机号"/>
       </el-form-item>
+      <el-form-item label="是否删除">
+        <el-select v-model="formInline.isDel" placeholder="请选择">
+          <el-option label="全部" value>全部</el-option>
+          <el-option label="未删除" value="false">未删除</el-option>
+          <el-option label="已删除" value="true">已删除</el-option>
+        </el-select>
+      </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
     <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
@@ -30,6 +37,22 @@
       </el-table-column>
       <el-table-column prop="nickName" label="用户昵称" align="center"/>
       <!-- <el-table-column prop="weixinNumber" label="微信号" align="center"/> -->
+      <el-table-column prop="isDel" label="是否删除" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isDel==false">未删除</span>
+          <span v-if="scope.row.isDel==true">已删除</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="createTime" label="创建时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.createTime) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateTime" label="更新时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.updateTime) }}
+        </template>
+      </el-table-column>
       <el-table-column label=" 操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="getDetails(scope.$index, scope.row )">编辑</el-button>
@@ -97,6 +120,7 @@
 </template>
 <script>
 import { getList, getUserDetails, updateUserPhone } from '@/api/users'
+import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
@@ -108,6 +132,7 @@ export default {
       urlListShow: true,
       formInline: {
         userName: '',
+        isDel: '',
         nickName: '',
         phone: ''
       },
@@ -126,6 +151,7 @@ export default {
     this.getList()
   },
   methods: {
+    unix2CurrentTime,
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1

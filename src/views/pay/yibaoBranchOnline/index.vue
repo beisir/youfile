@@ -25,18 +25,18 @@
       style="width: 100%"
     >
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="thirdInnerNumber" label="第三方支付内部流水号" align="center"/>
-      <el-table-column prop="requestNumber" label="入网请求编号" align="center"/>
-      <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
-      <el-table-column prop="thirdParentMerchantNumber" label="第三方支付父商户编号" align="center"/>
-      <el-table-column prop="thirdMerchantNumber" label="第三方支付商户编号" align="center"/>
-      <el-table-column prop="thirdMerchantRole" label="第三方支付商户角色" align="center">
+      <el-table-column prop="thirdInnerNumber" width="200" label="第三方支付内部流水号" align="center"/>
+      <el-table-column prop="requestNumber" width="200" label="入网请求编号" align="center"/>
+      <el-table-column prop="merchantNumber" width="200" label="商户编号" align="center"/>
+      <el-table-column prop="thirdParentMerchantNumber" width="200" label="第三方支付父商户编号" align="center"/>
+      <el-table-column prop="thirdMerchantNumber" width="200" label="第三方支付商户编号" align="center"/>
+      <el-table-column prop="thirdMerchantRole" width="200" label="第三方支付商户角色" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.thirdMerchantRole=='sub_merchant'" style="color: #E73E48">子商户</span>
           <span v-if="scope.row.thirdMerchantRole=='ledger_merchant'" style="color: #E6A23C">分账方</span>
         </template>
       </el-table-column>
-      <el-table-column prop="registerStatus" label="入网状态" align="center">
+      <el-table-column prop="registerStatus" label="入网状态" width="150" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.registerStatus=='unkonown'" style="color: #E73E48">未知</span>
           <span v-if="scope.row.registerStatus=='init'" style="color: #E6A23C">初始化</span>
@@ -45,13 +45,23 @@
           <span v-if="scope.row.registerStatus=='register_processing'" style="color: #670ACE">审核中</span>
         </template>
       </el-table-column>
-      <el-table-column prop="registerChannel" label="入网渠道" align="center">
+      <el-table-column prop="registerChannel" label="入网渠道" width="150" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.registerChannel=='wx_pay'" style="color: #E73E48">微信支付</span>
           <span v-if="scope.row.registerChannel=='yeepay'" style="color: #E6A23C">易宝支付</span>
         </template>
       </el-table-column>
-      <el-table-column prop="onlinePay" label="操作" width="200" align="center">
+      <el-table-column prop="createDate" label="创建时间" width="170" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.createDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateDate" label="更新时间" width="170" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.updateDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="onlinePay" label="操作" fixed="right" width="150" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="getDetails(scope.$index, scope.row )">详情</el-button>
         </template>
@@ -73,7 +83,7 @@
           <el-input v-model="formData.merchantSign" placeholder="请输入商户编号"/>
         </el-form-item>
         <el-form-item align="center">
-          <template slot-scope="scope">
+          <template>
             <el-button type="primary" @click="getDetailsData">确定</el-button>
           </template>
         </el-form-item>
@@ -124,6 +134,7 @@
 </template>
 <script>
 import { getMerchantList, getMerchantDetails } from '@/api/pay'
+import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
@@ -161,6 +172,7 @@ export default {
     this.getList()
   },
   methods: {
+    unix2CurrentTime,
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1

@@ -327,6 +327,31 @@ export const asyncRouterMap = [
         hidden: true
       },
       {
+        path: '/activeManage/index',
+        component: () => import('@/views/mallManage/activeManage/index'),
+        name: 'activeManage',
+        meta: {
+          title: 'activeManage'
+        }
+      },
+      {
+        path: '/mallActive/index',
+        component: () => import('@/views/mallManage/mallActive/index'),
+        name: 'mallActive',
+        meta: {
+          title: 'mallActive'
+        },
+        hidden: true
+      },
+      {
+        path: '/mallSale/index',
+        component: () => import('@/views/mallManage/mallSale/index'),
+        name: 'mallSale',
+        meta: {
+          title: 'mallSale'
+        }
+      },
+      {
         path: '/floorMes/index',
         component: () => import('@/views/mallManage/floorMes/index'),
         name: 'floorMes',

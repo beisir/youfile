@@ -38,29 +38,39 @@
     </el-form>
     <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="accountNumber" label="账户编号" align="center"/>
-      <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
-      <el-table-column prop="merchantName" label="商户名称" align="center"/>
-      <el-table-column prop="merchantCharacter" label="商户性质" align="center">
+      <el-table-column prop="accountNumber" width="150" label="账户编号" align="center"/>
+      <el-table-column prop="merchantNumber" label="商户编号" width="150" align="center"/>
+      <el-table-column prop="merchantName" label="商户名称" width="150" align="center"/>
+      <el-table-column prop="merchantCharacter" label="商户性质" width="150" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantCharacter=='1'" style="color: #E6A23C">个人</span>
           <span v-if="scope.row.merchantCharacter=='2'" style="color: #67C23A">个体</span>
           <span v-if="scope.row.merchantCharacter=='3'" style="color: #43E0D6">企业</span>
         </template>
       </el-table-column>
-      <el-table-column prop="merchantNature" label="商户类型" align="center">
+      <el-table-column prop="merchantNature" label="商户类型" width="150" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantNature=='1'">批发商</span>
           <span v-if="scope.row.merchantNature=='2'">零售商</span>
         </template>
       </el-table-column>
-      <el-table-column prop="balance" label="账户余额" align="center"/>
-      <el-table-column prop="accountType" label=" 账户类型" align="center">
+      <el-table-column prop="balance" label="账户余额" width="150" align="center"/>
+      <el-table-column prop="accountType" label=" 账户类型" width="150" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.accountType=='balance'">余额账户</span>
         </template>
       </el-table-column>
-      <el-table-column prop="status" label=" 账户状态" align="center">
+      <el-table-column prop="createDate" label="创建时间" width="170" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.createDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateDate" label="更新时间" width="170" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.updateDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="status" label=" 账户状态" width="90" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.status=='on'"
@@ -76,7 +86,7 @@
           >开通</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="freeze" label=" 是否冻结" align="center">
+      <el-table-column prop="freeze" label=" 是否冻结" width="90" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.freeze==true"
@@ -92,7 +102,7 @@
           >冻结</el-button>
         </template>
       </el-table-column>
-      <el-table-column label=" 操作" align="center">
+      <el-table-column label=" 操作" fixed="right" width="120" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -151,6 +161,7 @@ import {
   openStatus,
   addAccountNumber
 } from '@/api/pay'
+import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
@@ -190,6 +201,7 @@ export default {
     this.getList()
   },
   methods: {
+    unix2CurrentTime,
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1

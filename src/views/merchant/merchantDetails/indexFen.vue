@@ -12,31 +12,31 @@
         <div class="clearfix">
           <span>基本信息</span>
         </div>
-        <el-form-item label="联系人" prop="linkman">
-          <el-input :readonly="readonly" v-model="merchantVOData.linkman"/>
-        </el-form-item>
         <el-form-item label="商户名称" prop="merchantName">
           <el-input :readonly="readonly" v-model="merchantVOData.merchantName"/>
-        </el-form-item>
-        <el-form-item label="商户简称" prop="merchantAbbre">
-          <el-input :readonly="readonly" v-model="merchantVOData.merchantAbbre"/>
-        </el-form-item>
-        <el-form-item label="联系电话" prop="linkmanPhone">
-          <el-input :readonly="readonly" v-model="merchantVOData.linkmanPhone"/>
-        </el-form-item>
-        <el-form-item label="联系人邮箱" prop="linkmanEmail">
-          <el-input :readonly="readonly" v-model="merchantVOData.linkmanEmail"/>
         </el-form-item>
         <el-form-item label="商户编号" prop="merchantNumber">
           <el-input :readonly="true" v-model="merchantVOData.merchantNumber"/>
         </el-form-item>
-        <el-form-item label="商户经营范围" prop="merchantScope">
+        <el-form-item label="商户简称" prop="merchantAbbre">
+          <el-input :readonly="readonly" v-model="merchantVOData.merchantAbbre"/>
+        </el-form-item>
+        <el-form-item label="联系人" prop="linkman">
+          <el-input :readonly="readonly" v-model="merchantVOData.linkman"/>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="linkmanPhone">
+          <el-input :readonly="readonly" v-model="merchantVOData.linkmanPhone"/>
+        </el-form-item>
+        <el-form-item label="联系人邮箱">
+          <el-input :readonly="readonly" v-model="merchantVOData.linkmanEmail"/>
+        </el-form-item>
+        <el-form-item label="商户经营范围">
           <el-input :readonly="readonly" v-model="merchantVOData.merchantScope"/>
         </el-form-item>
-        <el-form-item label="商户一级分类" prop="firstCategory">
+        <el-form-item label="商户一级分类">
           <el-input :readonly="readonly" v-model="merchantVOData.firstCategory"/>
         </el-form-item>
-        <el-form-item label="商户二级分类" prop="secondCategory">
+        <el-form-item label="商户二级分类">
           <el-input :readonly="readonly" v-model="merchantVOData.secondCategory"/>
         </el-form-item>
         <el-form-item label="详细地址" prop="address">
@@ -124,6 +124,28 @@
               <el-form-item label="组织机构代码证" prop="organCertificateNo">
                 <el-input :readonly="readonly" v-model="merchantVOData.organCertificateNo"/>
               </el-form-item>
+              <el-form-item label="组织机构代码有效期至" prop="organExpireEndDate">
+                <el-date-picker
+                  v-model="merchantVOData.organExpireEndDate"
+                  type="date"
+                  placeholder="选择日期"
+                  style="width: 100%;"
+                />
+              </el-form-item>
+              <el-form-item label="组织机构代码证是否长期有效" prop="organType">
+                <el-select
+                  v-model="merchantVOData.organType"
+                  placeholder="请选择"
+                  @change="organTypeDataFun($event)"
+                >
+                  <el-option
+                    v-for="item in organTypeData"
+                    :label="item.name"
+                    :value="item.code"
+                    :key="item.id"
+                  />
+                </el-select>
+              </el-form-item>
             </div>
             <div v-if="!tabsHide">
               <el-col :span="12">
@@ -189,6 +211,7 @@
             <el-form-item v-if="tabsHide" label="统一社会信用代码证号" prop="unifiedCertificateNo">
               <el-input :readonly="readonly" v-model="merchantVOData.unifiedCertificateNo"/>
             </el-form-item>
+
             <div v-if="tabsHide">
               <el-col :span="12">
                 <el-form-item label="统一社会信用代码证" prop="unifiedCertificateUrl">
@@ -243,28 +266,7 @@
         <el-form-item label="法人身份证号" prop="legalIdCard">
           <el-input :readonly="readonly" v-model="merchantVOData.legalIdCard"/>
         </el-form-item>
-        <el-form-item label="组织机构代码有效期至" prop="organExpireEndDate">
-          <el-date-picker
-            v-model="merchantVOData.organExpireEndDate"
-            type="date"
-            placeholder="选择日期"
-            style="width: 100%;"
-          />
-        </el-form-item>
-        <el-form-item label="组织机构代码证是否长期有效" prop="organType">
-          <el-select
-            v-model="merchantVOData.organType"
-            placeholder="请选择"
-            @change="organTypeDataFun($event)"
-          >
-            <el-option
-              v-for="item in organTypeData"
-              :label="item.name"
-              :value="item.code"
-              :key="item.id"
-            />
-          </el-select>
-        </el-form-item>
+
         <el-row>
           <el-col :span="12">
             <el-form-item label="身份证正面" prop="idCardFaceUrl">
@@ -304,10 +306,27 @@
               </el-dialog>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
+          <el-col v-if="!enterpriseShow" :span="12">
+            <el-form-item label="手持身份证" prop="handIdCardUrl">
+              <el-upload
+                :on-remove="handleRemoveFaceHand"
+                :limit="1"
+                :class="{disabled:handIdCardUrlListShow}"
+                :file-list="handIdCardUrlList"
+                :on-success="handleSuccessFaceHand"
+                :on-preview="handlePictureCardPreview9"
+                :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+                list-type="picture-card"
+              >
+                <i class="el-icon-plus avatar-uploader-icon"/>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible9">
+                <img :src="handIdCardUrl" width="100%" alt>
+              </el-dialog>
+            </el-form-item>
+          </el-col>
           <el-col :span="12">
-            <el-form-item label="经营场所门头照" prop="storePhotoUrl">
+            <el-form-item label="经营场所门头照">
               <el-upload
                 :on-remove="handleRemovePhoto"
                 :limit="1"
@@ -326,7 +345,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="收银台场景照" prop="scenePhoneUrl">
+            <el-form-item label="收银台场景照">
               <el-upload
                 :on-remove="handleRemovePhone"
                 :limit="1"
@@ -345,23 +364,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item v-if="!enterpriseShow" label="手持身份证" prop="handIdCardUrl">
-          <el-upload
-            :on-remove="handleRemoveFaceHand"
-            :limit="1"
-            :class="{disabled:handIdCardUrlListShow}"
-            :file-list="handIdCardUrlList"
-            :on-success="handleSuccessFaceHand"
-            :on-preview="handlePictureCardPreview9"
-            :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-            list-type="picture-card"
-          >
-            <i class="el-icon-plus avatar-uploader-icon"/>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible9">
-            <img :src="handIdCardUrl" width="100%" alt>
-          </el-dialog>
-        </el-form-item>
         <div class="clearfix">
           <span>商户结算信息</span>
         </div>
@@ -439,7 +441,7 @@
           />
           <div v-if="showModelSub" class="ser-sel">
             <el-table :data="smallBankData" style="width: 100%">
-              <el-table-column prop="bankName" width="180">
+              <el-table-column prop="bankName" width="350">
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
@@ -529,20 +531,8 @@ export default {
         linkmanPhone: [
           { required: true, message: '联系电话不能为空', trigger: 'blur' }
         ],
-        linkmanEmail: [
-          { required: true, message: '联系人邮箱不能为空', trigger: 'blur' }
-        ],
         merchantNumber: [
           { required: true, message: '商户编号不能为空', trigger: 'blur' }
-        ],
-        merchantScope: [
-          { required: true, message: '商户经营范围不能为空', trigger: 'blur' }
-        ],
-        firstCategory: [
-          { required: true, message: '商户一级分类不能为空', trigger: 'blur' }
-        ],
-        secondCategory: [
-          { required: true, message: '商户二级分类不能为空', trigger: 'blur' }
         ],
         merchantType: [
           { required: true, message: '商户类型不能为空', trigger: 'blur' }
@@ -627,12 +617,6 @@ export default {
         ],
         settleType: [
           { required: true, message: '结算方式不能为空', trigger: 'blur' }
-        ],
-        scenePhoneUrl: [
-          { required: true, message: '收银台场景照不能为空', trigger: 'blur' }
-        ],
-        storePhotoUrl: [
-          { required: true, message: '经营场所门头照不能为空', trigger: 'blur' }
         ],
         industryLicenseUrl: [
           { required: true, message: '行业许可证不能为空', trigger: 'blur' }
@@ -803,8 +787,8 @@ export default {
       const name = this.getDataName(this.areaData, event)
       this.merchantVOData.bankProvinceCode = event
       this.merchantVOData.bankProvince = name
-      this.merchantVOData.bankCityCode = ''
-      this.merchantVOData.bankCity = ''
+      // this.merchantVOData.bankCityCode = ''
+      // this.merchantVOData.bankCity = ''
       const listQuery = this.listQuery
       listQuery.parentCode = event
       this.getBankCityData(listQuery)

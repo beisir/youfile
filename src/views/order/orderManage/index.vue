@@ -28,19 +28,19 @@
     </el-form>
     <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="orderNumber" label="订单编号" align="center"/>
-      <el-table-column prop="expressNumber" label="快递单号" align="center"/>
-      <el-table-column prop="customerUserNo" label="付款方用户编号" align="center"/>
-      <el-table-column prop="receiveMerchantNumber" label="收款方商户编号" align="center"/>
-      <el-table-column prop="orderAmount" label="订单金额" align="center"/>
-      <el-table-column prop="orderType" label="配送方式" align="center">
+      <el-table-column prop="orderNumber" width="180" label="订单编号" align="center"/>
+      <el-table-column prop="expressNumber" width="180" label="快递单号" align="center"/>
+      <el-table-column prop="customerUserNo" width="270" label="付款方用户编号" align="center"/>
+      <el-table-column prop="receiveMerchantNumber" width="180" label="收款方商户编号" align="center"/>
+      <el-table-column prop="orderAmount" width="100" label="订单金额" align="center"/>
+      <el-table-column prop="orderType" width="100" label="配送方式" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.orderType=='0'">没有物流</span>
           <span v-if="scope.row.orderType=='1'">门店自提</span>
           <span v-if="scope.row.orderType=='2'">物流配送</span>
         </template>
       </el-table-column>
-      <el-table-column prop="orderCategory" label="订单分类" align="center">
+      <el-table-column prop="orderCategory" width="100" label="订单分类" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.orderCategory=='1'">批发订单</span>
           <span v-if="scope.row.orderCategory=='2'">小云店订单</span>
@@ -48,29 +48,35 @@
           <span v-if="scope.row.orderCategory=='4'">门店订单</span>
         </template>
       </el-table-column>
-      <el-table-column prop="orderStatus" label="订单状态" align="center">
+      <el-table-column prop="orderStatus" width="180" label="订单状态" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderStatus=='unpaid'" style="color: #E6A23C">待付款</span>
-          <span v-if="scope.row.orderStatus=='paid'" style="color: #67C23A">已付款</span>
-          <span v-if="scope.row.orderStatus=='delivered'" style="color: #43E0D6">已发货/待收货</span>
-          <span v-if="scope.row.orderStatus=='canceled'" style="color: #670ACE">订单已取消/订单关闭</span>
-          <span v-if="scope.row.orderStatus=='finish'" style="color: #E73E48">已完成</span>
+          <span v-if="scope.row.orderStatus=='unpaid'">待付款</span>
+          <span v-if="scope.row.orderStatus=='paid'">已付款</span>
+          <span v-if="scope.row.orderStatus=='delivered'">已发货/待收货</span>
+          <span v-if="scope.row.orderStatus=='canceled'">订单已取消/订单关闭</span>
+          <span v-if="scope.row.orderStatus=='finish'">已完成</span>
         </template>
       </el-table-column>
-      <el-table-column label=" 操作" align="center">
+      <el-table-column prop="createDate" width="160" label="创建时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.createDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateDate" width="160" label="更新时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.updateDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column label=" 操作" fixed="right" width="250" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="primary"
             @click="getOrderDetails(scope.$index, scope.row )"
           >查看详情</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column label=" 操作" align="center">
-        <template slot-scope="scope">
           <el-button
             size="mini"
-            type="primary"
+            type="warning"
             @click="getPayList(scope.$index, scope.row )"
           >查看支付列表</el-button>
         </template>
@@ -90,6 +96,7 @@
 </template>
 <script>
 import { getOrderList } from '@/api/order'
+import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
@@ -118,6 +125,7 @@ export default {
     this.getList()
   },
   methods: {
+    unix2CurrentTime,
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1

@@ -6,9 +6,16 @@
       </el-form-item>
       <el-form-item label="商户类型">
         <el-select v-model="formInline.merchantType" placeholder="请选择">
-          <el-option label="全部商户" value="">全部商户</el-option>
+          <el-option label="全部商户" value>全部商户</el-option>
           <el-option label="批发商" value="1">批零商</el-option>
           <el-option label="零售商" value="2">零售商</el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="是否删除">
+        <el-select v-model="formInline.isDel" placeholder="请选择">
+          <el-option label="全部" value>全部</el-option>
+          <el-option label="未删除" value="false">未删除</el-option>
+          <el-option label="已删除" value="true">已删除</el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="商户名称">
@@ -21,64 +28,59 @@
       :data="tableData"
       highlight-current-row
       border
-      style="width: 100%">
-      <el-table-column
-        type="index"
-        width="50"
-        label="序号"
-        align="center"/>
-      <el-table-column
-        prop="merchantNumber"
-        label="商户编号"
-        align="center"/>
-      <el-table-column
-        prop="merchantName"
-        label="商户名称"
-        align="center"/>
-      <el-table-column
-        prop="linkman"
-        label="联系人"
-        align="center"/>
-      <el-table-column
-        prop="linkmanPhone"
-        label="联系电话"
-        align="center"/>
-      <el-table-column
-        prop="merchantCharacter"
-        label="商户性质"
-        align="center">
+      style="width: 100%"
+    >
+      <el-table-column type="index" width="50" label="序号" align="center"/>
+      <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
+      <el-table-column prop="merchantName" label="商户名称" align="center"/>
+      <el-table-column prop="linkman" label="联系人" align="center"/>
+      <el-table-column prop="linkmanPhone" label="联系电话" align="center"/>
+      <el-table-column prop="merchantCharacter" label="商户性质" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantCharacter==&quot;1&quot;">个人</span>
           <span v-if="scope.row.merchantCharacter==&quot;2&quot;">个体</span>
           <span v-if="scope.row.merchantCharacter==&quot;3&quot;">企业</span>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="merchantType"
-        label="商户类型"
-        align="center">
+      <el-table-column prop="merchantType" label="商户类型" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantType==&quot;1&quot;">批发商</span>
           <span v-if="scope.row.merchantType==&quot;2&quot;">零售商</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="操作"
-        width="400"
-        align="center">
+      <el-table-column prop="isDel" label="是否删除" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isDel==false">未删除</span>
+          <span v-if="scope.row.isDel==true">已删除</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="createTime" label="创建时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.createTime) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateTime" label="更新时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.updateTime) }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="400" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="info"
-            @click="handleLook(scope.$index, scope.row ,true)">全量资质编辑</el-button>
+            @click="handleLook(scope.$index, scope.row ,true)"
+          >全量资质编辑</el-button>
           <el-button
             size="mini"
             type="warning"
-            @click="handleLookFen(scope.$index, scope.row ,true)">基本资质编辑</el-button>
+            @click="handleLookFen(scope.$index, scope.row ,true)"
+          >基本资质编辑</el-button>
           <el-button
             size="mini"
             type="primary"
-            @click="getStoreMess(scope.$index, scope.row ,true)">小程序信息编辑</el-button>
+            @click="getStoreMess(scope.$index, scope.row ,true)"
+          >小程序信息编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -93,7 +95,13 @@
       @current-change="handleCurrentChange"
     />
     <el-dialog :visible.sync="dialogTableVisible" :title="title">
-      <el-form :inline="true" :label-width="formLabelWidth" :model="storeMes" :rules="rules" :ref="storeMes" >
+      <el-form
+        :inline="true"
+        :label-width="formLabelWidth"
+        :model="storeMes"
+        :rules="rules"
+        :ref="storeMes"
+      >
         <el-form-item :label-width="formLabelWidth" label="商户编号">
           <el-input v-model="merchantNumber" disabled="disabled"/>
         </el-form-item>
@@ -118,6 +126,7 @@
 </template>
 <script>
 import { getListMerchantRetail, getStoreMes, saveupdate } from '@/api/merchant'
+import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
@@ -127,25 +136,20 @@ export default {
       readonly: false,
       formInline: {
         merchantType: '',
+        isDel: '',
         merchantName: ''
       },
       isShow: false,
       rules: {
         appId: [
-          { required: true,
-            message: '小程序appID不能为空',
-            trigger: 'blur'
-          }],
+          { required: true, message: '小程序appID不能为空', trigger: 'blur' }
+        ],
         appName: [
-          { required: true,
-            message: '小程序名称不能为空',
-            trigger: 'blur'
-          }],
+          { required: true, message: '小程序名称不能为空', trigger: 'blur' }
+        ],
         appSecret: [
-          { required: true,
-            message: '小程序密钥不能为空',
-            trigger: 'blur'
-          }]
+          { required: true, message: '小程序密钥不能为空', trigger: 'blur' }
+        ]
       },
       listLoading: false,
       total: 0,
@@ -162,14 +166,15 @@ export default {
     this.getList()
   },
   methods: {
+    unix2CurrentTime,
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1
       this.getList()
     },
     /**
-       * 获取列表
-       */
+     * 获取列表
+     */
     getList() {
       this.listLoading = true
       getListMerchantRetail(this.listQuery).then(response => {
@@ -179,18 +184,18 @@ export default {
       })
     },
     /**
-       * 改变每页数量
-       * @param size 页大小
-       */
+     * 改变每页数量
+     * @param size 页大小
+     */
     handleSizeChange(size) {
       this.listQuery.pageSize = size
       this.listQuery.pageNum = 1
       this.getList()
     },
     /**
-       * 改变页码
-       * @param page 页号
-       */
+     * 改变页码
+     * @param page 页号
+     */
     handleCurrentChange(page) {
       this.listQuery.pageNum = page
       this.getList()
@@ -226,12 +231,12 @@ export default {
     },
     updateMes(index, row) {
       const formData = this.storeMes
-      this.$refs[formData].validate((valid) => {
+      this.$refs[formData].validate(valid => {
         if (valid) {
           const dataMes = this.storeMes
           const merchantNumber = this.merchantNumber
-          delete (dataMes['createTime'])
-          delete (dataMes['updateTime'])
+          delete dataMes['createTime']
+          delete dataMes['updateTime']
           dataMes.merchantNumber = merchantNumber
           saveupdate(dataMes).then(response => {
             this.dialogTableVisible = false

@@ -61,7 +61,7 @@ label {
   max-height: 250px;
   overflow: hidden;
   overflow: auto;
-  width: 100%;
+  width: 110%;
   z-index: 100;
   border: 1px solid #dcdfe6;
 }
@@ -146,6 +146,9 @@ label {
 }
 .mall-floor .bg-purple:hover {
   box-shadow: 6px 6px 10px #ddd;
+}
+.cove-img .el-upload-list--picture-card .el-upload-list__item{
+  width: 500px;height: auto;line-height: 0
 }
 </style>
 

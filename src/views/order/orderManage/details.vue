@@ -97,7 +97,7 @@
           <el-input v-model="formInline.payAmount" disabled="disabled"/>
         </el-form-item>
         <el-form-item label="支付时间">
-          <template slot-scope="scope">{{ unix2CurrentTime(formInline.payDate) }}</template>
+          <template >{{ unix2CurrentTime(formInline.payDate) }}</template>
         </el-form-item>
         <el-form-item label="支付方式">
           <el-select v-model="formInline.payWay" disabled="disabled" placeholder="请选择">
@@ -161,13 +161,13 @@
           <el-input v-model="formInline.remark" disabled="disabled"/>
         </el-form-item>
         <el-form-item label=" 发货时间">
-          <template slot-scope="scope">{{ unix2CurrentTime(formInline.deliverDate) }}</template>
+          <template >{{ unix2CurrentTime(formInline.deliverDate) }}</template>
         </el-form-item>
         <el-form-item label="完成时间">
-          <template slot-scope="scope">{{ unix2CurrentTime(formInline.finishDate) }}</template>
+          <template>{{ unix2CurrentTime(formInline.finishDate) }}</template>
         </el-form-item>
         <el-form-item label="创建时间">
-          <template slot-scope="scope">{{ unix2CurrentTime(formInline.createDate) }}</template>
+          <template >{{ unix2CurrentTime(formInline.createDate) }}</template>
         </el-form-item>
         <el-form-item label="用户删除标识">
           <el-select v-model="formInline.customerDelFlag" disabled="disabled" placeholder="请选择">
@@ -177,9 +177,11 @@
             <el-option label="彻底删除" value="2">彻底删除</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item class="pay-img" label="支付凭证">
-          <img :src="payVoucher">
-        </el-form-item>
+        <div>
+          <el-form-item class="pay-img" label="支付凭证">
+            <img :src="payVoucher" style="width:400px;height:auto">
+          </el-form-item>
+        </div>
       </el-form>
     </div>
   </div>
