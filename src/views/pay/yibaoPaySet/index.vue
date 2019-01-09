@@ -145,7 +145,7 @@
         </el-form-item>
 
         <el-form-item align="center">
-          <template slot-scope="scope">
+          <template>
             <el-button type="primary" @click="eidthData()">确定</el-button>
           </template>
         </el-form-item>
