@@ -1,6 +1,6 @@
 module.exports = {
   NODE_ENV: '"beta"',
   ENV_CONFIG: '"beta"',
-  BASE_API: '"http://123.56.164.213:8080"',
-  IMAGE_UPLOAD_API: '"http://123.56.164.213:7001"'
+  BASE_API: '"http://dev-bossapi.youlife.me"',
+  IMAGE_UPLOAD_API: '"https://dev-store.youlife.me"'
 }
