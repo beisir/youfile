@@ -21,6 +21,7 @@ import './permission' // permission control
 import './mock' // simulation data
 import { checkPermission } from '@/utils/permission'
 import imageUrl from './components/Const/index.vue'
+import privateImageUrl from './components/Const/index.vue'
 import * as filters from './filters' // global filters
 
 Vue.use(JsonViewer)
@@ -36,6 +37,7 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false
 Vue.prototype.Const = imageUrl
+Vue.prototype.Const = privateImageUrl
 Vue.prototype.checkPermission = checkPermission
 new Vue({
   el: '#app',

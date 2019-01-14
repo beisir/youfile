@@ -22,6 +22,7 @@ export function editMerchantRetail(params) {
   })
 }
 export function getImgUrl(params) {
+  // return 'https://youlife-private-prod.oss-cn-beijing.aliyuncs.com/' + params.filePath
   return request_upload_api({
     url: '/base/image/sign',
     method: 'get',

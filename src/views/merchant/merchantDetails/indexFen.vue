@@ -503,7 +503,13 @@
               <img :src="settlementCardUrl" width="100%" alt>
             </el-dialog>
           </el-form-item>
-          <el-form-item style="width:48%" label="手持银行卡">
+          <el-form-item
+            v-if="!enterpriseShow && !gtShow"
+            :span="12"
+            style="width:48%"
+            label="手持银行卡"
+            prop="handBankCardUrl"
+          >
             <el-upload
               :on-remove="handleRemovehandBankCardUrl"
               :limit="1"
@@ -542,6 +548,7 @@ export default {
   data() {
     return {
       listLoading: false,
+      privateImageUrl: this.Const.privateImageUrl,
       uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       dialogVisible: false,
       dialogVisible1: false,
@@ -657,6 +664,9 @@ export default {
         ],
         industryLicenseUrl: [
           { required: true, message: '行业许可证不能为空', trigger: 'blur' }
+        ],
+        handBankCardUrl: [
+          { required: true, message: '手持银行卡不能为空', trigger: 'blur' }
         ],
         settlementCardUrl: [
           { required: true, message: '结算银行卡不能为空', trigger: 'blur' }
@@ -1098,69 +1108,70 @@ export default {
       const params = { filePath: filePath }
       getImgUrl(params).then(response => {
         const fileList = []
-        fileList.push({ url: response.obj })
+        var objResUrl = this.privateImageUrl + response.obj
+        fileList.push({ url: objResUrl })
         if (name === 'businessLicenseUrl') {
-          this.businessLicenseUrl = response.obj
+          this.businessLicenseUrl = objResUrl
           this.fileList = fileList
           this.fileListShow = true
         }
         if (name === 'idCardFaceUrl') {
-          this.idCardFaceUrl = response.obj
+          this.idCardFaceUrl = objResUrl
           this.idCardFaceUrlList = fileList
           this.idCardFaceUrlListShow = true
         }
         if (name === 'idCardConUrl') {
-          this.idCardConUrl = response.obj
+          this.idCardConUrl = objResUrl
           this.idCardConUrlList = fileList
           this.idCardConUrlListShow = true
         }
         if (name === 'settlementCardUrl') {
-          this.settlementCardUrl = response.obj
+          this.settlementCardUrl = objResUrl
           this.settlementCardUrlList = fileList
           this.settlementCardUrlListShow = true
         }
         if (name === 'handBankCardUrl') {
-          this.handBankCardUrl = response.obj
+          this.handBankCardUrl = objResUrl
           this.handBankCardUrlList = fileList
           this.handBankCardUrlListShow = true
         }
         if (name === 'unifiedCertificateUrl') {
-          this.unifiedCertificateUrl = response.obj
+          this.unifiedCertificateUrl = objResUrl
           this.unifiedCertificateUrlList = fileList
           this.unifiedCertificateUrlListShow = true
         }
         if (name === 'taxRegisterCertificateUrl') {
-          this.taxRegisterCertificateUrl = response.obj
+          this.taxRegisterCertificateUrl = objResUrl
           this.taxRegisterCertificateUrlList = fileList
           this.taxRegisterCertificateUrlListShow = true
         }
         if (name === 'organCodeCertificateUrl') {
-          this.organCodeCertificateUrl = response.obj
+          this.organCodeCertificateUrl = objResUrl
           this.organCodeCertificateUrlList = fileList
           this.organCodeCertificateUrlListShow = true
         }
         if (name === 'bankOrganUrl') {
-          this.bankOrganUrl = response.obj
+          this.bankOrganUrl = objResUrl
           this.bankOrganUrlList = fileList
           this.bankOrganUrlListShow = true
         }
         if (name === 'storePhotoUrl') {
-          this.storePhotoUrl = response.obj
+          this.storePhotoUrl = objResUrl
           this.storePhotoUrlList = fileList
           this.storePhotoUrlListShow = true
         }
         if (name === 'scenePhoneUrl') {
-          this.scenePhoneUrl = response.obj
+          this.scenePhoneUrl = objResUrl
           this.scenePhoneUrlList = fileList
           this.scenePhoneUrlListShow = true
         }
         if (name === 'industryLicenseUrl') {
-          this.industryLicenseUrl = response.obj
+          this.industryLicenseUrl = objResUrl
           this.industryLicenseUrlList = fileList
           this.industryLicenseUrlListShow = true
         }
         if (name === 'handIdCardUrl') {
-          this.handIdCardUrl = response.obj
+          this.handIdCardUrl = objResUrl
           this.handIdCardUrlList = fileList
           this.handIdCardUrlListShow = true
         }
