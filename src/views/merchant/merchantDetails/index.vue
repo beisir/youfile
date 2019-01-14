@@ -404,7 +404,7 @@
             </el-table>
           </div>
         </el-form-item>
-        <el-form-item label="结算方式" prop="settleType">
+        <!-- <el-form-item label="结算方式" prop="settleType">
           <el-select
             v-model="merchantVOData.settleType"
             placeholder="请选择"
@@ -414,7 +414,7 @@
             <el-option label="自助结算" value="1">自助结算</el-option>
             <el-option label="手动结算" value="2">手动结算</el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
     </div>
     <el-row class="submit-btn">
@@ -601,10 +601,10 @@ export default {
         { code: true, name: '是', id: 1 },
         { code: false, name: '否', id: 2 }
       ],
-      settleTypeData: [
-        { code: 1, name: '自助结算', id: 1 },
-        { code: 2, name: '手动结算', id: 2 }
-      ],
+      // settleTypeData: [
+      //   { code: 1, name: '自助结算', id: 1 },
+      //   { code: 2, name: '手动结算', id: 2 }
+      // ],
       businessLicenseUrl: '',
       idCardFaceUrl: '',
       idCardConUrl: '',
@@ -641,9 +641,9 @@ export default {
     organTypeDataFun(event) {
       this.merchantVOData.organType = event
     },
-    settleTypeFun(event) {
-      this.merchantVOData.settleType = event
-    },
+    // settleTypeFun(event) {
+    //   this.merchantVOData.settleType = event
+    // },
     // 选择城市
     getProvinceListData() {
       getProvinceList(this.listQuery).then(response => {

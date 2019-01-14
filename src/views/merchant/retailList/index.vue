@@ -4,6 +4,9 @@
       <el-form-item label="商户编号">
         <el-input v-model="formInline.merchantNumber" placeholder="请输入商户编号"/>
       </el-form-item>
+      <el-form-item label="手机号">
+        <el-input v-model="formInline.linkmanPhone" placeholder="请输入手机号"/>
+      </el-form-item>
       <el-form-item label="商户类型">
         <el-select v-model="formInline.merchantType" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
@@ -206,6 +209,7 @@ export default {
       areaCountyData: [],
       formInline: {
         merchantType: '',
+        linkmanPhone: '',
         isDel: '',
         merchantName: ''
       },
