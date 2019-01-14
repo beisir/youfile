@@ -254,6 +254,9 @@
             </el-form-item>
           </el-col>
         </el-tabs>
+        <el-form-item v-if="gtShow" label="营业执照编号" prop="businessLicenseNo">
+          <el-input :readonly="readonly" v-model="merchantVOData.businessLicenseNo"/>
+        </el-form-item>
         <el-form-item v-if="enterpriseShow" label="开户许可证编号" prop="openCertificateNo">
           <el-input :readonly="readonly" v-model="merchantVOData.openCertificateNo"/>
         </el-form-item>
@@ -268,6 +271,25 @@
         </el-form-item>
 
         <el-row>
+          <el-col v-if="gtShow" :span="12">
+            <el-form-item label="营业执照" prop="businessLicenseUrl">
+              <el-upload
+                :on-remove="handleRemoveSuccess"
+                :limit="1"
+                :class="{disabled:fileListShow}"
+                :file-list="fileList"
+                :on-preview="handlePictureCardPreview"
+                :on-success="handleSuccess"
+                :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+                list-type="picture-card"
+              >
+                <i class="el-icon-plus avatar-uploader-icon"/>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible">
+                <img :src="businessLicenseUrl" width="100%" alt>
+              </el-dialog>
+            </el-form-item>
+          </el-col>
           <el-col :span="12">
             <el-form-item label="身份证正面" prop="idCardFaceUrl">
               <el-upload
@@ -306,7 +328,7 @@
               </el-dialog>
             </el-form-item>
           </el-col>
-          <el-col v-if="!enterpriseShow" :span="12">
+          <el-col v-if="!enterpriseShow && !gtShow" :span="12">
             <el-form-item label="手持身份证" prop="handIdCardUrl">
               <el-upload
                 :on-remove="handleRemoveFaceHand"
@@ -433,7 +455,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="开户行支行" prop="subBankName">
+        <el-form-item label="开户行支行">
           <el-input
             :readonly="readonly"
             v-model="merchantVOData.subBankName"
@@ -481,7 +503,7 @@
               <img :src="settlementCardUrl" width="100%" alt>
             </el-dialog>
           </el-form-item>
-          <el-form-item style="width:48%" label="手持银行卡" prop="settlementCardUrl">
+          <el-form-item style="width:48%" label="手持银行卡">
             <el-upload
               :on-remove="handleRemovehandBankCardUrl"
               :limit="1"
@@ -630,17 +652,11 @@ export default {
         bankCity: [
           { required: true, message: '开户行城市不能为空', trigger: 'blur' }
         ],
-        subBankName: [
-          { required: true, message: '开户行支行不能为空', trigger: 'blur' }
-        ],
         settleType: [
           { required: true, message: '结算方式不能为空', trigger: 'blur' }
         ],
         industryLicenseUrl: [
           { required: true, message: '行业许可证不能为空', trigger: 'blur' }
-        ],
-        handBankCardUrl: [
-          { required: true, message: '手持银行卡不能为空', trigger: 'blur' }
         ],
         settlementCardUrl: [
           { required: true, message: '结算银行卡不能为空', trigger: 'blur' }
@@ -746,7 +762,8 @@ export default {
       storePhotoUrlListShow: false,
       industryLicenseUrlListShow: false,
       scenePhoneUrlListShow: false,
-      handIdCardUrlListShow: false
+      handIdCardUrlListShow: false,
+      gtShow: false
     }
   },
   created() {
@@ -899,6 +916,11 @@ export default {
         this.enterpriseShow = true
       } else {
         this.enterpriseShow = false
+      }
+      if (event === '2') {
+        this.gtShow = true
+      } else {
+        this.gtShow = false
       }
       this.merchantVOData.merchantCharacter = event
     },
@@ -1235,15 +1257,18 @@ export default {
             this.getImageUrl(handBankCardUrl, 'handBankCardUrl')
           }
         }
+        if (obj.merchantCharacter === '2') {
+          this.gtShow = true
+        }
         this.merchantVOData = obj
         this.merchantNumber = response.data.merchantNumber
       })
     },
     eidthData() {
       const formData1 = this.merchantVOData
-      this.listLoading = true
       this.$refs[formData1].validate(valid => {
         if (valid) {
+          this.listLoading = true
           const merchantQualificationVO = {
             id: this.merchantQualificationVOId,
             bankOrganUrl: formData1.bankOrganUrl,

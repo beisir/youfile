@@ -385,7 +385,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="开户行支行" prop="subBankName">
+        <el-form-item label="开户行支行">
           <el-input
             :readonly="readonly"
             v-model="merchantVOData.subBankName"
@@ -414,7 +414,7 @@
             <el-option label="自助结算" value="1">自助结算</el-option>
             <el-option label="手动结算" value="2">手动结算</el-option>
           </el-select>
-        </el-form-item> -->
+        </el-form-item>-->
       </el-form>
     </div>
     <el-row class="submit-btn">
@@ -542,9 +542,6 @@ export default {
         ],
         bankCity: [
           { required: true, message: '开户行城市不能为空', trigger: 'blur' }
-        ],
-        subBankName: [
-          { required: true, message: '开户行支行不能为空', trigger: 'blur' }
         ],
         settleType: [
           { required: true, message: '结算方式不能为空', trigger: 'blur' }
@@ -1002,9 +999,9 @@ export default {
     },
     eidthData() {
       const formData1 = this.merchantVOData
-      this.listLoading = true
       this.$refs[formData1].validate(valid => {
         if (valid) {
+          this.listLoading = true
           const merchantQualificationVO = {
             id: this.merchantQualificationVOId,
             bankOrganUrl: formData1.bankOrganUrl,
