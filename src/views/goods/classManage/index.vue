@@ -161,6 +161,7 @@ export default {
         rootCode: '',
         sort: ''
       },
+      nameInit: '',
       rules: {
         name: [
           { required: true, message: '分类名称不能为空', trigger: 'blur' }
@@ -219,6 +220,7 @@ export default {
       getClassDetails(categoryCode).then(response => {
         const parentCategoryCode = response.data.parentCategoryCode
         this.formData = response.data
+        this.nameInit = response.data.name
         this.dialogShow = true
         if (parentCategoryCode === '0') {
           this.oneClass = false
@@ -278,6 +280,9 @@ export default {
             params.parentCategoryCode = formData.parentCategoryCode
           }
           if (isShowAdd) {
+            if (params.name === this.nameInit) {
+              delete params['name']
+            }
             updateClass(params).then(response => {
               this.getList()
               this.dialogShow = false
