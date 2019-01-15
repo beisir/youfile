@@ -462,6 +462,11 @@
             @input="selectedSubBankCode"
           />
           <div v-if="showModelSub" class="ser-sel">
+            <el-button
+              size="mini"
+              style="border-bottom:1px solid #ebeef5;text-align:center;width:100%"
+              @click="showModelSubHide"
+            >暂不选择</el-button>
             <el-table :data="smallBankData" style="width: 100%">
               <el-table-column prop="bankName" width="350">
                 <template slot-scope="scope">
@@ -883,6 +888,12 @@ export default {
         this.smallBankData = response.data.obj.result
         this.showModelSub = true
       })
+    },
+    // 隐藏支行
+    showModelSubHide() {
+      this.showModelSub = false
+      this.merchantVOData.subBankCode = ''
+      this.merchantVOData.subBankName = ''
     },
     alertSubBank(index, row) {
       this.merchantVOData.subBankCode = row.bankCode
