@@ -471,6 +471,7 @@ export const asyncRouterMap = [
       title: 'errorPages',
       icon: '404'
     },
+    hidden: true,
     children: [
       {
         path: '401',

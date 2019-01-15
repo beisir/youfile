@@ -973,7 +973,7 @@ export default {
     },
     handlePictureCardPreview9(file) {
       this.handIdCardUrl = file.url
-      this.dialogVisible6 = true
+      this.dialogVisible9 = true
     },
     handlePictureCardPreview10(file) {
       this.settlementCardUrl = file.url
