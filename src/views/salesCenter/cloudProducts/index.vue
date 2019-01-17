@@ -123,23 +123,23 @@ export default {
     },
     getAllList() {
       this.listQuery.keyWords = this.serchKey
-      // if(this.startDate){
-      //   this.listQuery.payDateBeginStr = this.startDate;
-      // }else{
-      //   this.listQuery.payDateBeginStr = ""
-      // }
-      // if(this.endDate){
-      //   this.listQuery.payDateEndStr = this.endDate;
-      // }else{
-      //   this.listQuery.payDateEndStr = ""
-      // }
-      // if(this.startDate > this.endDate){
-      //   this.$message({
-      //     message:'开始时间应小于截止时间',
-      //     type: 'warning'
-      //   });
-      //   return
-      // }
+      if (this.startDate) {
+        this.listQuery.payDateBeginStr = this.startDate
+      } else {
+        this.listQuery.payDateBeginStr = ''
+      }
+      if (this.endDate) {
+        this.listQuery.payDateEndStr = this.endDate + 86400000
+      } else {
+        this.listQuery.payDateEndStr = ''
+      }
+      if (this.startDate > this.endDate) {
+        this.$message({
+          message: '开始时间应小于截止时间',
+          type: 'warning'
+        })
+        return
+      }
       getAllList(this.type, this.listQuery).then(res => {
         this.tableData = res.data.result
         this.total = res.data.totalCount
