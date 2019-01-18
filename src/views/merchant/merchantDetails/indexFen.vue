@@ -455,7 +455,7 @@
           />
           <div v-if="showModel" class="ser-sel ser-sel-z">
             <el-table :data="bankData" style="width: 100%">
-              <el-table-column prop="bankName" width="180">
+              <el-table-column prop="bankName" width="250">
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
@@ -1392,4 +1392,9 @@ export default {
   }
 }
 </script>
+<style>
+.submit-btn {
+  margin-bottom: 200px;
+}
+</style>
 

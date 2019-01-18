@@ -61,7 +61,7 @@ label {
   max-height: 250px;
   overflow: hidden;
   overflow: auto;
-  width: 110%;
+  width: auto;
   z-index: 100;
   border: 1px solid #dcdfe6;
 }
