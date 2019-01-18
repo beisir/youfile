@@ -389,6 +389,47 @@
         <div class="clearfix">
           <span>商户结算信息</span>
         </div>
+        <div v-if="!enterpriseShow">
+          <el-form-item style="width:48%" label="结算银行卡">
+            <el-upload
+              :on-remove="handleRemoveSettlement"
+              :limit="1"
+              :class="{disabled:settlementCardUrlListShow}"
+              :file-list="settlementCardUrlList"
+              :on-success="handleSuccesSettlement"
+              :on-preview="handlePictureCardPreview8"
+              :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+              list-type="picture-card"
+            >
+              <i class="el-icon-plus avatar-uploader-icon"/>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible10">
+              <img :src="settlementCardUrl" width="100%" alt>
+            </el-dialog>
+          </el-form-item>
+          <el-form-item
+            v-if="!enterpriseShow && !gtShow"
+            :span="12"
+            style="width:48%"
+            label="手持银行卡"
+          >
+            <el-upload
+              :on-remove="handleRemovehandBankCardUrl"
+              :limit="1"
+              :class="{disabled:handBankCardUrlListShow}"
+              :file-list="handBankCardUrlList"
+              :on-success="handleSucceshandBankCardUrl"
+              :on-preview="handlePictureCardPreview11"
+              :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+              list-type="picture-card"
+            >
+              <i class="el-icon-plus avatar-uploader-icon"/>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible11">
+              <img :src="handBankCardUrl" width="100%" alt>
+            </el-dialog>
+          </el-form-item>
+        </div>
         <el-form-item label="银行账户" prop="bankCard">
           <el-input :readonly="readonly" v-model="merchantVOData.bankCard"/>
         </el-form-item>
@@ -490,47 +531,6 @@
             <el-option label="手动结算" value="2">手动结算</el-option>
           </el-select>
         </el-form-item>-->
-        <div v-if="!enterpriseShow">
-          <el-form-item style="width:48%" label="结算银行卡">
-            <el-upload
-              :on-remove="handleRemoveSettlement"
-              :limit="1"
-              :class="{disabled:settlementCardUrlListShow}"
-              :file-list="settlementCardUrlList"
-              :on-success="handleSuccesSettlement"
-              :on-preview="handlePictureCardPreview8"
-              :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-              list-type="picture-card"
-            >
-              <i class="el-icon-plus avatar-uploader-icon"/>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible10">
-              <img :src="settlementCardUrl" width="100%" alt>
-            </el-dialog>
-          </el-form-item>
-          <el-form-item
-            v-if="!enterpriseShow && !gtShow"
-            :span="12"
-            style="width:48%"
-            label="手持银行卡"
-          >
-            <el-upload
-              :on-remove="handleRemovehandBankCardUrl"
-              :limit="1"
-              :class="{disabled:handBankCardUrlListShow}"
-              :file-list="handBankCardUrlList"
-              :on-success="handleSucceshandBankCardUrl"
-              :on-preview="handlePictureCardPreview11"
-              :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-              list-type="picture-card"
-            >
-              <i class="el-icon-plus avatar-uploader-icon"/>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible11">
-              <img :src="handBankCardUrl" width="100%" alt>
-            </el-dialog>
-          </el-form-item>
-        </div>
       </el-form>
     </div>
     <el-row class="submit-btn">
@@ -669,12 +669,12 @@ export default {
         industryLicenseUrl: [
           { required: true, message: '行业许可证不能为空', trigger: 'blur' }
         ],
-        // handBankCardUrl: [
-        //   { required: true, message: '手持银行卡不能为空', trigger: 'blur' }
-        // ],
-        // settlementCardUrl: [
-        //   { required: true, message: '结算银行卡不能为空', trigger: 'blur' }
-        // ],
+        handBankCardUrl: [
+          { required: true, message: '手持银行卡不能为空', trigger: 'blur' }
+        ],
+        settlementCardUrl: [
+          { required: true, message: '结算银行卡不能为空', trigger: 'blur' }
+        ],
         idCardFaceUrl: [
           { required: true, message: '身份证正面不能为空', trigger: 'blur' }
         ],
@@ -1106,12 +1106,14 @@ export default {
     },
     handleSuccesSettlement(response) {
       const imgUrl = response.obj
+      console.log(imgUrl)
       this.settlementCardUrlListShow = true
       this.merchantVOData.settlementCardUrl = imgUrl
     },
     handleSucceshandBankCardUrl(response) {
       const imgUrl = response.obj
       this.handBankCardUrlListShow = true
+      console.log(imgUrl)
       this.merchantVOData.handBankCardUrl = imgUrl
     },
     getImageUrl(filePath, name) {
