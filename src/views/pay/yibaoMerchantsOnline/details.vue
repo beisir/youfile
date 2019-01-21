@@ -265,6 +265,26 @@
         <div class="clearfix">
           <span>商户结算信息</span>
         </div>
+        <div v-if="!enterpriseShow">
+          <el-form-item style="width:48%" label="结算银行卡：" prop="settlementCardUrl">
+            <el-upload
+              :limit="1"
+              :file-list="settlementCardUrlList"
+              :class="{disabled:uploadDisabled}"
+              :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+              list-type="picture-card"
+            />
+          </el-form-item>
+          <el-form-item style="width:48%" label="手持银行卡：">
+            <el-upload
+              :limit="1"
+              :file-list="handBankCardUrlList"
+              :class="{disabled:uploadDisabled}"
+              :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
+              list-type="picture-card"
+            />
+          </el-form-item>
+        </div>
         <el-form-item label="银行账户：" prop="bankCard">
           <el-input :readonly="readonly" v-model="merchantVOData.bankCard"/>
         </el-form-item>
@@ -345,17 +365,6 @@
             <el-option label="手动结算" value="2">手动结算</el-option>
           </el-select>
         </el-form-item>
-        <div v-if="!enterpriseShow">
-          <el-form-item label="结算银行卡：" prop="settlementCardUrl">
-            <el-upload
-              :limit="1"
-              :file-list="settlementCardUrlList"
-              :class="{disabled:uploadDisabled}"
-              :action="uploadImgUrl+'/base/image?type=MERCHANT_QUALIFICATION'"
-              list-type="picture-card"
-            />
-          </el-form-item>
-        </div>
       </el-form>
     </div>
     <el-row class="submit-btn">
@@ -574,6 +583,7 @@ export default {
       scenePhoneUrl: '',
       industryLicenseUrl: '',
       settlementCardUrl: '',
+      handBankCardUrl: '',
       fileList: [],
       tabsHide: false,
       idCardFaceUrlList: [],
@@ -587,6 +597,7 @@ export default {
       scenePhoneUrlList: [],
       industryLicenseUrlList: [],
       settlementCardUrlList: [],
+      handBankCardUrlList: [],
       enterpriseShow: true,
       merchantRetailId: '',
       merchantQualificationVOId: '',
@@ -707,6 +718,10 @@ export default {
           this.settlementCardUrl = response.obj
           this.settlementCardUrlList = fileList
         }
+        if (name === 'handBankCardUrl') {
+          this.handBankCardUrl = response.obj
+          this.handBankCardUrlList = fileList
+        }
         if (name === 'unifiedCertificateUrl') {
           this.unifiedCertificateUrl = response.obj
           this.unifiedCertificateUrlList = fileList
@@ -826,6 +841,11 @@ export default {
           if (settlementCardUrl) {
             this.getImageUrl(settlementCardUrl, 'settlementCardUrl')
           }
+          const handBankCardUrl =
+            response.data.merchantSettleVO.handBankCardUrl
+          if (handBankCardUrl) {
+            this.getImageUrl(handBankCardUrl, 'handBankCardUrl')
+          }
         }
         this.merchantVOData = obj
         this.merchantNumber = response.data.merchantNumber
@@ -913,7 +933,8 @@ export default {
                 hand_idcard: formData.handIdCardUrl,
                 idcard_front: formData.idCardFaceUrl,
                 idcard_back: formData.idCardConUrl,
-                settle_bankcard: formData.settlementCardUrl
+                settle_bankcard: formData.settlementCardUrl,
+                hand_bankcard: formData.handBankCardUrl
               },
               merchantStyle: merchantStyle,
               provinceCode: formData.provinceCode,
