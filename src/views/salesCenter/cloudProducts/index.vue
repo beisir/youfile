@@ -34,6 +34,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="yunStore.name" label="店名" align="center"/>
+      <el-table-column prop="yunStoreGoodsSnapshot.promotionCode" label="优惠码" align="center"/>
       <el-table-column prop="yunStoreGoodsSnapshot.serviceReriodMonth" label="服务时间（月）" align="center"/>
       <el-table-column prop="userInfoVO.mobile" label="客户手机" width="180" align="center"/>
       <el-table-column :formatter="formatTime" prop="createDate" label="下单时间" width="180" align="center"/>
