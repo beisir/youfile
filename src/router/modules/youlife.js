@@ -13,79 +13,27 @@ const youlifeRouter = {
   },
   children: [
     {
-      path: '/mallManage/index',
-      component: () => import('@/views/mallManage/mallList/index'),
-      name: 'mallList',
-      meta: {
-        title: 'mallList'
-      }
-    },
-    {
-      path: '/bannerManage/index',
-      component: () => import('@/views/mallManage/bannerManage/index'),
-      name: 'bannerManage',
-      meta: {
-        title: 'bannerManage'
-      }
-    },
-    {
-      path: '/mallBanner/index',
-      component: () => import('@/views/mallManage/mallBanner/index'),
+      path: '/youlifeBanner/index',
+      component: () => import('@/views/youlifeManage/youlifeBanner/index'),
       name: 'mallBanner',
       meta: {
         title: 'mallBanner'
-      },
-      hidden: true
-    },
-    {
-      path: '/activeManage/index',
-      component: () => import('@/views/mallManage/activeManage/index'),
-      name: 'activeManage',
-      meta: {
-        title: 'activeManage'
       }
     },
     {
-      path: '/mallActive/index',
-      component: () => import('@/views/mallManage/mallActive/index'),
+      path: '/youlifeActive/index',
+      component: () => import('@/views/youlifeManage/youlifeActive/index'),
       name: 'mallActive',
       meta: {
         title: 'mallActive'
-      },
-      hidden: true
-    },
-    {
-      path: '/mallSale/index',
-      component: () => import('@/views/mallManage/mallSale/index'),
-      name: 'mallSale',
-      meta: {
-        title: 'mallSale'
       }
     },
     {
-      path: '/floorMes/index',
-      component: () => import('@/views/mallManage/floorMes/index'),
-      name: 'floorMes',
+      path: '/youlifeSale/index',
+      component: () => import('@/views/youlifeManage/youlifeSale/index'),
+      name: 'mallSale',
       meta: {
-        title: 'floorMes'
-      },
-      hidden: true
-    },
-    {
-      path: '/floorMes/floorStoreList',
-      component: () => import('@/views/mallManage/floorMes/floorStoreList'),
-      name: 'floorStoreList',
-      meta: {
-        title: 'floorStoreList'
-      },
-      hidden: true
-    },
-    {
-      path: '/floorManage/index',
-      component: () => import('@/views/mallManage/floorManage/index'),
-      name: 'floorManage',
-      meta: {
-        title: 'floorManage'
+        title: 'mallSale'
       }
     }
   ]
