@@ -1,6 +1,7 @@
 <template>
   <div class="bodyCont">
     <el-button type="primary" @click="onSubmit">添加楼层</el-button>
+    <el-button type="warning" @click="onBindFloor">绑定店铺</el-button>
     <div class="custom-tree-node tree-header">
       <tr>
         <td style="width:32px;border-left:0">#</td>
@@ -90,6 +91,89 @@
         <el-button type="primary" @click="addClass">确 定</el-button>
       </el-row>
     </el-dialog>
+    <el-dialog :visible.sync="storeNameShow" title="绑定店铺">
+      <el-form :inline="true" :model="storeInfo" :label-width="formLabelWidth" class="storeInfo">
+        <el-form-item :label-width="formLabelWidth" label="店铺名称：" required>
+          <el-input v-model="storeName"/>
+        </el-form-item>
+        <div v-if="storeInfoShow">
+          <el-form-item :label-width="formLabelWidth" label="店铺名称">
+            <el-input v-model="storeInfo.name" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item :label-width="formLabelWidth" label="手机号：">
+            <el-input v-model="storeInfo.phone" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="店铺性质：">
+            <el-select v-model="storeInfo.storeNature" placeholder="请选择" disabled="disabled">
+              <el-option label="请选择" value>请选择</el-option>
+              <el-option label="新批零" value="1">新批零</el-option>
+              <el-option label="新零售" value="2">新零售</el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label-width="formLabelWidth" label="店铺logo：">
+            <img :src="imageUrl+storeInfo.logo" width="40" height="40" class="head_pic">
+          </el-form-item>
+          <el-form-item :label-width="formLabelWidth" label="经营范围：">
+            <el-input v-model="storeInfo.businessScope" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item :label-width="formLabelWidth" label="店铺地址：">
+            <el-input v-model="storeInfo.address" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="楼座：">
+            <el-select
+              :label-width="formLabelWidth"
+              v-model="floorInfo.balconyCode"
+              placeholder="请选择"
+              @change="changeOneClass($event)"
+            >
+              <el-option
+                v-for="item in tableData"
+                :label="item.name"
+                :value="item.code"
+                :key="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item v-if="twoClass" label="楼层：">
+            <el-select
+              :label-width="formLabelWidth"
+              v-model="floorInfo.floorCode"
+              placeholder="请选择"
+              @change="changeTwoClass($event)"
+            >
+              <el-option
+                v-for="item in childList"
+                :label="item.name"
+                :value="item.code"
+                :key="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="区域：">
+            <el-select
+              :label-width="formLabelWidth"
+              v-model="floorInfo.floorAreaCode"
+              placeholder="请选择"
+              @change="changeFloorArea($event)"
+            >
+              <el-option
+                v-for="item in childAreaList"
+                :label="item.name"
+                :value="item.code"
+                :key="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item :label-width="formLabelWidth" label="门牌号：">
+            <el-input v-model="floorInfo.storeDoorNum"/>
+          </el-form-item>
+        </div>
+      </el-form>
+      <el-row class="submit-btn">
+        <el-button type="primary" @click="bindStore">确 定</el-button>
+        <el-button type="primary" @click="editStoreFloor">编辑楼层</el-button>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -98,14 +182,17 @@ import {
   saveFloor,
   getFloorDetails,
   updateloor,
-  deteleFloor
+  deteleFloor,
+  getFloorInfo,
+  editStoreFloor
 } from '@/api/mall'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
+      imageUrl: this.Const.imageUrl,
       mallCode: '',
-      title: '添加分类',
+      title: '添加楼层',
       addClassData: false,
       className: '',
       sort: '0',
@@ -143,7 +230,13 @@ export default {
         mallCode: [
           { required: true, message: '商贸云编码不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      storeName: '',
+      storeNameShow: false,
+      floorInfo: {},
+      storeInfo: {},
+      storeInfoShow: false,
+      childAreaList: []
     }
   },
   created() {
@@ -187,6 +280,44 @@ export default {
         query: {
           floorCode: code
         }
+      })
+    },
+    // 绑定店铺
+    onBindFloor() {
+      this.storeNameShow = true
+    },
+    bindStore() {
+      const storeName = this.storeName
+      if (storeName) {
+        const data = { name: storeName }
+        getFloorInfo(data).then(response => {
+          this.floorInfo = response.data.floorInfo
+          const floorInfo = response.data.floorInfo
+          this.storeInfo = response.data.store
+          this.storeInfoShow = true
+          if (floorInfo) {
+            const eventCode = floorInfo.balconyCode
+            this.changeFloor(eventCode)
+          }
+        })
+      } else {
+        this.$message({
+          message: '请输入店铺名称！',
+          type: 'warning'
+        })
+      }
+    },
+    editStoreFloor() {
+      const floorInfo = this.floorInfo
+      editStoreFloor(floorInfo).then(response => {
+        this.$message({
+          type: 'success',
+          message: response.msg
+        })
+        this.getList()
+        this.storeNameShow = false
+        this.floorInfo = {}
+        this.storeInfo = {}
       })
     },
     // 编辑分类
@@ -283,8 +414,8 @@ export default {
       }
       this.formData.type = e
     },
-    changeOneClass(event) {
-      this.formData.rootCode = event
+    // change楼座 信息
+    changeFloor(event) {
       const tableData = this.tableData
       for (var i = 0; i < tableData.length; i++) {
         if (tableData[i].code === event) {
@@ -292,8 +423,21 @@ export default {
         }
       }
     },
+    changeOneClass(event) {
+      this.formData.rootCode = event
+      this.changeFloor(event)
+      this.floorInfo.balconyCode = event
+      this.floorInfo.floorCode = '0'
+      this.floorInfo.floorAreaCode = '0'
+    },
     changeTwoClass(event) {
       this.formData.parentCode = event
+      this.childAreaList = this.childList.childList
+      this.floorInfo.floorCode = event
+      this.floorInfo.floorAreaCode = '0'
+    },
+    changeFloorArea(event) {
+      this.floorInfo.floorAreaCode = event
     }
   }
 }
@@ -341,6 +485,10 @@ export default {
   border: 1px solid #ebeef5;
   border-top: 0;
   border-right: 0;
+}
+.storeInfo .el-form-item--medium .el-form-item__content,
+.storeInfo .el-form-item--medium .el-form-item__label {
+  width: 200px;
 }
 </style>
 

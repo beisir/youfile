@@ -385,6 +385,7 @@ import { yeepayRegister } from '@/api/pay'
 export default {
   data() {
     return {
+      privateImageUrl: this.Const.privateImageUrl,
       uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       readonly: true,
       activeName: 'first',
@@ -701,7 +702,8 @@ export default {
       const params = { filePath: filePath }
       getImgUrl(params).then(response => {
         const fileList = []
-        fileList.push({ url: response.obj })
+        var objResUrl = this.privateImageUrl + response.obj
+        fileList.push({ url: objResUrl })
         if (name === 'businessLicenseUrl') {
           this.businessLicenseUrl = response.obj
           this.fileList = fileList
@@ -900,6 +902,12 @@ export default {
               legalPersonId: formData.legalIdCard,
               uniCreditNo: formData.unifiedCertificateNo,
               businessLicenseNo: formData.businessLicenseNo,
+              districtCode: formData.countyCode,
+              address: formData.address,
+              shortName: formData.merchantAbbre,
+              oneCategory: formData.firstCategory,
+              twoCategory: formData.secondCategory,
+              merchantScope: formData.merchantScope,
               merchantPictureInfoMap: {
                 idcard_front: formData.idCardFaceUrl,
                 idcard_back: formData.idCardConUrl,
@@ -929,6 +937,12 @@ export default {
               legalPersonId: formData.legalIdCard,
               legalPersonName: formData.legalPerson,
               merchantNumber: this.merchantNumber,
+              districtCode: formData.countyCode,
+              address: formData.address,
+              shortName: formData.merchantAbbre,
+              oneCategory: formData.firstCategory,
+              twoCategory: formData.secondCategory,
+              merchantScope: formData.merchantScope,
               merchantPictureInfoMap: {
                 hand_idcard: formData.handIdCardUrl,
                 idcard_front: formData.idCardFaceUrl,
