@@ -37,6 +37,7 @@ export default {
     buyerList: '进货商列表',
     floorList: '楼层列表',
     mallManage: '商贸云',
+    youlifeManage: '优生活',
     floorManage: '楼层管理',
     mallBanner: 'banner 管理',
     mallActive: '活动管理',

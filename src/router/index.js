@@ -10,6 +10,8 @@ import Layout from '@/views/layout/Layout'
 import goodsRouter from './modules/goods'
 import orderRouter from './modules/order'
 import payRouter from './modules/pay'
+import mallRouter from './modules/mall'
+import youlifeRouter from './modules/youlife'
 // import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
 // import tableRouter from './modules/table'
@@ -289,96 +291,10 @@ export const asyncRouterMap = [
       }
     ]
   },
-
   /** 商贸云管理**/
-  {
-    path: '/mallManage',
-    component: Layout,
-    redirect: 'noredirect',
-    alwaysShow: true,
-    meta: {
-      title: 'mallManage',
-      icon: 'table'
-    },
-    children: [
-      {
-        path: '/mallManage/index',
-        component: () => import('@/views/mallManage/mallList/index'),
-        name: 'mallList',
-        meta: {
-          title: 'mallList'
-        }
-      },
-      {
-        path: '/bannerManage/index',
-        component: () => import('@/views/mallManage/bannerManage/index'),
-        name: 'bannerManage',
-        meta: {
-          title: 'bannerManage'
-        }
-      },
-      {
-        path: '/mallBanner/index',
-        component: () => import('@/views/mallManage/mallBanner/index'),
-        name: 'mallBanner',
-        meta: {
-          title: 'mallBanner'
-        },
-        hidden: true
-      },
-      {
-        path: '/activeManage/index',
-        component: () => import('@/views/mallManage/activeManage/index'),
-        name: 'activeManage',
-        meta: {
-          title: 'activeManage'
-        }
-      },
-      {
-        path: '/mallActive/index',
-        component: () => import('@/views/mallManage/mallActive/index'),
-        name: 'mallActive',
-        meta: {
-          title: 'mallActive'
-        },
-        hidden: true
-      },
-      {
-        path: '/mallSale/index',
-        component: () => import('@/views/mallManage/mallSale/index'),
-        name: 'mallSale',
-        meta: {
-          title: 'mallSale'
-        }
-      },
-      {
-        path: '/floorMes/index',
-        component: () => import('@/views/mallManage/floorMes/index'),
-        name: 'floorMes',
-        meta: {
-          title: 'floorMes'
-        },
-        hidden: true
-      },
-      {
-        path: '/floorMes/floorStoreList',
-        component: () => import('@/views/mallManage/floorMes/floorStoreList'),
-        name: 'floorStoreList',
-        meta: {
-          title: 'floorStoreList'
-        },
-        hidden: true
-      },
-      {
-        path: '/floorManage/index',
-        component: () => import('@/views/mallManage/floorManage/index'),
-        name: 'floorManage',
-        meta: {
-          title: 'floorManage'
-        }
-      }
-    ]
-  },
+  mallRouter,
+  /** 优生活管理**/
+  youlifeRouter,
   /** 销售中心**/
   {
     path: '/salesCenter',

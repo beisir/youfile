@@ -36,6 +36,7 @@ export default {
     userList: 'User List',
     buyerList: 'Buyer List',
     mallManage: 'Mall Manage',
+    youlifeManage: 'Youlife Manage',
     floorList: 'Floor List',
     floorManage: 'Floor Manage',
     mallBanner: 'Mall Banner',

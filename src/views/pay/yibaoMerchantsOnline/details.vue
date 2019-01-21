@@ -33,10 +33,10 @@
         <el-form-item label="商户经营范围：" prop="merchantScope">
           <el-input :readonly="readonly" v-model="merchantVOData.merchantScope"/>
         </el-form-item>
-        <el-form-item label="商户一级分类：" prop="firstCategory">
+        <el-form-item label="商户一级分类：">
           <el-input :readonly="readonly" v-model="merchantVOData.firstCategory"/>
         </el-form-item>
-        <el-form-item label="商户二级分类：" prop="secondCategory">
+        <el-form-item label="商户二级分类：">
           <el-input :readonly="readonly" v-model="merchantVOData.secondCategory"/>
         </el-form-item>
         <el-form-item label="详细地址：" prop="address">
@@ -412,12 +412,6 @@ export default {
         ],
         merchantScope: [
           { required: true, message: '商户经营范围不能为空', trigger: 'blur' }
-        ],
-        firstCategory: [
-          { required: true, message: '商户一级分类不能为空', trigger: 'blur' }
-        ],
-        secondCategory: [
-          { required: true, message: '商户二级分类不能为空', trigger: 'blur' }
         ],
         merchantType: [
           { required: true, message: '商户类型不能为空', trigger: 'blur' }
