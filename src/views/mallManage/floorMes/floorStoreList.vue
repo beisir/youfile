@@ -6,7 +6,13 @@
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
+    <el-table
+      v-loading.body="listLoading"
+      :data="tableData"
+      highlight-current-row
+      border
+      style="width: 100%"
+    >
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="name" label="店铺名称" align="center"/>
       <el-table-column prop="phone" label="手机号" align="center"/>
@@ -23,6 +29,16 @@
       </el-table-column>
       <el-table-column prop="businessScope" label="经营范围" align="center"/>
       <el-table-column prop="address" label="店铺地址" align="center"/>
+      <el-table-column label="操作" align="center">
+        <template slot-scope="scope">
+          <el-button size="mini" type="primary" @click="editStoreFloor(scope.$index, scope.row)">编辑</el-button>
+          <el-button
+            size="mini"
+            type="warning"
+            @click="removeStoreFloor(scope.$index, scope.row)"
+          >删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       :current-page="listQuery.page"
@@ -34,10 +50,61 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+    <el-dialog :visible.sync="dialogTableVisible" title="编辑信息">
+      <el-form :model="floorInfo">
+        <!-- <el-form-item :label-width="formLabelWidth" label="入网请求编号">
+          <el-input v-model="rowData.requestNumber" disabled="disabled" placeholder/>
+        </el-form-item> -->
+        <!-- <el-form-item :label-width="formLabelWidth" label="入网状态">
+          <el-select v-model="rowData.registerStatus" disabled="disabled" placeholder="请选择">
+            <el-option label="微信支付" value="unkonown">微信支付</el-option>
+            <el-option label="初始化" value="init">初始化</el-option>
+            <el-option label="注册失败" value="regist_fail">注册失败</el-option>
+            <el-option label="注册成功" value="regist_success">注册成功</el-option>
+            <el-option label="审核中" value="regist_processing">审核中</el-option>
+          </el-select>
+        </el-form-item> -->
+        <el-form-item label="选择楼座" prop="balconyCode">
+          <el-select
+            :label-width="formLabelWidth"
+            v-model="floorInfo.balconyCode"
+            placeholder="请选择"
+            @change="changeOneClass($event)"
+          >
+            <el-option
+              v-for="item in FloorData"
+              :label="item.name"
+              :value="item.code"
+              :key="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item v-if="twoClass" label="选择楼层" prop="parentCode">
+          <el-select
+            :label-width="formLabelWidth"
+            v-model="formData.parentCode"
+            placeholder="请选择"
+            @change="changeTwoClass($event)"
+          >
+            <el-option
+              v-for="item in childList"
+              :label="item.name"
+              :value="item.code"
+              :key="item.id"
+            />
+          </el-select>
+        </el-form-item> -->
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { getFloorStore } from '@/api/mall'
+import {
+  getFloorStore,
+  removeStoreFloor,
+  getFloorInfo,
+  getFloorList
+} from '@/api/mall'
 export default {
   data() {
     return {
@@ -45,8 +112,12 @@ export default {
       formInline: {
         name: ''
       },
+      formLabelWidth: '210px',
+      dialogTableVisible: false,
+      floorInfo: {},
       listLoading: false,
       total: 0,
+      FloorData: [],
       listQuery: {
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
@@ -64,35 +135,67 @@ export default {
       this.getList()
     },
     /**
-       * 获取列表
-       */
+     * 获取列表
+     */
     getList() {
       this.listLoading = true
       this.mallCode = this.$route.query.floorCode
       this.listQuery.floorCode = this.$route.query.floorCode
       getFloorStore(this.listQuery).then(response => {
-        console.log(response)
         this.tableData = response.data.result
         this.listLoading = false
         this.total = response.data.totalCount
       })
+      getFloorList(1000).then(response => {
+        this.FloorData = response.data
+      })
     },
     /**
-       * 改变每页数量
-       * @param size 页大小
-       */
+     * 改变每页数量
+     * @param size 页大小
+     */
     handleSizeChange(size) {
       this.listQuery.pageSize = size
       this.listQuery.pageNum = 1
       this.getList()
     },
     /**
-       * 改变页码
-       * @param page 页号
-       */
+     * 改变页码
+     * @param page 页号
+     */
     handleCurrentChange(page) {
       this.listQuery.pageNum = page
       this.getList()
+    },
+    // 删除与楼层之间的关系
+    removeStoreFloor(index, row) {
+      const storeId = row.id
+      this.$confirm('确定要删除此店铺吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          removeStoreFloor(storeId).then(response => {
+            this.listQuery.pageNum = 1
+            this.getList()
+            this.$message({
+              message: response.data,
+              type: 'success'
+            })
+          })
+        })
+        .catch(() => {})
+    },
+    // 编辑
+    editStoreFloor(index, row) {
+      const data = { name: row.name }
+      console.log(data)
+      getFloorInfo(data).then(response => {
+        this.floorInfo = response.data.floorInfo
+        console.log(response.data.floorInfo)
+        this.dialogTableVisible = true
+      })
     }
   }
 }

@@ -135,6 +135,26 @@ export function getFloorStore(params) {
     params
   })
 }
+export function removeStoreFloor(storeId) {
+  return request({
+    url: '/floor/store/' + storeId,
+    method: 'delete'
+  })
+}
+export function editStoreFloor(params) {
+  return request({
+    url: '/floor/store/add',
+    method: 'post',
+    data: params
+  })
+}
+export function getFloorInfo(params) {
+  return request({
+    url: '/floor/store/name',
+    method: 'get',
+    params
+  })
+}
 // 销售配置
 export function getSaleList(params) {
   return request({

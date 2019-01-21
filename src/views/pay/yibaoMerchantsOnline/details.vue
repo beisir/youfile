@@ -941,7 +941,6 @@ export default {
               uniCreditNo: formData.unifiedCertificateNo
             }
           }
-
           yeepayRegister(data)
             .then(response => {
               const message = response.data.message
