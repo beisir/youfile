@@ -29,11 +29,35 @@ const youlifeRouter = {
       }
     },
     {
-      path: '/youlifeSale/index',
-      component: () => import('@/views/youlifeManage/youlifeSale/index'),
-      name: 'mallSale',
+      path: '/recommendGoods/index',
+      component: () => import('@/views/youlifeManage/recommendGoods/index'),
+      name: 'recommendGoods',
       meta: {
-        title: 'mallSale'
+        title: 'recommendGoods'
+      }
+    },
+    {
+      path: '/choseGoods/index',
+      component: () => import('@/views/youlifeManage/choseGoods/index'),
+      name: 'choseGoods',
+      meta: {
+        title: 'choseGoods'
+      }
+    },
+    {
+      path: '/choseStores/index',
+      component: () => import('@/views/youlifeManage/choseStores/index'),
+      name: 'choseStores',
+      meta: {
+        title: 'choseStores'
+      }
+    },
+    {
+      path: '/hotClasss/index',
+      component: () => import('@/views/youlifeManage/hotClasss/index'),
+      name: 'hotClasss',
+      meta: {
+        title: 'hotClasss'
       }
     }
   ]

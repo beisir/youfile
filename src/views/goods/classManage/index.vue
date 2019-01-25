@@ -119,6 +119,21 @@
         <el-form-item :label-width="formLabelWidth" label="排序" prop="sort">
           <el-input v-model="formData.sort" type="number"/>
         </el-form-item>
+        <div>
+          <el-form-item label="图片" class="cove-img">
+            <el-upload
+              :on-remove="handleRemove"
+              :limit="1"
+              :class="{disabled:logoUrlListShow}"
+              :file-list="logoList"
+              :on-success="handleSuccess"
+              :action="uploadImgUrl+'/base/image?type=OTHER'"
+              list-type="picture-card"
+            >
+              <i class="el-icon-plus avatar-uploader-icon"/>
+            </el-upload>
+          </el-form-item>
+        </div>
       </el-form>
       <el-row class="submit-btn">
         <el-button type="primary" @click="addClass">确 定</el-button>
@@ -139,13 +154,17 @@ export default {
   data() {
     return {
       title: '添加分类',
+      uploadImgUrl: process.env.IMAGE_UPLOAD_API,
+      logoUrlListShow: false,
       addClassData: false,
       className: '',
+      logoUrl: '',
       sort: '0',
       dialogShow: false,
       formLabelWidth: '130px',
       listLoading: false,
       parentCategoryCode: 0,
+      logoList: [],
       tableData: [],
       subGoodsCategoryList: [],
       oneClass: true,
@@ -185,6 +204,15 @@ export default {
   methods: {
     unix2CurrentTime,
     handleNodeClick(data) {},
+    handleRemove(file, fileList) {
+      this.formData.logo = ''
+      this.logoUrlListShow = false
+    },
+    handleSuccess(response) {
+      const logoUrl = response.obj
+      this.logoUrlListShow = true
+      this.formData.imgUrl = logoUrl
+    },
     /**
      * 获取列表
      */
@@ -222,6 +250,12 @@ export default {
         this.formData = response.data
         this.nameInit = response.data.name
         this.dialogShow = true
+        const fileList = []
+        if (response.data.imageUrl) {
+          fileList.push({ url: this.imageUrl + response.data.imageUrl })
+          this.logoList = fileList
+          this.logoUrlListShow = true
+        }
         if (parentCategoryCode === '0') {
           this.oneClass = false
           this.twoClass = false

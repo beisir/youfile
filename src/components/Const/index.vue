@@ -1,6 +1,7 @@
 <script type="text/javascript">
 let imageUrl = ''
 let privateImageUrl = ''
+const owner = 10000
 if (process.env.NODE_ENV === 'production') {
   imageUrl = 'https://image.youlife.me/'
   privateImageUrl = 'https://image-safe.youlife.me/'
@@ -10,6 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 export default {
   imageUrl,
-  privateImageUrl
+  privateImageUrl,
+  owner
 }
 </script>

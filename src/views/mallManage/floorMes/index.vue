@@ -171,7 +171,7 @@
       </el-form>
       <el-row class="submit-btn">
         <el-button type="primary" @click="bindStore">确 定</el-button>
-        <el-button type="primary" @click="editStoreFloor">编辑楼层</el-button>
+        <el-button type="primary" @click="editStoreFloor">保存</el-button>
       </el-row>
     </el-dialog>
   </div>

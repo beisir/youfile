@@ -1,32 +1,5 @@
 import request from '@/utils/request'
 
-export function getList(params) {
-  return request({
-    url: '/mall/list',
-    method: 'get',
-    data: params
-  })
-}
-export function getMallMes(mallCode) {
-  return request({
-    url: '/mall/info/' + mallCode,
-    method: 'get'
-  })
-}
-export function updateMall(params) {
-  return request({
-    url: '/mall',
-    method: 'put',
-    data: params
-  })
-}
-export function addMall(params) {
-  return request({
-    url: '/mall',
-    method: 'post',
-    data: params
-  })
-}
 // banner
 export function getBannerList(params) {
   return request({
@@ -64,33 +37,33 @@ export function addBanner(params) {
 // 活动
 export function getActiveList(params) {
   return request({
-    url: '/activity/list',
+    url: '/youlife/activity/list',
     method: 'get',
     params
   })
 }
 export function getActiveMes(id) {
   return request({
-    url: '/activity/info/' + id,
+    url: '/youlife/activity/info/' + id,
     method: 'get'
   })
 }
 export function updateActive(params) {
   return request({
-    url: '/activity',
+    url: '/youlife/activity',
     method: 'put',
     data: params
   })
 }
 export function removeActive(id) {
   return request({
-    url: '/activity/' + id,
+    url: '/youlife/activity/' + id,
     method: 'delete'
   })
 }
 export function addActive(params) {
   return request({
-    url: '/activity',
+    url: '/youlife/activity',
     method: 'post',
     data: params
   })
@@ -155,37 +128,60 @@ export function getFloorInfo(params) {
     params
   })
 }
-// 销售配置
-export function getSaleList(params) {
+// 推荐好物
+export function recommendList(mallCode) {
   return request({
-    url: '/sale/config/list',
-    method: 'get',
-    params
-  })
-}
-export function deleteSale(id) {
-  return request({
-    url: '/sale/config/' + id,
-    method: 'delete'
-  })
-}
-export function getSaleDetails(id) {
-  return request({
-    url: '/sale/config/info/' + id,
+    url: '/youlife/config/info/' + mallCode + '/recommend/good/things',
     method: 'get'
   })
 }
+// 销售配置
 export function updateSale(params) {
   return request({
-    url: '/sale/config',
+    url: '/youlife/sale/config',
     method: 'put',
     data: params
   })
 }
 export function addSale(params) {
   return request({
-    url: '/sale/config',
+    url: '/youlife/sale/config',
     method: 'post',
     data: params
+  })
+}
+// 销售配置
+export function getSaleList(params) {
+  return request({
+    url: '/youlife/sale/config/list',
+    method: 'get',
+    params
+  })
+}
+export function getSaleDetails(id) {
+  return request({
+    url: '/youlife/sale/config/info/' + id,
+    method: 'get'
+  })
+}
+
+// 分类
+export function hotClassList(mallCode) {
+  return request({
+    url: '/youlife/config/info/' + mallCode + '/hot/category',
+    method: 'get'
+  })
+}
+export function getClassList(parentCategoryCode) {
+  return request({
+    url: '/shop/category/sublist/' + parentCategoryCode,
+    method: 'get'
+  })
+}
+// 精选商品
+export function chosenGoodsList(owner) {
+  return request({
+    url: '/youlife/config/info/' + owner + '/chosen/goods',
+    method: 'get'
   })
 }

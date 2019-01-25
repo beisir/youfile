@@ -25,7 +25,7 @@
       <el-table-column prop="address" label="店铺地址" align="center"/>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="removeStoreFloor(scope.$index, scope.row)">删除</el-button>
+          <el-button size="mini" type="primary" @click="removeStoreFloor(scope.$index, scope.row)">解除绑定</el-button>
         </template>
       </el-table-column>
     </el-table>

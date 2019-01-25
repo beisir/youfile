@@ -118,7 +118,7 @@ import {
   updateSale,
   addSale,
   deleteSale
-} from '@/api/mall'
+} from '@/api/youlife'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
@@ -254,7 +254,7 @@ export default {
 </script>
 <style>
 .el-text .el-textarea__inner{
-  width: 400px;min-height: 100px !important;
+  width: 400px;min-height: 300px !important;
 }
 </style>
 

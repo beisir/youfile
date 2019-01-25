@@ -11,7 +11,6 @@
       style="width: 100%"
     >
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="mallCode" label="商贸云编码" align="center"/>
       <el-table-column prop="imageUrl" label="活动图" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.imageUrl" width="40" height="40" class="head_pic">
@@ -60,9 +59,6 @@
         :rules="rules"
         :ref="formData"
       >
-        <el-form-item :label-width="formLabelWidth" label="商贸云编码">
-          <el-input v-model="mallCode" disabled="disabled"/>
-        </el-form-item>
         <div>
           <el-form-item label="活动图" class="cove-img" prop="imageUrl">
             <el-upload
@@ -105,7 +101,7 @@ import {
   updateActive,
   addActive,
   removeActive
-} from '@/api/mall'
+} from '@/api/youlife'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
@@ -154,8 +150,6 @@ export default {
      */
     getList() {
       this.listLoading = true
-      this.mallCode = this.$route.query.mallCode
-      this.listQuery.mallCode = this.$route.query.mallCode
       getActiveList(this.listQuery).then(response => {
         this.tableData = response.data.result
         this.total = response.data.totalCount
@@ -219,7 +213,6 @@ export default {
     },
     editMallMes() {
       const formData = this.formData
-      formData.mallCode = this.mallCode
       this.$refs[formData].validate(valid => {
         if (valid) {
           if (formData.click === '0') {
