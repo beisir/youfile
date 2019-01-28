@@ -1113,7 +1113,6 @@ export default {
     handleSucceshandBankCardUrl(response) {
       const imgUrl = response.obj
       this.handBankCardUrlListShow = true
-      console.log(imgUrl)
       this.merchantVOData.handBankCardUrl = imgUrl
     },
     getImageUrl(filePath, name) {

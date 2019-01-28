@@ -126,6 +126,7 @@
               placeholder="请选择"
               @change="changeOneClass($event)"
             >
+              <el-option label="暂无选择" value="0">暂无选择</el-option>
               <el-option
                 v-for="item in tableData"
                 :label="item.name"
@@ -141,9 +142,10 @@
               placeholder="请选择"
               @change="changeTwoClass($event)"
             >
+              <el-option label="暂无选择" value="0">暂无选择</el-option>
               <el-option
                 v-for="item in childList"
-                :label="item.name"
+                :label="item.floorNum"
                 :value="item.code"
                 :key="item.id"
               />
@@ -156,6 +158,7 @@
               placeholder="请选择"
               @change="changeFloorArea($event)"
             >
+              <el-option label="暂无选择" value="0">暂无选择</el-option>
               <el-option
                 v-for="item in childAreaList"
                 :label="item.name"
@@ -171,7 +174,7 @@
       </el-form>
       <el-row class="submit-btn">
         <el-button type="primary" @click="bindStore">确 定</el-button>
-        <el-button type="primary" @click="editStoreFloor">保存</el-button>
+        <el-button v-if="bindStoreShow" type="primary" @click="editStoreFloor">保存</el-button>
       </el-row>
     </el-dialog>
   </div>
@@ -193,6 +196,7 @@ export default {
       imageUrl: this.Const.imageUrl,
       mallCode: '',
       title: '添加楼层',
+      bindStoreShow: false,
       addClassData: false,
       className: '',
       sort: '0',
@@ -285,19 +289,28 @@ export default {
     // 绑定店铺
     onBindFloor() {
       this.storeNameShow = true
+      this.storeInfoShow = false
+      this.bindStoreShow = false
     },
     bindStore() {
       const storeName = this.storeName
+      this.bindStoreShow = true
       if (storeName) {
         const data = { name: storeName }
         getFloorInfo(data).then(response => {
-          this.floorInfo = response.data.floorInfo
           const floorInfo = response.data.floorInfo
           this.storeInfo = response.data.store
           this.storeInfoShow = true
           if (floorInfo) {
+            this.floorInfo = response.data.floorInfo
             const eventCode = floorInfo.balconyCode
             this.changeFloor(eventCode)
+          } else {
+            this.floorInfo = {
+              balconyCode: '0',
+              floorCode: '0',
+              floorAreaCode: '0'
+            }
           }
         })
       } else {
