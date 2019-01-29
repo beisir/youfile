@@ -1,6 +1,6 @@
 <template>
   <div class="body-cont">
-    <el-button size="small" class="addTal" type="primary" @click="addTab(editableTabsValue2)">添加好物</el-button>
+    <el-button size="small" class="addTal" type="primary" @click="addTab(editableTabsValue2)">添加精选商品</el-button>
     <el-tabs
       v-model="editableTabsValue2"
       type="border-card"
@@ -21,21 +21,6 @@
           <el-form-item label="描述">
             <el-input v-model="item.desc"/>
           </el-form-item>
-          <!-- <div>
-          <el-form-item class="cove-img" label="主 图：">
-            <el-upload
-              :on-remove="handleRemove"
-              :limit="1"
-              :class="{disabled:logoUrlListShow}"
-              :file-list="logoList"
-              :on-success="handleSuccess"
-              :action="uploadImgUrl+'/base/image?type=OTHER'"
-              list-type="picture-card"
-            >
-              <i class="el-icon-plus avatar-uploader-icon"/>
-            </el-upload>
-          </el-form-item>
-          </div>-->
         </el-form>
         <el-table
           v-loading.body="listLoading"
@@ -150,15 +135,13 @@ export default {
     return {
       owner: this.Const.owner,
       imageUrl: this.Const.imageUrl,
-      uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       tableData2: [],
-      logoList: [],
       fName: '',
       fDesc: '',
       isAddShow: false,
       editableTabsValue2: '0',
       tabIndex: 1,
-      tabChangeIndex: '',
+      tabChangeIndex: '0',
       logoUrlListShow: false,
       listQuery: {
         status: 1,
@@ -176,7 +159,6 @@ export default {
       tableData: [],
       formData: {},
       dataData: {},
-      showData: [],
       selectData: [],
       addIndex: ''
     }
@@ -198,7 +180,6 @@ export default {
       this.listLoading = true
       chosenGoodsList(this.owner).then(response => {
         var datas = response.data
-        this.showData = datas.show
         this.dataData = datas.data
         this.tableData = datas.show
         this.editableTabsValue2 = datas.show[0].name
@@ -250,7 +231,6 @@ export default {
     // 点击tab
     clickTab(tab, event) {
       this.tabChangeIndex = tab.index
-      console.log(tab.index)
       // console.log(event)
     },
     // 编辑信息
@@ -258,23 +238,12 @@ export default {
       this.dialogShow = true
       this.getGoodsList()
     },
-    handleRemove(file, fileList) {
-      this.logoUrlListShow = false
-    },
     // 添加
     addData(index, row) {
       this.isAddShow = false
       this.dialogShow = true
       this.getGoodsList()
       this.addIndex = index
-    },
-    // 上传图片成功
-    handleSuccess(response) {
-      const logoUrl = response.obj
-      this.logoUrlListShow = true
-      var showData = this.showData
-      showData[0].imageUrl = logoUrl
-      this.showData = showData
     },
     // 操作复选框
     handleSelectionChange(val) {
@@ -299,10 +268,13 @@ export default {
     editgoodsMes() {
       const tabChangeIndex = this.tabChangeIndex
       const selectData = this.selectData
+      const addIndex = this.addIndex + 1
       const tableData = this.tableData
       const goodsList = tableData[tabChangeIndex].goodsList
-      const goodsConcatList = goodsList.concat(selectData)
-      tableData[tabChangeIndex].goodsList = goodsConcatList
+      for (var i = 0; i < selectData.length; i++) {
+        goodsList.splice(addIndex + i, 0, selectData[i])
+      }
+      tableData[tabChangeIndex].goodsList = goodsList
       this.tableData = tableData
       this.dialogShow = false
     },
@@ -345,13 +317,6 @@ export default {
     handleCurrentChange(page) {
       this.listQuery.pageNum = page
       this.getGoodsList()
-    },
-    addSubmit() {
-      this.dialogShow = true
-      this.logoUrlListShow = false
-      this.initData()
-      this.logoList = []
-      this.title = '添加配置'
     }
   }
 }

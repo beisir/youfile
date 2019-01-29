@@ -185,3 +185,10 @@ export function chosenGoodsList(owner) {
     method: 'get'
   })
 }
+// 精选店铺
+export function chosenStoreList(owner) {
+  return request({
+    url: '/youlife/config/info/' + owner + '/chosen/store',
+    method: 'get'
+  })
+}

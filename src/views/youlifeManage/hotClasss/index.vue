@@ -11,13 +11,13 @@
       style="width: 100%;margin-top:30px"
     >
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="name" width="350" label="商品名称" align="center"/>
+      <el-table-column prop="name" width="270" label="分类名称" align="center"/>
       <el-table-column prop="imageUrl" label="主图" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.imageUrl" width="40" height="40" class="head_pic">
         </template>
       </el-table-column>
-      <el-table-column prop="categoryCode" width="120" label="分类编码" align="center"/>
+      <el-table-column prop="categoryCode" label="分类编码" align="center"/>
       <el-table-column prop="onlinePay" label="操作" fixed="right" width="200" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="editData(scope.$index, scope.row )">编辑</el-button>

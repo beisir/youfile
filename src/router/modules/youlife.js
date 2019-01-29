@@ -13,19 +13,19 @@ const youlifeRouter = {
   },
   children: [
     {
+      path: '/youlifeSale/index',
+      component: () => import('@/views/youlifeManage/youlifeSale/index'),
+      name: 'mallSale',
+      meta: {
+        title: 'mallSale'
+      }
+    },
+    {
       path: '/youlifeBanner/index',
       component: () => import('@/views/youlifeManage/youlifeBanner/index'),
       name: 'mallBanner',
       meta: {
         title: 'mallBanner'
-      }
-    },
-    {
-      path: '/youlifeActive/index',
-      component: () => import('@/views/youlifeManage/youlifeActive/index'),
-      name: 'mallActive',
-      meta: {
-        title: 'mallActive'
       }
     },
     {

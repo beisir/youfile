@@ -1,132 +1,151 @@
 <template>
   <div class="body-cont">
-    <el-form :inline="true" class="demo-form-inline border-form">
+    <el-button size="small" class="addTal" type="primary" @click="addTab(editableTabsValue2)">添加精选店铺</el-button>
+    <el-tabs
+      v-model="editableTabsValue2"
+      type="border-card"
+      closable
+      @tab-click="clickTab"
+      @tab-remove="removeTab"
+    >
+      <el-tab-pane
+        v-for="(item) in tableData"
+        :key="item.name"
+        :label="item.name"
+        :name="item.name"
+      >
+        <el-form :inline="true" class="demo-form-inline">
+          <el-form-item label="名称">
+            <el-input v-model="item.name"/>
+          </el-form-item>
+          <el-form-item label="描述">
+            <el-input v-model="item.desc"/>
+          </el-form-item>
+        </el-form>
+        <el-table
+          v-loading.body="listLoading"
+          :data="item.storeGoodsList"
+          highlight-current-row
+          border
+          style="width: 100%;"
+        >
+          <el-table-column type="index" width="50" label="序号" align="center"/>
+          <el-table-column prop="store" label="店铺名称" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.store.name }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="store" label="店铺logo" align="center">
+            <template slot-scope="scope">
+              <img :src="imageUrl+scope.row.store.logo" width="40" height="40" class="head_pic">
+            </template>
+          </el-table-column>
+          <el-table-column prop="store" label="店铺性质" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.store.storeNature=='2'" style="color: #E6A23C">零售店</span>
+              <span v-if="scope.row.store.storeNature=='1'" style="color: #67C23A">批零店</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="store" label="经营范围" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.store.businessScope }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="onlinePay" fixed="right" label="操作" width="200" align="center">
+            <template slot-scope="scope">
+              <el-button size="mini" type="primary" @click="removeData(scope.$index, scope.row )">删除</el-button>
+              <el-button size="mini" type="warning" @click="addData(scope.$index, scope.row )">添加</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
+    <el-row class="submit-btn">
+      <el-button type="primary" @click="editMes()">确定修改</el-button>
+    </el-row>
+    <el-dialog :visible.sync="dialogShow" class="el-dialog1" title="添加好物">
+      <el-form v-if="isAddShow" :inline="true" class="demo-form-inline">
+        <el-form-item label="名称">
+          <el-input v-model="fName"/>
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model="fDesc"/>
+        </el-form-item>
+      </el-form>
       <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
-        <el-form-item label="属性名称">
-          <el-input v-model="formInline.attrName" placeholder="属性名称"/>
-        </el-form-item>
-        <el-form-item label="配置所有者">
-          <el-input v-model="formInline.owner" placeholder="配置所有者"/>
-        </el-form-item>
-        <el-form-item label="配置所有者类型">
-          <el-select v-model="formInline.ownerType" placeholder="请选择">
-            <el-option label="全部" value>全部</el-option>
-            <el-option label="店铺" value="STORE">店铺</el-option>
-            <el-option label="商户" value="MERCHANT">商户</el-option>
-            <el-option label="用户" value="USER">用户</el-option>
-            <el-option label="商品" value="GOODS">商品</el-option>
-            <el-option label="商贸云" value="MALL">商贸云</el-option>
-          </el-select>
+        <el-form-item label="商品名称">
+          <el-input v-model="formInline.name" placeholder="请输入商品名称"/>
         </el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
-        <el-button type="warning" @click="addSubmit">添加销售配置</el-button>
       </el-form>
-    </el-form>
-    <el-table
-      v-loading.body="listLoading"
-      :data="tableData"
-      highlight-current-row
-      border
-      style="width: 100%"
-    >
-      <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="attrName" width="150" label="属性名称" align="center"/>
-      <el-table-column prop="attrValue" width="350" label="属性值" align="center">
-        <template slot-scope="scope">
-          <json-viewer :value="scope.row.attrValue"/>
-        </template>
-      </el-table-column>
-      <el-table-column prop="attrValueType" width="180" label="属性值类型" align="center"/>
-      <el-table-column prop="attrDesc" width="150" label="属性描述" align="center"/>
-      <el-table-column prop="owner" width="150" label="配置所有者" align="center"/>
-      <el-table-column prop="ownerType" width="150" label="配置所有者类型" align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.ownerType=='STORE'">店铺</span>
-          <span v-if="scope.row.ownerType=='MERCHANT'">商户</span>
-          <span v-if="scope.row.ownerType=='USER'">用户</span>
-          <span v-if="scope.row.ownerType=='GOODS'">商品</span>
-          <span v-if="scope.row.ownerType=='MALL'">商贸云</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="createDate" width="170" label="创建时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.createDate) }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="updateDate" width="170" label="更新时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.updateDate) }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="onlinePay" label="操作" fixed="right" width="200" align="center">
-        <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="getSaleDetails(scope.$index, scope.row )">编辑</el-button>
-          <el-button size="mini" type="danger" @click="deleteSale(scope.$index, scope.row )">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      :current-page="listQuery.page"
-      :page-size="listQuery.size"
-      :total="total"
-      :page-sizes="[10, 30, 50, 100]"
-      background
-      layout="total, sizes, prev, pager, next, jumper"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
-    <el-dialog :visible.sync="dialogShow" :title="title">
-      <el-form :inline="true" :label-width="formLabelWidth" :model="formData">
-        <el-form-item :label-width="formLabelWidth" label="属性名称">
-          <el-input v-model="formData.attrName"/>
-        </el-form-item>
-        <div>
-          <el-form-item :label-width="formLabelWidth" class="el-text" label="属性值">
-            <el-input v-model="formData.attrValue" type="textarea"/>
-          </el-form-item>
-        </div>
-        <el-form-item :label-width="formLabelWidth" label="属性值类型">
-          <el-input v-model="formData.attrValueType"/>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="属性描述">
-          <el-input v-model="formData.attrDesc"/>
-        </el-form-item>
-        <el-form-item label="配置所有者">
-          <el-input v-model="formData.owner" placeholder="配置所有者"/>
-        </el-form-item>
-        <el-form-item label="配置所有者类型">
-          <el-select v-model="formData.ownerType" placeholder="请选择">
-            <el-option label="全部" value>全部</el-option>
-            <el-option label="店铺" value="STORE">店铺</el-option>
-            <el-option label="商户" value="MERCHANT">商户</el-option>
-            <el-option label="用户" value="USER">用户</el-option>
-            <el-option label="商品" value="GOODS">商品</el-option>
-            <el-option label="商贸云" value="MALL">商贸云</el-option>
-          </el-select>
-        </el-form-item>
-        <el-row class="submit-btn">
-          <el-button type="primary" @click="editMes()">确定</el-button>
-        </el-row>
-      </el-form>
+      <el-table
+        ref="multipleTable"
+        :data="tableData2"
+        highlight-current-row
+        border
+        tooltip-effect="dark"
+        style="width: 100%;"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55"/>
+        <el-table-column type="index" width="50" label="序号" align="center"/>
+        <el-table-column prop="name" label="店铺名称" width="100" align="center"/>
+        <el-table-column prop="phone" label="手机号" width="100" align="center"/>
+        <el-table-column prop="logo" label="店铺logo" width="100" align="center">
+          <template slot-scope="scope">
+            <img :src="imageUrl+scope.row.logo" width="40" height="40" class="head_pic">
+          </template>
+        </el-table-column>
+        <el-table-column prop="storeNature" label="店铺性质" width="100" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.storeNature==&quot;1&quot;">新批零</span>
+            <span v-if="scope.row.storeNature==&quot;2&quot;">新零售</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="businessScope" label="经营范围" width="150" align="center"/>
+        <el-table-column prop="address" label="店铺地址" width="300" align="center"/>
+      </el-table>
+      <el-pagination
+        :current-page="listQuery.page"
+        :page-size="listQuery.size"
+        :total="total"
+        :page-sizes="[10, 30, 50, 100]"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+      <el-row class="submit-btn">
+        <el-button v-if="isAddShow" type="primary" @click="addgoodsMes()">确定添加</el-button>
+        <el-button v-if="!isAddShow" type="primary" @click="editgoodsMes()">确定</el-button>
+      </el-row>
     </el-dialog>
   </div>
 </template>
 <script>
-import {
-  getSaleList,
-  getSaleDetails,
-  updateSale,
-  addSale,
-  deleteSale
-} from '@/api/youlife'
+import { chosenStoreList, updateSale } from '@/api/youlife'
 import { unix2CurrentTime } from '@/utils'
+import { getList } from '@/api/store'
 export default {
   data() {
     return {
+      owner: this.Const.owner,
+      imageUrl: this.Const.imageUrl,
+      tableData2: [],
+      fName: '',
+      fDesc: '',
+      isAddShow: false,
+      editableTabsValue2: '0',
+      tabIndex: 1,
+      tabChangeIndex: '0',
+      logoUrlListShow: false,
+      listQuery: {
+        status: 1,
+        pageNum: 1, // 页码
+        pageSize: 10 // 每页数量
+      },
       formInline: {
-        owner: '',
-        ownerType: '',
-        attrName: ''
+        name: ''
       },
       title: '',
       formLabelWidth: '130px',
@@ -135,10 +154,9 @@ export default {
       total: 0,
       tableData: [],
       formData: {},
-      listQuery: {
-        pageNum: 1, // 页码
-        pageSize: 10 // 每页数量
-      }
+      dataData: {},
+      selectData: [],
+      addIndex: ''
     }
   },
   created() {
@@ -149,81 +167,135 @@ export default {
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1
-      this.getList()
+      this.getGoodsList()
     },
     /**
      * 获取列表
      */
     getList() {
       this.listLoading = true
-      getSaleList(this.listQuery).then(response => {
-        this.tableData = response.data.result
-        this.total = response.data.totalCount
+      chosenStoreList(this.owner).then(response => {
+        var datas = response.data
+        this.dataData = datas.data
+        this.tableData = datas.show
+        this.editableTabsValue2 = datas.show[0].name
         this.listLoading = false
       })
     },
-    initData() {
-      this.formData = {
-        attrName: '',
-        attrValue: '',
-        attrValueType: '',
-        attrDesc: '',
-        owner: '',
-        ownerType: ''
-      }
-    },
-    // 删除
-    deleteSale(index, row) {
-      const code = row.id
-      this.$confirm('确定要删除此配置吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+    // 获取商品列表
+    getGoodsList() {
+      getList(this.listQuery).then(response => {
+        this.total = response.data.totalCount
+        this.tableData2 = response.data.result
+        this.listLoading = false
       })
-        .then(() => {
-          deleteSale(code).then(response => {
-            this.getList()
-            this.$message({
-              message: response.data,
-              type: 'success'
-            })
-          })
+    },
+    // 添加tab 好物
+    addTab(targetName) {
+      this.isAddShow = true
+      this.dialogShow = true
+      this.getGoodsList()
+    },
+    addgoodsMes() {
+      const selectData = this.selectData
+      const tableData = this.tableData
+      tableData.push({
+        name: this.fName,
+        desc: this.fDesc,
+        goodsList: selectData
+      })
+      this.tableData = tableData
+      this.dialogShow = false
+    },
+    // 删除tab
+    removeTab(targetName) {
+      const tabs = this.tableData
+      let activeName = this.editableTabsValue2
+      if (activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            const nextTab = tabs[index + 1] || tabs[index - 1]
+            if (nextTab) {
+              activeName = nextTab.name
+            }
+          }
         })
-        .catch(() => {})
+      }
+      this.editableTabsValue2 = activeName
+      this.tableData = tabs.filter(tab => tab.name !== targetName)
+    },
+    // 点击tab
+    clickTab(tab, event) {
+      this.tabChangeIndex = tab.index
+      // console.log(event)
     },
     // 编辑信息
-    getSaleDetails(index, row) {
-      const code = row.id
+    editData(index, row) {
       this.dialogShow = true
-      this.showCode = true
-      this.initData()
-      this.title = '编辑配置信息'
-      getSaleDetails(code).then(response => {
-        const formData = response.data[0]
-        this.formData = formData
-      })
+      this.getGoodsList()
     },
-    editMes() {
-      const formData = this.formData
-      if (this.title === '添加配置') {
-        addSale(formData).then(response => {
-          this.dialogShow = false
-          this.getList()
-          this.$message({
-            message: response.data,
-            type: 'success'
-          })
-        })
-      } else {
-        updateSale(formData).then(response => {
-          this.dialogShow = false
-          this.getList()
-          this.$message({
-            message: response.data,
-            type: 'success'
-          })
-        })
+    // 添加
+    addData(index, row) {
+      this.isAddShow = false
+      this.dialogShow = true
+      this.getGoodsList()
+      this.addIndex = index
+    },
+    // 操作复选框
+    handleSelectionChange(val) {
+      this.selectData = val
+    },
+    // 删除
+    removeData(index, row) {
+      const tabChangeIndex = this.tabChangeIndex
+      const tableData = this.tableData
+      const goodsData = tableData[tabChangeIndex].goodsList
+      const goodsId = tableData[tabChangeIndex].goodsList[index].id
+      const goodsIds = tableData[tabChangeIndex].goodsIds
+      if (goodsIds.indexOf(goodsId) >= 0) {
+        goodsIds.splice(goodsIds.indexOf(goodsId), 1)
       }
+      goodsData.splice(index, 1)
+      tableData[tabChangeIndex].goodsIds = goodsIds
+      tableData[tabChangeIndex].goodsList = goodsData
+      this.tableData = tableData
+    },
+    // 确定添加商品
+    editgoodsMes() {
+      const tabChangeIndex = this.tabChangeIndex
+      const selectData = this.selectData
+      const addIndex = this.addIndex + 1
+      const tableData = this.tableData
+      const goodsList = tableData[tabChangeIndex].goodsList
+      for (var i = 0; i < selectData.length; i++) {
+        goodsList.splice(addIndex + i, 0, selectData[i])
+      }
+      tableData[tabChangeIndex].goodsList = goodsList
+      this.tableData = tableData
+      this.dialogShow = false
+    },
+    // 编辑
+    editMes() {
+      var data = this.dataData
+      var tableData = this.tableData
+      for (var i = 0; i < tableData.length; i++) {
+        var goodsListData = tableData[i].goodsList
+        var goodsIds = []
+        for (var j = 0; j < goodsListData.length; j++) {
+          goodsIds.push(goodsListData[j].id)
+        }
+        tableData[i].goodsIds = goodsIds
+        delete tableData[i].goodsList
+      }
+      data.attrValue = JSON.stringify(tableData)
+      updateSale(data).then(response => {
+        this.$message({
+          type: 'success',
+          message: response.data
+        })
+        this.dialogShow = false
+        this.getList()
+      })
     },
     /**
      * 改变每页数量
@@ -232,7 +304,7 @@ export default {
     handleSizeChange(size) {
       this.listQuery.pageSize = size
       this.listQuery.pageNum = 1
-      this.getList()
+      this.getGoodsList()
     },
     /**
      * 改变页码
@@ -240,21 +312,22 @@ export default {
      */
     handleCurrentChange(page) {
       this.listQuery.pageNum = page
-      this.getList()
-    },
-    addSubmit() {
-      this.dialogShow = true
-      this.logoUrlListShow = false
-      this.initData()
-      this.logoList = []
-      this.title = '添加配置'
+      this.getGoodsList()
     }
   }
 }
 </script>
 <style>
-.el-text .el-textarea__inner{
-  width: 400px;min-height: 300px !important;
+.el-text .el-textarea__inner {
+  width: 400px;
+  min-height: 100px !important;
+}
+.el-dialog1 .el-dialog {
+  width: 80%;
+  margin-top: 10vh !important;
+}
+.addTal {
+  margin: 20px 0;
 }
 </style>
 

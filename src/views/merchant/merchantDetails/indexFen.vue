@@ -1201,6 +1201,7 @@ export default {
         }
         if (response.data.merchantQualificationVO) {
           obj = Object.assign(response.data.merchantQualificationVO, obj)
+          console.log(response.data.merchantQualificationVO.id)
           this.merchantQualificationVOId =
             response.data.merchantQualificationVO.id
           const imgUrl =
@@ -1288,6 +1289,7 @@ export default {
     },
     eidthData() {
       const formData1 = this.merchantVOData
+      console.log(this.merchantQualificationVOId)
       this.$refs[formData1].validate(valid => {
         if (valid) {
           this.listLoading = true
