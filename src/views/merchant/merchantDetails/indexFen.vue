@@ -1191,6 +1191,7 @@ export default {
     getParams() {
       const routerParams = this.$route.query.merchantNo
       getMerchantRetail(routerParams).then(response => {
+        console.log(response)
         let obj = {}
         this.merchantRetailId = response.data.merchantVO.id
         obj = Object.assign(response.data.merchantVO, obj)
