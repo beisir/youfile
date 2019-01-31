@@ -85,25 +85,25 @@
         border
         tooltip-effect="dark"
         style="width: 100%;"
+        max-height="500"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55"/>
         <el-table-column type="index" width="50" label="序号" align="center"/>
-        <el-table-column prop="name" label="店铺名称" width="100" align="center"/>
-        <el-table-column prop="phone" label="手机号" width="100" align="center"/>
-        <el-table-column prop="logo" label="店铺logo" width="100" align="center">
+        <el-table-column prop="name" label="店铺名称" align="center"/>
+        <el-table-column prop="phone" label="手机号" align="center"/>
+        <el-table-column prop="logo" label="店铺logo" align="center">
           <template slot-scope="scope">
             <img :src="imageUrl+scope.row.logo" width="40" height="40" class="head_pic">
           </template>
         </el-table-column>
-        <el-table-column prop="storeNature" label="店铺性质" width="100" align="center">
+        <el-table-column prop="storeNature" label="店铺性质" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.storeNature==&quot;1&quot;">新批零</span>
             <span v-if="scope.row.storeNature==&quot;2&quot;">新零售</span>
           </template>
         </el-table-column>
-        <el-table-column prop="businessScope" label="经营范围" width="150" align="center"/>
-        <el-table-column prop="address" label="店铺地址" width="300" align="center"/>
+        <el-table-column prop="businessScope" label="经营范围" align="center"/>
       </el-table>
       <el-pagination
         :current-page="listQuery.page"
@@ -178,6 +178,7 @@ export default {
         var datas = response.data
         this.dataData = datas.data
         this.tableData = datas.show
+        console.log(datas.show)
         this.editableTabsValue2 = datas.show[0].name
         this.listLoading = false
       })
@@ -202,7 +203,7 @@ export default {
       tableData.push({
         name: this.fName,
         desc: this.fDesc,
-        goodsList: selectData
+        storeGoodsList: selectData
       })
       this.tableData = tableData
       this.dialogShow = false
@@ -249,15 +250,9 @@ export default {
     removeData(index, row) {
       const tabChangeIndex = this.tabChangeIndex
       const tableData = this.tableData
-      const goodsData = tableData[tabChangeIndex].goodsList
-      const goodsId = tableData[tabChangeIndex].goodsList[index].id
-      const goodsIds = tableData[tabChangeIndex].goodsIds
-      if (goodsIds.indexOf(goodsId) >= 0) {
-        goodsIds.splice(goodsIds.indexOf(goodsId), 1)
-      }
+      const goodsData = tableData[tabChangeIndex].storeGoodsList
       goodsData.splice(index, 1)
-      tableData[tabChangeIndex].goodsIds = goodsIds
-      tableData[tabChangeIndex].goodsList = goodsData
+      tableData[tabChangeIndex].storeGoodsList = goodsData
       this.tableData = tableData
     },
     // 确定添加商品
@@ -266,11 +261,11 @@ export default {
       const selectData = this.selectData
       const addIndex = this.addIndex + 1
       const tableData = this.tableData
-      const goodsList = tableData[tabChangeIndex].goodsList
+      const storeGoodsList = tableData[tabChangeIndex].storeGoodsList
       for (var i = 0; i < selectData.length; i++) {
-        goodsList.splice(addIndex + i, 0, selectData[i])
+        storeGoodsList.splice(addIndex + i, 0, { store: selectData[i] })
       }
-      tableData[tabChangeIndex].goodsList = goodsList
+      tableData[tabChangeIndex].storeGoodsList = storeGoodsList
       this.tableData = tableData
       this.dialogShow = false
     },
@@ -279,13 +274,13 @@ export default {
       var data = this.dataData
       var tableData = this.tableData
       for (var i = 0; i < tableData.length; i++) {
-        var goodsListData = tableData[i].goodsList
-        var goodsIds = []
-        for (var j = 0; j < goodsListData.length; j++) {
-          goodsIds.push(goodsListData[j].id)
+        var storeGoodsListData = tableData[i].storeGoodsList
+        var storeIds = []
+        for (var j = 0; j < storeGoodsListData.length; j++) {
+          storeIds.push(storeGoodsListData[j].store.id)
         }
-        tableData[i].goodsIds = goodsIds
-        delete tableData[i].goodsList
+        tableData[i].storeIds = storeIds
+        delete tableData[i].storeGoodsList
       }
       data.attrValue = JSON.stringify(tableData)
       updateSale(data).then(response => {
@@ -317,17 +312,3 @@ export default {
   }
 }
 </script>
-<style>
-.el-text .el-textarea__inner {
-  width: 400px;
-  min-height: 100px !important;
-}
-.el-dialog1 .el-dialog {
-  width: 80%;
-  margin-top: 10vh !important;
-}
-.addTal {
-  margin: 20px 0;
-}
-</style>
-

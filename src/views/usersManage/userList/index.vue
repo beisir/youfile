@@ -19,41 +19,37 @@
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" border style="width: 100%">
+    <el-table v-loading.body="listLoading" :data="tableData" max-height="800" border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="userName" label="用户名称" align="center"/>
-      <el-table-column prop="headPic" label="用户头像" align="center">
+      <el-table-column prop="userName" label="用户名称" width="160" align="center"/>
+      <el-table-column prop="headPic" label="用户头像" width="160" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.headPic" width="40" height="40" class="head_pic">
         </template>
       </el-table-column>
-      <el-table-column prop="mobile" label="手机号" align="center"/>
-      <el-table-column prop="gender" label="性别" align="center">
+      <el-table-column prop="mobile" label="手机号" width="160" align="center"/>
+      <el-table-column prop="gender" label="性别" width="160" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.gender==&quot;0&quot;">未知</span>
           <span v-if="scope.row.gender==&quot;1&quot;">男</span>
           <span v-if="scope.row.gender==&quot;2&quot;">女</span>
         </template>
       </el-table-column>
-      <el-table-column prop="nickName" label="用户昵称" align="center"/>
+      <el-table-column prop="nickName" label="用户昵称" width="160" align="center"/>
       <!-- <el-table-column prop="weixinNumber" label="微信号" align="center"/> -->
-      <el-table-column prop="isDel" label="是否删除" align="center">
+      <el-table-column prop="isDel" label="是否删除" width="160" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.isDel==false">未删除</span>
           <span v-if="scope.row.isDel==true">已删除</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.createTime) }}
-        </template>
+      <el-table-column prop="createTime" label="创建时间" width="180" align="center">
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createTime) }}</template>
       </el-table-column>
-      <el-table-column prop="updateTime" label="更新时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.updateTime) }}
-        </template>
+      <el-table-column prop="updateTime" label="更新时间" width="180" align="center">
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateTime) }}</template>
       </el-table-column>
-      <el-table-column label=" 操作" align="center">
+      <el-table-column label=" 操作" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="getDetails(scope.$index, scope.row )">编辑</el-button>
         </template>

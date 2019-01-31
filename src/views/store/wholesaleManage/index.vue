@@ -26,7 +26,14 @@
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
+    <el-table
+      v-loading.body="listLoading"
+      :data="tableData"
+      highlight-current-row
+      border
+      max-height="800"
+      style="width: 100%"
+    >
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="id" width="120" label="店铺编号" align="center"/>
       <el-table-column prop="merchantNumber" width="120" label="商户编号" align="center"/>
@@ -57,14 +64,10 @@
         </template>
       </el-table-column>
       <el-table-column prop="createDate" label="创建时间" width="180" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.createDate) }}
-        </template>
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createDate) }}</template>
       </el-table-column>
       <el-table-column prop="updateDate" label="更新时间" width="180" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.updateDate) }}
-        </template>
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateDate) }}</template>
       </el-table-column>
       <el-table-column label=" 操作" fixed="right" width="210px" align="center">
         <template slot-scope="scope">
@@ -176,11 +179,7 @@
       </el-form>
     </el-dialog>
     <el-dialog :visible.sync="dialogShowCode" title="编辑收款码">
-      <el-form
-        :inline="true"
-        :label-width="formLabelWidth"
-        class="inline-f"
-      >
+      <el-form :inline="true" :label-width="formLabelWidth" class="inline-f">
         <div>
           <el-form-item label="收款码">
             <el-upload
@@ -464,10 +463,10 @@ export default {
 .inline-f input {
   width: 200px;
 }
-.el-dialog__body{
-  padding-bottom: 0
+.el-dialog__body {
+  padding-bottom: 0;
 }
-.miniClass .el-upload-list--picture-card .el-upload-list__item-actions{
+.miniClass .el-upload-list--picture-card .el-upload-list__item-actions {
   position: relative;
 }
 </style>

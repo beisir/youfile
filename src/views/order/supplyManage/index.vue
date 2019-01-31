@@ -26,7 +26,7 @@
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
+    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row max-height="800" border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="orderNumber" width="180" label="订单编号" align="center"/>
       <el-table-column prop="expressNumber" width="180" label="快递单号" align="center"/>

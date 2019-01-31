@@ -8,6 +8,7 @@
       :data="tableData"
       highlight-current-row
       border
+      max-height="800"
       style="width: 100%"
     >
       <el-table-column type="index" width="50" label="序号" align="center"/>
@@ -26,16 +27,12 @@
       <el-table-column prop="url" label="跳转路径" align="center"/>
       <el-table-column prop="activityDesc" label="描述" align="center"/>
       <el-table-column prop="createDate" label="创建时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.createDate) }}
-        </template>
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createDate) }}</template>
       </el-table-column>
       <el-table-column prop="updateDate" label="更新时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.updateDate) }}
-        </template>
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateDate) }}</template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" fixed="right" width="150" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="editMall(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="warning" @click="removeBanner(scope.$index, scope.row)">删除</el-button>
@@ -80,7 +77,7 @@
         </div>
         <el-form-item label="状态" prop="click">
           <el-select v-model="formData.click" placeholder="是否可点击">
-            <el-option label="全部" value="">全部</el-option>
+            <el-option label="全部" value>全部</el-option>
             <el-option label="不可点击" value="0">不可点击</el-option>
             <el-option label="可点击" value="1">可点击</el-option>
           </el-select>

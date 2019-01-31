@@ -150,5 +150,12 @@ label {
 .cove-img .el-upload-list--picture-card .el-upload-list__item{
   width: 500px;height: auto;line-height: 0
 }
+.el-dialog1 .el-dialog {
+  width: 95%;
+  margin-top: 10vh !important;
+}
+.addTal {
+  margin: 20px 0;
+}
 </style>
 

@@ -34,6 +34,7 @@
       :data="tableData"
       highlight-current-row
       border
+      max-height="800"
       style="width: 100%"
     >
       <el-table-column type="index" width="50" label="序号" align="center"/>

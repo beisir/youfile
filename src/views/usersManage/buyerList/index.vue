@@ -14,32 +14,18 @@
       :data="tableData"
       highlight-current-row
       border
-      style="width: 100%">
-      <el-table-column
-        type="index"
-        width="50"
-        label="序号"
-        align="center"/>
-      <el-table-column
-        prop="nickName"
-        label="昵称"
-        align="center"/>
-      <el-table-column
-        prop="headPic"
-        label="用户头像"
-        align="center">
+      max-height="800"
+      style="width: 100%"
+    >
+      <el-table-column type="index" width="50" label="序号" align="center"/>
+      <el-table-column prop="nickName" label="昵称" align="center"/>
+      <el-table-column prop="headPic" label="用户头像" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.headPic" width="40" height="40" class="head_pic">
         </template>
       </el-table-column>
-      <el-table-column
-        prop="phone"
-        label="手机号"
-        align="center"/>
-      <el-table-column
-        prop="storeName"
-        label="供应商"
-        align="center"/>
+      <el-table-column prop="phone" label="手机号" align="center"/>
+      <el-table-column prop="storeName" label="供应商" align="center"/>
     </el-table>
     <el-pagination
       :current-page="listQuery.page"
@@ -82,8 +68,8 @@ export default {
       this.getList()
     },
     /**
-       * 获取列表
-       */
+     * 获取列表
+     */
     getList() {
       this.listLoading = true
       getPurchaserList(this.listQuery).then(response => {
@@ -93,18 +79,18 @@ export default {
       })
     },
     /**
-       * 改变每页数量
-       * @param size 页大小
-       */
+     * 改变每页数量
+     * @param size 页大小
+     */
     handleSizeChange(size) {
       this.listQuery.pageSize = size
       this.listQuery.pageNum = 1
       this.getList()
     },
     /**
-       * 改变页码
-       * @param page 页号
-       */
+     * 改变页码
+     * @param page 页号
+     */
     handleCurrentChange(page) {
       this.listQuery.pageNum = page
       this.getList()

@@ -321,17 +321,4 @@ export default {
   }
 }
 </script>
-<style>
-.el-text .el-textarea__inner {
-  width: 400px;
-  min-height: 100px !important;
-}
-.el-dialog1 .el-dialog {
-  width: 80%;
-  margin-top: 10vh !important;
-}
-.addTal {
-  margin: 20px 0;
-}
-</style>
 

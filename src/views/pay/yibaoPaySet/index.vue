@@ -17,11 +17,17 @@
           <el-option label="微信小程序支付" value="wx_mini_app_pay">微信小程序支付</el-option>
         </el-select>
       </el-form-item>
-
       <el-button type="primary" @click="onSubmit">查询</el-button>
       <el-button type="primary" @click="addData">添加支付配置</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
+    <el-table
+      v-loading.body="listLoading"
+      :data="tableData"
+      highlight-current-row
+      border
+      max-height="800"
+      style="width: 100%"
+    >
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="platAppId" label="平台定义的app编号" width="180" align="center"/>
       <el-table-column prop="merchantNumber" label="商户编号" width="180" align="center"/>
@@ -72,7 +78,13 @@
       </el-form>
     </el-dialog>
     <el-dialog :visible.sync="dialogTableVisible" title="添加支付配置">
-      <el-form :inline="true" :label-width="formLabelWidth" :model="storeMes" :rules="rules" :ref="storeMes" >
+      <el-form
+        :inline="true"
+        :label-width="formLabelWidth"
+        :model="storeMes"
+        :rules="rules"
+        :ref="storeMes"
+      >
         <el-form-item label="第三方支付的商户编号" prop="thirdMerchantNumber">
           <el-input v-model="storeMes.thirdMerchantNumber" placeholder="请输入第三方支付的商户编号"/>
         </el-form-item>
@@ -83,7 +95,7 @@
             <el-option label="易宝支付" value="yeepay">易宝支付</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="支付方式" prop="payWay" >
+        <el-form-item label="支付方式" prop="payWay">
           <el-select v-model="storeMes.payWay" placeholder="请选择">
             <el-option label="全部" value>全部</el-option>
             <el-option label="微信小程序支付" value="wx_mini_app_pay">微信小程序支付</el-option>
@@ -104,7 +116,6 @@
         <el-form-item :label-width="formLabelWidth" label="小程序密钥" prop="appSecret">
           <el-input v-model="storeMes.appSecret" disabled="disabled"/>
         </el-form-item>
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="addYeepayFunc">确 定</el-button>
@@ -123,7 +134,7 @@
           </el-select>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" prop="payWay" label="支付方式">
-          <el-select v-model="formData.payWay" placeholder="请选择" >
+          <el-select v-model="formData.payWay" placeholder="请选择">
             <el-option label="全部" value>全部</el-option>
             <el-option label="微信小程序支付" value="wx_mini_app_pay">微信小程序支付</el-option>
           </el-select>
@@ -170,7 +181,11 @@ export default {
       merchantData: {},
       rules: {
         thirdMerchantNumber: [
-          { required: true, message: '第三方支付的商户编号不能为空', trigger: 'blur' }
+          {
+            required: true,
+            message: '第三方支付的商户编号不能为空',
+            trigger: 'blur'
+          }
         ],
         merchantNumber: [
           { required: true, message: '商户编号不能为空', trigger: 'blur' }
@@ -179,7 +194,11 @@ export default {
           { required: true, message: '支付通道不能为空', trigger: 'blur' }
         ],
         appId: [
-          { required: true, message: '小程序appId不能为空,请在资质管理补全信息', trigger: 'blur' }
+          {
+            required: true,
+            message: '小程序appId不能为空,请在资质管理补全信息',
+            trigger: 'blur'
+          }
         ],
         payWay: [
           { required: true, message: '支付方式不能为空', trigger: 'blur' }
@@ -188,7 +207,11 @@ export default {
           { required: true, message: '平台内应用编号不能为空', trigger: 'blur' }
         ],
         appSecret: [
-          { required: true, message: '小程序秘钥不能为空,请在资质管理补全信息', trigger: 'blur' }
+          {
+            required: true,
+            message: '小程序秘钥不能为空,请在资质管理补全信息',
+            trigger: 'blur'
+          }
         ],
         appName: [
           { required: true, message: '小程序名称不能为空', trigger: 'blur' }

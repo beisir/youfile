@@ -31,43 +31,40 @@
       :data="tableData"
       highlight-current-row
       border
+      max-height="800"
       style="width: 100%"
     >
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
-      <el-table-column prop="merchantName" label="商户名称" align="center"/>
-      <el-table-column prop="linkman" label="联系人" align="center"/>
-      <el-table-column prop="linkmanPhone" label="联系电话" align="center"/>
-      <el-table-column prop="merchantCharacter" label="商户性质" align="center">
+      <el-table-column prop="merchantNumber" width="160" label="商户编号" align="center"/>
+      <el-table-column prop="merchantName" width="160" label="商户名称" align="center"/>
+      <el-table-column prop="linkman" label="联系人" width="150" align="center"/>
+      <el-table-column prop="linkmanPhone" width="160" label="联系电话" align="center"/>
+      <el-table-column prop="merchantCharacter" width="160" label="商户性质" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantCharacter==&quot;1&quot;">个人</span>
           <span v-if="scope.row.merchantCharacter==&quot;2&quot;">个体</span>
           <span v-if="scope.row.merchantCharacter==&quot;3&quot;">企业</span>
         </template>
       </el-table-column>
-      <el-table-column prop="merchantType" label="商户类型" align="center">
+      <el-table-column prop="merchantType" width="160" label="商户类型" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantType==&quot;1&quot;">批发商</span>
           <span v-if="scope.row.merchantType==&quot;2&quot;">零售商</span>
         </template>
       </el-table-column>
-      <el-table-column prop="isDel" label="是否删除" align="center">
+      <el-table-column prop="isDel" label="是否删除" width="160" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.isDel==false">未删除</span>
           <span v-if="scope.row.isDel==true">已删除</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.createTime) }}
-        </template>
+      <el-table-column prop="createTime" width="180" label="创建时间" align="center">
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createTime) }}</template>
       </el-table-column>
-      <el-table-column prop="updateTime" label="更新时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.updateTime) }}
-        </template>
+      <el-table-column prop="updateTime" width="180" label="更新时间" align="center">
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateTime) }}</template>
       </el-table-column>
-      <el-table-column label=" 操作" align="center">
+      <el-table-column label=" 操作" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="editData(scope.$index, scope.row )">编辑</el-button>
         </template>

@@ -1,6 +1,6 @@
 <template>
   <div style="padding:30px;">
-    <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
+    <el-table v-loading.body="listLoading" :data="tableData" max-height="800" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="paymentNumber" width="150" label="支付流水号" align="center"/>
       <el-table-column prop="orderNumber" width="150" label="订单编号" align="center"/>
