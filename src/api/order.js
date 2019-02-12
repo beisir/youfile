@@ -32,3 +32,9 @@ export function getPayDetails(paymentNumber) {
     method: 'get'
   })
 }
+export function confirmPay(paymentNumber) {
+  return request({
+    url: '/payment/' + paymentNumber + '/paid/confirm',
+    method: 'put'
+  })
+}

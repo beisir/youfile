@@ -57,7 +57,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="hasRefund" width="150" label="是否已退款" align="center"/>
-      <el-table-column label=" 操作" width="150" align="center">
+      <el-table-column label=" 操作" fixed="right" width="150" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -77,25 +77,26 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
-    <!-- <el-dialog :visible.sync="dialogShow" class="el-dialog1" :title="title">
+    <el-dialog :visible.sync="dialogShow" class="el-dialog1" title="支付状态">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="物流方式">
-          <el-select v-model="formInline.logisticsMode" placeholder="请选择">
-            <el-option label="全部" value>全部</el-option>
-            <el-option label="其他" value="0">没有物流</el-option>
-            <el-option label="门店自提" value="1">门店自提</el-option>
-            <el-option label="物流配送" value="2">物流配送</el-option>
+        <el-form-item label="支付状态">
+          <el-select v-model="payStatus" disabled="disabled" placeholder="请选择">
+            <el-option label="已付款" value="paid">已付款</el-option>
+            <el-option label="待付款" value="unpaid">待付款</el-option>
+            <el-option label="已发货/待收货" value="delivered">已发货/待收货</el-option>
+            <el-option label="订单已取消/订单关闭" value="canceled">订单已取消/订单关闭</el-option>
+            <el-option label="已完成" value="finish">已完成</el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <el-row class="submit-btn">
         <el-button type="primary" @click="editMes()">确定</el-button>
       </el-row>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 <script>
-import { getPayList, getPayDetails } from '@/api/order'
+import { getPayList, getPayDetails, confirmPay } from '@/api/order'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
@@ -103,12 +104,15 @@ export default {
       data: '',
       imageUrl: this.Const.imageUrl,
       listLoading: false,
+      paymentNumber: '',
       total: 0,
+      payStatus: '',
       listQuery: {
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
-      tableData: []
+      tableData: [],
+      dialogShow: false
     }
   },
   created() {
@@ -133,8 +137,22 @@ export default {
     // 查看支付状态详情
     getPayDetails(index, row) {
       const paymentNumber = row.paymentNumber
+      this.paymentNumber = paymentNumber
       getPayDetails(paymentNumber).then(response => {
-        console.log(response)
+        this.payStatus = response.data
+        this.dialogShow = true
+      })
+    },
+    // 确定支付
+    editMes() {
+      const paymentNumber = this.paymentNumber
+      confirmPay(paymentNumber).then(response => {
+        this.$message({
+          type: 'success',
+          message: response.msg
+        })
+        this.dialogShow = false
+        this.getList()
       })
     },
     /**
