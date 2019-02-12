@@ -26,3 +26,9 @@ export function getPayList(params) {
     params
   })
 }
+export function getPayDetails(paymentNumber) {
+  return request({
+    url: '/payment/status/' + paymentNumber,
+    method: 'get'
+  })
+}

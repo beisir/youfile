@@ -309,7 +309,10 @@ export default {
             this.floorInfo = {
               balconyCode: '0',
               floorCode: '0',
-              floorAreaCode: '0'
+              floorAreaCode: '0',
+              storeDoorNum: '',
+              mallCode: this.mallCode,
+              storeId: response.data.store.id
             }
           }
         })

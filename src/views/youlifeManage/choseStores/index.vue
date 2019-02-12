@@ -178,7 +178,6 @@ export default {
         var datas = response.data
         this.dataData = datas.data
         this.tableData = datas.show
-        console.log(datas.show)
         this.editableTabsValue2 = datas.show[0].name
         this.listLoading = false
       })

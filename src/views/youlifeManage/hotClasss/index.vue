@@ -1,8 +1,8 @@
 <template>
   <div class="body-cont">
     <!-- <el-form :inline="true" class="demo-form-inline border-form">
-      <el-button type="warning" @click="addSubmit">添加推荐好物</el-button>
-    </el-form>-->
+      <el-button type="warning" @click="addSubmit">添加热门分类</el-button>
+    </el-form> -->
     <el-table
       v-loading.body="listLoading"
       :data="tableData"
@@ -24,7 +24,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog :visible.sync="dialogShow" class="el-dialog1" title="编辑信息">
+    <el-dialog :visible.sync="dialogShow" :title="title" class="el-dialog1">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="选择分类：">
           <el-select
@@ -117,12 +117,18 @@ export default {
     editData(index, row) {
       this.categoryCode = row.categoryCode
       this.cateIndex = index
+      this.title = '编辑信息'
       const fileList = []
       fileList.push({ url: this.imageUrl + row.imageUrl })
       this.logoList = fileList
       this.logoUrlListShow = true
       this.dialogShow = true
     },
+    // addSubmit() {
+    //   this.dialogShow = true
+    //   this.title="添加信息"
+    //   this.logoUrlListShow = false
+    // },
     handleRemove(file, fileList) {
       this.logoUrlListShow = false
     },
@@ -182,13 +188,6 @@ export default {
     handleCurrentChange(page) {
       this.listQuery.pageNum = page
       this.getGoodsList()
-    },
-    addSubmit() {
-      this.dialogShow = true
-      this.logoUrlListShow = false
-      this.initData()
-      this.logoList = []
-      this.title = '添加配置'
     }
   }
 }

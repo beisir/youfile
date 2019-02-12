@@ -1,6 +1,13 @@
 <template>
   <div style="padding:30px;">
-    <el-table v-loading.body="listLoading" :data="tableData" max-height="800" highlight-current-row border style="width: 100%">
+    <el-table
+      v-loading.body="listLoading"
+      :data="tableData"
+      max-height="800"
+      highlight-current-row
+      border
+      style="width: 100%"
+    >
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="paymentNumber" width="150" label="支付流水号" align="center"/>
       <el-table-column prop="orderNumber" width="150" label="订单编号" align="center"/>
@@ -14,11 +21,15 @@
       </el-table-column>
       <el-table-column prop="amount" width="150" label="支付金额(元)" align="center"/>
       <el-table-column prop="payWay" width="150" label="支付方式" align="center">
-        <template slot-scope="scope"><span v-if="scope.row.payWay=='wx_mini_app_pay'">小程序支付</span></template>
+        <template slot-scope="scope">
+          <span v-if="scope.row.payWay=='wx_mini_app_pay'">小程序支付</span>
+        </template>
       </el-table-column>
       <el-table-column prop="accountNumber" width="150" label="账户编号" align="center"/>
       <el-table-column prop="channel" width="150" label="支付通道" align="center">
-        <template slot-scope="scope"> <span v-if="scope.row.channel=='wx_mini_app'">微信小程序支付</span></template>
+        <template slot-scope="scope">
+          <span v-if="scope.row.channel=='wx_mini_app'">微信小程序支付</span>
+        </template>
       </el-table-column>
       <el-table-column prop="status" width="150" label="支付状态" align="center"/>
       <el-table-column prop="paidDate" width="170" label="支付完成时间" align="center">
@@ -46,20 +57,15 @@
         </template>
       </el-table-column>
       <el-table-column prop="hasRefund" width="150" label="是否已退款" align="center"/>
-      <!-- <el-table-column label=" 操作" align="center">
+      <el-table-column label=" 操作" width="150" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="primary"
-            @click="getOrderDetails(scope.$index, scope.row )"
-          >查看详情</el-button>
-          <el-button
-            size="mini"
-            type="primary"
-            @click="getPayList(scope.$index, scope.row )"
-          >查看支付列表</el-button>
+            @click="getPayDetails(scope.$index, scope.row )"
+          >查询支付状态</el-button>
         </template>
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
     <el-pagination
       :current-page="listQuery.page"
@@ -71,10 +77,25 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+    <!-- <el-dialog :visible.sync="dialogShow" class="el-dialog1" :title="title">
+      <el-form :inline="true" class="demo-form-inline">
+        <el-form-item label="物流方式">
+          <el-select v-model="formInline.logisticsMode" placeholder="请选择">
+            <el-option label="全部" value>全部</el-option>
+            <el-option label="其他" value="0">没有物流</el-option>
+            <el-option label="门店自提" value="1">门店自提</el-option>
+            <el-option label="物流配送" value="2">物流配送</el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <el-row class="submit-btn">
+        <el-button type="primary" @click="editMes()">确定</el-button>
+      </el-row>
+    </el-dialog> -->
   </div>
 </template>
 <script>
-import { getPayList } from '@/api/order'
+import { getPayList, getPayDetails } from '@/api/order'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
@@ -107,6 +128,13 @@ export default {
         this.tableData = response.data == null ? [] : response.data.result
         this.listLoading = false
         this.total = response.data == null ? 0 : response.data.totalCount
+      })
+    },
+    // 查看支付状态详情
+    getPayDetails(index, row) {
+      const paymentNumber = row.paymentNumber
+      getPayDetails(paymentNumber).then(response => {
+        console.log(response)
       })
     },
     /**
