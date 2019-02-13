@@ -13,10 +13,31 @@ const orderRouter = {
   },
   children: [
     {
-      path: 'yibaoMerchantsOnline',
-      name: 'YibaoMerchantsOnline',
-      component: () => import('@/views/pay/yibaoMerchantsOnline/index'), // Parent router-view
-      meta: { title: 'yibaoMerchantsOnline' }
+      path: 'menu1',
+      component: () => import('@/views/pay/accountSet/index'), // Parent router-view
+      name: 'Menu1',
+      meta: { title: 'menu1' },
+      redirect: 'noredirect',
+      children: [
+        {
+          path: 'yibaoMerchantsOnline',
+          name: 'YibaoMerchantsOnline',
+          component: () => import('@/views/pay/yibaoMerchantsOnline/index'), // Parent router-view
+          meta: { title: 'yibaoMerchantsOnline' }
+        },
+        {
+          path: 'yibaoBranchOnline',
+          name: 'YibaoBranchOnline',
+          component: () => import('@/views/pay/yibaoBranchOnline/index'), // Parent router-view
+          meta: { title: 'yibaoBranchOnline' }
+        },
+        {
+          path: 'yibaoPaySet',
+          name: 'YibaoPaySet',
+          component: () => import('@/views/pay/yibaoPaySet/index'), // Parent router-view
+          meta: { title: 'yibaoPaySet' }
+        }
+      ]
     },
     {
       path: 'yibaoOnlineDetails',
@@ -26,23 +47,11 @@ const orderRouter = {
       hidden: true
     },
     {
-      path: 'yibaoBranchOnline',
-      name: 'YibaoBranchOnline',
-      component: () => import('@/views/pay/yibaoBranchOnline/index'), // Parent router-view
-      meta: { title: 'yibaoBranchOnline' }
-    },
-    {
       path: 'yibaoSubDetails',
       name: 'YibaoSubDetails',
       component: () => import('@/views/pay/yibaoBranchOnline/details'), // Parent router-view
       meta: { title: 'yibaoSubDetails' },
       hidden: true
-    },
-    {
-      path: 'yibaoPaySet',
-      name: 'YibaoPaySet',
-      component: () => import('@/views/pay/yibaoPaySet/index'), // Parent router-view
-      meta: { title: 'yibaoPaySet' }
     },
     {
       path: 'accountManage',
@@ -58,28 +67,10 @@ const orderRouter = {
       hidden: true
     },
     {
-      path: 'network',
-      name: 'Network',
-      component: () => import('@/views/pay/network/index'), // Parent router-view
-      meta: { title: 'network' }
-    },
-    {
       path: 'billList',
       name: 'BillList',
       component: () => import('@/views/pay/billList/index'),
       meta: { title: 'billList' }
-    },
-    {
-      path: 'rateSet',
-      name: 'RateSet',
-      component: () => import('@/views/pay/rateSet/index'),
-      meta: { title: 'rateSet' }
-    },
-    {
-      path: 'accountSet',
-      name: 'AccountSet',
-      component: () => import('@/views/pay/accountSet/index'),
-      meta: { title: 'accountSet' }
     },
     {
       path: 'refund',

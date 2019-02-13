@@ -7,15 +7,24 @@
       <el-form-item label="入网状态">
         <el-select v-model="formInline.registerStatus" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
-          <el-option label="注册失败" value="regist_fail">注册失败</el-option>
           <el-option label="注册成功" value="regist_success">注册成功</el-option>
+          <el-option label="审核中" value="regist_processing">审核中</el-option>
           <el-option label="初始化" value="init">初始化</el-option>
           <el-option label="未知" value="unkonown">未知</el-option>
-          <el-option label="审核中" value="regist_processing">审核中</el-option>
+          <el-option label="注册失败" value="regist_fail">注册失败</el-option>
         </el-select>
       </el-form-item>
+      <el-date-picker
+        v-model="value6"
+        type="daterange"
+        range-separator="至 "
+        start-placeholder="开始日期"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        end-placeholder="结束日期"
+      />
       <el-button type="primary" @click="onSubmit">查询</el-button>
-      <el-button type="primary" @click="addData">添加分账方</el-button>
+      <el-button type="primary" @click="addData">分帐方入网</el-button>
     </el-form>
     <el-table
       v-loading.body="listLoading"
@@ -143,7 +152,7 @@ export default {
       imageUrl: this.Const.imageUrl,
       formInline: {
         merchantNumber: '',
-        registerStatus: ''
+        registerStatus: 'regist_success'
       },
       formData: {
         merchantSign: ''
@@ -160,6 +169,7 @@ export default {
       dialogTableVisible: false,
       listQuery: {
         registerChannel: 'YEEPAY',
+        registerStatus: 'regist_success',
         thirdMerchantRole: 'ledger_merchant',
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
@@ -167,7 +177,8 @@ export default {
       tableData: [],
       merchantMes: '',
       jsonData: {},
-      rowData: {}
+      rowData: {},
+      value6: ''
     }
   },
   created() {
@@ -178,6 +189,14 @@ export default {
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1
+      const arrData = this.value6
+      if (arrData) {
+        this.listQuery.openPayBeginDate = (new Date(arrData[0])).getTime()
+        this.listQuery.openPayEndDate = (new Date(arrData[1])).getTime()
+      } else {
+        this.listQuery.openPayBeginDate = ''
+        this.listQuery.openPayEndDate = ''
+      }
       this.getList()
     },
     /**
@@ -218,7 +237,6 @@ export default {
         const data = response.data
         if (data) {
           this.jsonData = response.data
-
           // console.log(eval ("(" + response.data.baseInfo + ")"))
         }
         this.dialogTableVisible = true

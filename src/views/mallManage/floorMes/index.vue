@@ -416,8 +416,8 @@ export default {
       })
     },
     clickitem(e) {
-      this.formData.parentCode = ''
-      this.formData.rootCode = ''
+      // this.formData.parentCode = ''
+      // this.formData.rootCode = ''
       if (e === '1') {
         this.oneClass = false
         this.twoClass = false

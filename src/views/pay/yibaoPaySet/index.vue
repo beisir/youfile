@@ -17,8 +17,17 @@
           <el-option label="微信小程序支付" value="wx_mini_app_pay">微信小程序支付</el-option>
         </el-select>
       </el-form-item>
+      <el-date-picker
+        v-model="value6"
+        type="daterange"
+        range-separator="至 "
+        start-placeholder="开始日期"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        end-placeholder="结束日期"
+      />
       <el-button type="primary" @click="onSubmit">查询</el-button>
-      <el-button type="primary" @click="addData">添加支付配置</el-button>
+      <el-button type="primary" @click="addData">子商户配置</el-button>
     </el-form>
     <el-table
       v-loading.body="listLoading"
@@ -89,14 +98,14 @@
           <el-input v-model="storeMes.thirdMerchantNumber" placeholder="请输入第三方支付的商户编号"/>
         </el-form-item>
         <el-form-item label="支付通道" prop="payChannel">
-          <el-select v-model="storeMes.payChannel" placeholder="请选择">
+          <el-select v-model="storeMes.payChannel" disabled="disabled" placeholder="请选择">
             <el-option label="全部" value>全部</el-option>
             <el-option label="微信支付" value="wx_pay">微信支付</el-option>
             <el-option label="易宝支付" value="yeepay">易宝支付</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="支付方式" prop="payWay">
-          <el-select v-model="storeMes.payWay" placeholder="请选择">
+          <el-select v-model="storeMes.payWay" disabled="disabled" placeholder="请选择">
             <el-option label="全部" value>全部</el-option>
             <el-option label="微信小程序支付" value="wx_mini_app_pay">微信小程序支付</el-option>
           </el-select>
@@ -227,6 +236,7 @@ export default {
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
+      value6: '',
       tableData: []
     }
   },
@@ -237,6 +247,14 @@ export default {
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1
+      const arrData = this.value6
+      if (arrData) {
+        this.listQuery.openPayBeginDate = (new Date(arrData[0])).getTime()
+        this.listQuery.openPayEndDate = (new Date(arrData[1])).getTime()
+      } else {
+        this.listQuery.openPayBeginDate = ''
+        this.listQuery.openPayEndDate = ''
+      }
       this.getList()
     },
     /**

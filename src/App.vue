@@ -157,5 +157,8 @@ label {
 .addTal {
   margin: 20px 0;
 }
+.el-date-editor .el-range-separator{
+  width: 10%
+}
 </style>
 

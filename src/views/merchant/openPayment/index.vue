@@ -22,6 +22,15 @@
       <el-form-item label="商户名称">
         <el-input v-model="formInline.merchantName" placeholder="请输入商户名称"/>
       </el-form-item>
+      <el-date-picker
+        v-model="value6"
+        type="daterange"
+        range-separator="至 "
+        start-placeholder="开始日期"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        end-placeholder="结束日期"
+      />
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
     <el-table
@@ -74,18 +83,13 @@
           </div>
           <div v-if="scope.row.onlinePay=='1'">
             <el-button size="mini" type="warning" @click="closeFun(scope.$index, scope.row )">关闭</el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="getDetailsFun(scope.$index, scope.row )"
-            >编辑</el-button>
           </div>
           <div v-if="scope.row.onlinePay=='2'">
             <el-button
               size="mini"
               type="primary"
               @click="getDetailsFun(scope.$index, scope.row )"
-            >编辑</el-button>
+            >开通</el-button>
           </div>
         </template>
       </el-table-column>
@@ -128,16 +132,18 @@ export default {
     return {
       formLabelWidth: '130px',
       merchantNumber: '',
+      value6: '',
       formInline: {
         merchantType: '',
         merchantName: '',
         merchantNumber: '',
-        onlinePay: ''
+        onlinePay: '1'
       },
       merchantMes: {},
       listLoading: false,
       total: 0,
       listQuery: {
+        onlinePay: '1',
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
@@ -153,6 +159,14 @@ export default {
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1
+      const arrData = this.value6
+      if (arrData) {
+        this.listQuery.openPayBeginDate = (new Date(arrData[0])).getTime()
+        this.listQuery.openPayEndDate = (new Date(arrData[1])).getTime()
+      } else {
+        this.listQuery.openPayBeginDate = ''
+        this.listQuery.openPayEndDate = ''
+      }
       this.getList()
     },
     /**

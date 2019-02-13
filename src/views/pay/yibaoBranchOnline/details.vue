@@ -392,6 +392,7 @@ export default {
   data() {
     return {
       listLoading: false,
+      privateImageUrl: this.Const.privateImageUrl,
       uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       readonly: true,
       activeName: 'first',
@@ -718,7 +719,8 @@ export default {
       const params = { filePath: filePath }
       getImgUrl(params).then(response => {
         const fileList = []
-        fileList.push({ url: response.obj })
+        var objResUrl = this.privateImageUrl + response.obj
+        fileList.push({ url: objResUrl })
         if (name === 'businessLicenseUrl') {
           this.businessLicenseUrl = response.obj
           this.fileList = fileList
