@@ -82,7 +82,7 @@
       <el-table-column prop="settleBatchNumber" label="结算批次号" align="center"/>
       <el-table-column prop="inAccountDate" label="入账时间" align="center">
         <template slot-scope="scope">
-          <span>{{ unix2CurrentTime(scope.row.inAccountDate) }}</span>
+          <span v-if="scope.row.inAccountDate!=null">{{ unix2CurrentTime(scope.row.inAccountDate) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="备注" align="center"/>

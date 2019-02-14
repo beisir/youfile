@@ -971,7 +971,7 @@ export default {
                   type: 'success'
                 })
                 this.$router.push({
-                  path: '/pay/yibaoBranchOnline'
+                  path: '/pay/menu1/yibaoBranchOnline'
                 })
               }
               this.listLoading = false

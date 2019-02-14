@@ -16,7 +16,6 @@
           <el-option label="全部" value>全部</el-option>
           <el-option label="未开通" value="0">未开通</el-option>
           <el-option label="已开通" value="1">已开通</el-option>
-          <el-option label="未设置" value="2">未设置</el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="商户名称">
@@ -61,9 +60,8 @@
       </el-table-column>
       <el-table-column prop="onlinePay" label="在线支付状态" width="160" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.onlinePay==&quot;0&quot;">未开通</span>
           <span v-if="scope.row.onlinePay==&quot;1&quot;">已开通</span>
-          <span v-if="scope.row.onlinePay==&quot;2&quot;">未设置</span>
+          <span v-if="scope.row.onlinePay==&quot;2&quot;">未开通</span>
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="160" align="center">
@@ -74,17 +72,10 @@
       </el-table-column>
       <el-table-column prop="onlinePay" label="操作" width="200" fixed="right" align="center">
         <template slot-scope="scope">
-          <div v-if="scope.row.onlinePay=='0'">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="getDetailsFun(scope.$index, scope.row )"
-            >编辑</el-button>
-          </div>
           <div v-if="scope.row.onlinePay=='1'">
             <el-button size="mini" type="warning" @click="closeFun(scope.$index, scope.row )">关闭</el-button>
           </div>
-          <div v-if="scope.row.onlinePay=='2'">
+          <div v-if="scope.row.onlinePay=='0'">
             <el-button
               size="mini"
               type="primary"
@@ -104,26 +95,12 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
-    <el-dialog :visible.sync="dialogTableVisible" title="支付信息配置">
-      <el-form :model="merchantMes">
-        <el-form-item :label-width="formLabelWidth" label="商户编号">{{ merchantNumber }}</el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="在线支付">
-          <el-radio v-model="merchantMes.onlinePay" label="0">未开通</el-radio>
-          <el-radio v-model="merchantMes.onlinePay" label="1">已开通</el-radio>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="支付信息">小程序支付</el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="updateMes">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
 import {
   getListMerchantRetail,
   closePay,
-  getPayMes,
   savePayMes
 } from '@/api/merchant'
 import { unix2CurrentTime } from '@/utils'
@@ -139,7 +116,6 @@ export default {
         merchantNumber: '',
         onlinePay: '1'
       },
-      merchantMes: {},
       listLoading: false,
       total: 0,
       listQuery: {
@@ -147,8 +123,7 @@ export default {
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
-      tableData: [],
-      dialogTableVisible: false
+      tableData: []
     }
   },
   created() {
@@ -161,8 +136,8 @@ export default {
       this.listQuery.pageNum = 1
       const arrData = this.value6
       if (arrData) {
-        this.listQuery.openPayBeginDate = (new Date(arrData[0])).getTime()
-        this.listQuery.openPayEndDate = (new Date(arrData[1])).getTime()
+        this.listQuery.openPayBeginDate = new Date(arrData[0]).getTime()
+        this.listQuery.openPayEndDate = new Date(arrData[1]).getTime()
       } else {
         this.listQuery.openPayBeginDate = ''
         this.listQuery.openPayEndDate = ''
@@ -198,45 +173,24 @@ export default {
       this.getList()
     },
     getDetailsFun(index, row) {
-      this.dialogTableVisible = true
-      const merchantNumber = row.merchantNumber
+      var merchantNumber = row.merchantNumber
       this.merchantNumber = merchantNumber
-      this.merchantMes = {}
-      getPayMes(merchantNumber).then(response => {
-        const merchantMes = response.data
-        if (merchantMes) {
-          if (merchantMes.onlinePay) {
-            merchantMes.onlinePay = '1'
-          } else {
-            merchantMes.onlinePay = '0'
-          }
-          this.merchantMes = merchantMes
-        }
+      this.$confirm('是否关闭商户在线支付?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-    },
-    updateMes() {
-      const merchantMes = this.merchantMes
-      if (merchantMes.onlinePay) {
-        const params = this.merchantMes
-        if (params.onlinePay === '0') {
-          params.onlinePay = false
-        }
-        if (params.onlinePay === '1') {
-          params.onlinePay = true
-        }
-        params.payProduct = '小程序支付'
-        params.merchantNumber = this.merchantNumber
-        savePayMes(params).then(response => {
-          this.$message({
-            type: 'success',
-            message: '保存成功!'
+        .then(() => {
+          const data = { merchantNumber: merchantNumber, onlinePay: true }
+          savePayMes(data).then(response => {
+            this.$message({
+              type: 'success',
+              message: '保存成功!'
+            })
+            this.getList()
           })
-          this.getList()
-          this.dialogTableVisible = false
         })
-      } else {
-        this.$message.error('请选择支付信息！')
-      }
+        .catch(() => {})
     },
     closeFun(index, row) {
       const merchantNumber = row.merchantNumber

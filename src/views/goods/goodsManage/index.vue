@@ -64,14 +64,10 @@
       </el-table-column>
       <el-table-column prop="categoryName" width="120" label="分类" align="center"/>
       <el-table-column prop="createDate" width="170" label="创建时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.createDate) }}
-        </template>
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createDate) }}</template>
       </el-table-column>
       <el-table-column prop="updateDate" width="170" label="更新时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.updateDate) }}
-        </template>
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateDate) }}</template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" width="160px" align="center">
         <template slot-scope="scope">
@@ -126,6 +122,7 @@ export default {
       total: 0,
       listQuery: {
         pageNum: 1, // 页码
+        status: 1,
         pageSize: 10 // 每页数量
       },
       tableData: []
@@ -171,24 +168,40 @@ export default {
     },
     // 上下架
     offGoods(index, row) {
-      const data = { storeId: row.storeId, goodsIdList: [row.goodsId] }
-      offGoods(data).then(response => {
-        this.$message({
-          type: 'success',
-          message: response.data
-        })
-        this.getList()
+      this.$confirm('确定要下架吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(() => {
+          const data = { storeId: row.storeId, goodsIdList: [row.goodsId] }
+          offGoods(data).then(response => {
+            this.$message({
+              type: 'success',
+              message: response.data
+            })
+            this.getList()
+          })
+        })
+        .catch(() => {})
     },
     onGoods(index, row) {
-      const data = { storeId: row.storeId, goodsIdList: [row.goodsId] }
-      onGoods(data).then(response => {
-        this.$message({
-          type: 'success',
-          message: response.data
-        })
-        this.getList()
+      this.$confirm('确定要上架吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(() => {
+          const data = { storeId: row.storeId, goodsIdList: [row.goodsId] }
+          onGoods(data).then(response => {
+            this.$message({
+              type: 'success',
+              message: response.data
+            })
+            this.getList()
+          })
+        })
+        .catch(() => {})
     },
     deteleGoods(index, row) {
       const goodsId = row.goodsId

@@ -35,19 +35,19 @@
         <el-col :span="6">
           <div>
             收货人姓名：
-            <span>{{ consigneeInfo.userName }}</span>
+            <span>{{ customerUserNickName }}</span>
           </div>
         </el-col>
         <el-col :span="6">
           <div>
             联系电话：
-            <span>{{ consigneeInfo.userPhone }}</span>
+            <span v-if="consigneeInfoShow">{{ consigneeInfo.userPhone }}</span>
           </div>
         </el-col>
         <el-col :span="12">
           <div>
             收货地址：
-            <span>{{ consigneeInfo.detailAddress }}</span>
+            <span v-if="consigneeInfoShow">{{ consigneeInfo.detailAddress }}</span>
           </div>
         </el-col>
       </el-row>
@@ -56,7 +56,7 @@
         <el-col :span="6">
           <div>
             店铺名称：
-            <span>周大福珠宝店</span>
+            <span>{{ storeName }}</span>
           </div>
         </el-col>
         <el-col :span="6">
@@ -103,94 +103,96 @@
         </el-col>
         <el-col :span="6">
           <div>
-            用户编号：
-            <span>{{ formInline.customerUserNo }}</span>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div>
             买家留言：
             <span>{{ formInline.userMemo }}</span>
           </div>
         </el-col>
+        <el-col :span="12">
+          <div>
+            用户编号：
+            <span>{{ formInline.customerUserNo }}</span>
+          </div>
+        </el-col>
       </el-row>
-      <el-table
-        v-loading.body="listLoading"
-        :data="tableData"
-        highlight-current-row
-        style="width: 100%"
-      >
-        <el-table-column type="index" width="50" label="" align="center"/>
-        <el-table-column prop="mainImgUrl" label="周大福珠宝" align="center">
-          <template slot-scope="scope">
-            <img :src="imageUrl+scope.row.mainImgUrl" width="40" height="40">
-          </template>
-        </el-table-column>
-        <el-table-column width="250" >
-          <template slot-scope="scope">
-            <div>{{ scope.row.goodsName }}</div>
-            <div>商品ID：<span>{{ scope.row.goodsId }}</span></div>
-            <div><span>{{ scope.row.goodsDesc }}</span></div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="sellPrice" label="商品价格" align="center">
-          <template slot-scope="scope">
-            ￥{{ scope.row.sellPrice }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="num" label="数量" align="center"/>
-        <el-table-column prop="amount" label="金额小计" align="center">
-          <template slot-scope="scope">
-            ￥{{ scope.row.amount }}
-          </template>
-        </el-table-column>
-        <el-table-column label="优惠" align="center"/>
-        <el-table-column prop="stockNum" label="订单总金额" align="center">
-          <template>
-            ￥{{ formInline.payAmount }}
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-row class="all-m">
-        共<span>7</span>件商品 | 实付金额：<span>￥{{ formInline.payAmount }}</span>
+      <div class="table-c">
+        <div class="xian_last"/>
+        <el-row class="row-img">
+          <div>
+            <img :src="storeIcon">
+            <span>{{ storeName }}</span>
+          </div>
+        </el-row>
+        <el-table
+          v-loading.body="listLoading"
+          :data="tableData"
+          :span-method="objectSpanMethod"
+          highlight-current-row
+          style="width: 100%"
+        >
+          <el-table-column type="index" width="45" label align="center"/>
+          <el-table-column prop="mainImgUrl" width="85" label align="left">
+            <template slot-scope="scope">
+              <img :src="imageUrl+scope.row.mainImgUrl" width="70" height="70">
+            </template>
+          </el-table-column>
+          <el-table-column width="250">
+            <template slot-scope="scope">
+              <div>{{ scope.row.goodsName }}</div>
+              <div>
+                <span>商品ID：</span>
+                {{ scope.row.goodsId }}
+              </div>
+              <div>{{ scope.row.goodsDesc }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sellPrice" label="商品价格" align="center">
+            <template slot-scope="scope">￥{{ scope.row.sellPrice }}</template>
+          </el-table-column>
+          <el-table-column prop="num" label="数量" align="center"/>
+          <el-table-column prop="amount" label="金额小计" align="center">
+            <template slot-scope="scope">￥{{ scope.row.amount }}</template>
+          </el-table-column>
+          <el-table-column label="优惠" align="center"/>
+          <el-table-column prop="payAmount" width="180" label="订单总金额" align="center">
+            <template slot-scope="scope"><span class="t-payAmount">￥{{ scope.row.payAmount }}</span></template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <el-row class="all-m">共
+        <span>{{ formInline.num }}</span>件商品 | 实付金额：
+        <span>￥{{ formInline.payAmount }}</span>
       </el-row>
       <el-row class="order-row1">
         <div class="order-t">支付信息</div>
         <el-col :span="24">
           <div>
-            支付方式
-            <span v-if="formInline.offline_pay=='offline_pay'">线下方式</span>
+            支付方式：
+            <span v-if="formInline.payType=='offline'">线下方式</span>
+            <span v-if="formInline.payType=='online'">在线方式</span>
           </div>
         </el-col>
-        <el-col :span="24">
+        <el-col v-if="formInline.payType=='online'" :span="24">
           <div>
-            支付方用户编号：
-            <span>{{ formInline.customerUserNo }}</span>
+            支付交易号：
+            <span>{{ formInline.paymentNumber }}</span>
           </div>
         </el-col>
+        <!--
         <el-col :span="24">
           <div>
             收款方商户编号：
             <span>{{ formInline.receiveMerchantNumber }}</span>
           </div>
-        </el-col>
-        <el-col :span="24">
+        </el-col>-->
+        <el-col v-if="formInline.payType=='offline'" :span="24">
           <div>
             支付凭证：
-            <img v-if="showImg" :src="payVoucher" style="width:400px;height:auto">
+            <img v-if="showImg" :src="payVoucher" style="width:400px;height:auto;vertical-align: top">
           </div>
         </el-col>
       </el-row>
-      <el-row class="order-row1">
+      <el-row v-if="formInline.payType=='offline'" class="order-row1">
         <div class="order-t">物流信息</div>
-        <el-col :span="24">
-          <div>
-            物流方式：
-            <span v-if="formInline.logisticsMode=='0'">没有物流</span>
-            <span v-if="formInline.logisticsMode=='1'">门店自提</span>
-            <span v-if="formInline.logisticsMode=='2'">物流配送</span>
-          </div>
-        </el-col>
         <el-col :span="24">
           <div>
             物流公司名称：
@@ -203,40 +205,34 @@
             <span>{{ formInline.expressNumber }}</span>
           </div>
         </el-col>
+      </el-row>
+      <el-row v-if="formInline.payType=='online'" class="order-row1">
+        <div class="order-t">自提信息</div>
         <el-col :span="24">
           <div>
-            收货地址：
-            <span>{{ consigneeInfo.detailAddress }}</span>
+            取货码：
+            <span>{{ formInline.claimGoodsNum }}</span>
           </div>
         </el-col>
       </el-row>
-      <el-row class="order-row1">
+      <el-row v-if="receiptInfoShow" class="order-row1">
         <div class="order-t">发票信息</div>
         <el-col :span="24">
           <div>
             发票类型：
-            <span>postageinfo</span>
+            <span>{{ receiptInfo.invoiceCategory }}</span>
           </div>
         </el-col>
         <el-col :span="24">
           <div>
             发票抬头：
-            <span>3254354</span>
+            <span>{{ receiptInfo.invoiceTitle }}</span>
           </div>
         </el-col>
         <el-col :span="24">
           <div>
             纳税人识别号：
-            <span>3254354</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row class="order-row1">
-        <div class="order-t">备注信息</div>
-        <el-col :span="24">
-          <div>
-            备注信息：
-            <span>北京</span>
+            <span>{{ receiptInfo.depositBankNumber }}</span>
           </div>
         </el-col>
       </el-row>
@@ -246,6 +242,7 @@
 <script>
 import { getOrderDetails } from '@/api/order'
 import { unix2CurrentTime } from '@/utils'
+import storeIcon from '@/assets/img/icon.png'
 export default {
   data() {
     return {
@@ -260,9 +257,16 @@ export default {
       postageType: '',
       payVoucher: '',
       tableData: [],
+      tableIndex: '',
+      customerUserNickName: '',
+      storeName: '',
       formInline: {},
+      storeIcon: storeIcon,
       formLabelWidth: '150px',
-      listLoading: false
+      listLoading: false,
+      receiptInfoShow: false,
+      receiptInfo: {},
+      consigneeInfoShow: false
     }
   },
   created() {
@@ -270,6 +274,21 @@ export default {
   },
   methods: {
     unix2CurrentTime,
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 7) {
+        if (rowIndex % 2 === 0) {
+          return {
+            rowspan: this.tableIndex,
+            colspan: 1
+          }
+        } else {
+          return {
+            rowspan: 0,
+            colspan: 0
+          }
+        }
+      }
+    },
     /**
      * 查看详情
      */
@@ -278,11 +297,18 @@ export default {
       const orderNumber = this.$route.query.orderNumber
       getOrderDetails(orderNumber).then(response => {
         this.listLoading = false
-        this.formInline = response.data
-        const createDateShow = response.data.createDate
-        const payDateShow = response.data.payDate
-        const deliverDateShow = response.data.deliverDate
-        const finishDateShow = response.data.finishDate
+        this.formInline = response.data.orderRespVO
+        this.customerUserNickName = response.data.customerUserNickName
+        this.storeName = response.data.storeName
+        const createDateShow = response.data.orderRespVO.createDate
+        const payDateShow = response.data.orderRespVO.payDate
+        const deliverDateShow = response.data.orderRespVO.deliverDate
+        const finishDateShow = response.data.orderRespVO.finishDate
+        const receiptInfo = response.data.orderRespVO.receiptInfo
+        if (receiptInfo) {
+          this.receiptInfo = receiptInfo
+          this.receiptInfoShow = true
+        }
         if (createDateShow) {
           this.createDateShow = true
         }
@@ -295,20 +321,26 @@ export default {
         if (finishDateShow) {
           this.finishDateShow = true
         }
-        this.consigneeInfo = response.data.consigneeInfo
-        const orderDetailVOList = response.data.orderDetailVOList
+        const consigneeInfo = response.data.orderRespVO.consigneeInfo
+        if (consigneeInfo) {
+          this.consigneeInfo = consigneeInfo
+          this.consigneeInfoShow = true
+        }
+        const orderDetailVOList = response.data.orderRespVO.orderDetailVOList
         var newData = []
         for (var i = 0; i < orderDetailVOList.length; i++) {
           newData.push(JSON.parse(orderDetailVOList[i].goodsSnapshot))
         }
         for (var j = 0; j < newData.length; j++) {
           orderDetailVOList[j].mainImgUrl = newData[j].mainImgUrl
+          orderDetailVOList[j].payAmount = response.data.orderRespVO.payAmount
         }
         this.tableData = orderDetailVOList
-        console.log(orderDetailVOList)
-        this.postageType = response.data.postageinfo.postageType
-        if (response.data.payVoucher) {
-          this.payVoucher = this.imageUrl + '/' + response.data.payVoucher
+        this.tableIndex = orderDetailVOList.length
+        this.postageType = response.data.orderRespVO.postageinfo.postageType
+        if (response.data.orderRespVO.payVoucher) {
+          this.payVoucher =
+            this.imageUrl + '/' + response.data.orderRespVO.payVoucher
           this.showImg = true
         }
       })
@@ -317,7 +349,7 @@ export default {
 }
 </script>
 <style>
-.block{
+.block {
   margin-top: 0;
 }
 .pay-img img {
@@ -327,25 +359,25 @@ export default {
 .order-row {
   padding: 30px;
   font-size: 18px;
-  border-bottom: 1px solid #F5F5F5;
+  border-bottom: 1px solid #f5f5f5;
   padding-bottom: 20px;
 }
-.order-row .el-col-6{
-  padding:10px 0;
+.order-row .el-col-6 {
+  padding: 10px 0;
 }
 .order-col {
   font-size: 24px;
   padding-bottom: 20px;
-  color: #DD1B34;
-  font-weight: bold
+  color: #dd1b34;
+  font-weight: bold;
 }
-.o-font{
-  color: #DD1B34;
+.o-font {
+  color: #dd1b34;
 }
 .order-row1 {
   padding: 10px 0;
   margin: 0 30px;
-  margin-top: 10px
+  margin-top: 10px;
 }
 .order-row1 .el-col-6,
 .order-row1 .el-col-12,
@@ -367,26 +399,71 @@ export default {
   color: #000;
   padding-bottom: 10px;
 }
-.new-t .el-table th{
-  background: #FCFCFC;
+.new-t .el-table th {
+  background: #fcfcfc;
   font-size: 18px;
-  border-top: 1px solid #F2F2F2;
+  border-top: 1px solid #f2f2f2;
   font-weight: normal;
   color: #000;
 }
-.all-m{
+.all-m {
   height: 100px;
   line-height: 100px;
-  border-bottom: 1px solid #F2F2F2;
+  border-bottom: 1px solid #f2f2f2;
   text-align: right;
   font-size: 16px;
-  padding-right: 40px
+  padding-right: 40px;
 }
-.all-m span{
-  color: #E02840;
+.all-m span {
+  color: #e02840;
 }
-.all-m span:last-child{
+.all-m span:last-child {
   font-size: 30px;
+}
+.new-t .el-table th{
+  z-index: 99
+}
+.xian_last{
+  width: 1px;
+  height: 100%;
+  background: #f2f2f2;
+  z-index: 98;
+  position: absolute;right: 210px;
+}
+.new-t .el-table td div {
+  color: #000;
+}
+.new-t .el-table td div span {
+  color: #999;
+}
+.row-img {
+  position: relative;
+}
+.row-img div {
+  position: absolute;
+  background: #fcfcfc;
+  z-index: 999;
+  left: 15px;
+  color: #000;
+  font-size: 18px;
+  bottom: -35px;
+}
+.row-img img {
+  width: 25px;
+  height: auto;
+  margin-right: 3px;
+  vertical-align: middle;
+  margin-top: -1px
+}
+.table-c{
+  padding:0 30px;
+  margin-top: 20px;
+  position: relative;
+}
+.new-t .el-table td div span.t-payAmount{
+  font-size: 18px;
+  font-weight: normal;
+  color: #000;
 }
 </style>
 

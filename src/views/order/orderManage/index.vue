@@ -1,7 +1,20 @@
 <template>
   <div class="body-cont">
     <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
-      <el-form-item label="物流方式">
+      <el-form-item label="">
+        <el-input v-model="formInline.keyWords" style="width:250px" placeholder="订单编号、店铺ID、运单号"/>
+      </el-form-item>
+      <el-form-item label="订单状态">
+        <el-select v-model="formInline.orderStatus" placeholder="请选择">
+          <el-option label="全部" value>全部</el-option>
+          <el-option label="待付款" value="unpaid">待付款</el-option>
+          <el-option label="已付款" value="paid">已付款</el-option>
+          <el-option label="已发货/待收货" value="delivered">已发货/待收货</el-option>
+          <el-option label="订单已取消/订单关闭" value="canceled">订单已取消/订单关闭</el-option>
+          <el-option label="已完成" value="finish">已完成</el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="配送方式">
         <el-select v-model="formInline.logisticsMode" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
           <el-option label="其他" value="0">没有物流</el-option>
@@ -9,62 +22,61 @@
           <el-option label="物流配送" value="2">物流配送</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="付款方用户编号">
-        <el-input v-model="formInline.customerUserNo" placeholder="请输入付款方用户编号"/>
-      </el-form-item>
-      <el-form-item label="收款方商户编号">
-        <el-input v-model="formInline.receiveMerchantNumber" placeholder="请输入收款方商户编号"/>
-      </el-form-item>
-      <el-form-item label="订单编号">
-        <el-input v-model="formInline.orderNumber" placeholder="请输入订单编号"/>
-      </el-form-item>
-      <el-form-item label="快递单号">
-        <el-input v-model="formInline.expressNumber" placeholder="请输入快递单号"/>
-      </el-form-item>
-      <el-form-item label="店铺ID">
-        <el-input v-model="formInline.storeId" placeholder="请输入店铺ID"/>
-      </el-form-item>
+      <el-date-picker
+        v-model="value6"
+        type="daterange"
+        range-separator="至 "
+        start-placeholder="选择开始日期"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        end-placeholder="选择结束日期"
+      />
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
     <el-table v-loading.body="listLoading" :data="tableData" max-height="800" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="orderNumber" width="180" label="订单编号" align="center"/>
-      <el-table-column prop="expressNumber" width="180" label="快递单号" align="center"/>
-      <el-table-column prop="customerUserNo" width="270" label="付款方用户编号" align="center"/>
-      <el-table-column prop="receiveMerchantNumber" width="180" label="收款方商户编号" align="center"/>
-      <el-table-column prop="orderAmount" width="100" label="订单金额" align="center"/>
-      <el-table-column prop="orderType" width="100" label="配送方式" align="center">
+      <el-table-column prop="orderNumber" width="180" label="订单编号" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderType=='0'">没有物流</span>
-          <span v-if="scope.row.orderType=='1'">门店自提</span>
-          <span v-if="scope.row.orderType=='2'">物流配送</span>
+          {{ scope.row.orderRespVO.orderNumber }}
         </template>
       </el-table-column>
-      <el-table-column prop="orderCategory" width="100" label="订单分类" align="center">
+      <el-table-column prop="orderAmount" width="150" label="订单金额（元）" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderCategory=='1'">批发订单</span>
-          <span v-if="scope.row.orderCategory=='2'">小云店订单</span>
-          <span v-if="scope.row.orderCategory=='3'">零售订单</span>
-          <span v-if="scope.row.orderCategory=='4'">门店订单</span>
+          ￥{{ scope.row.orderRespVO.orderAmount }}
         </template>
       </el-table-column>
+      <el-table-column prop="customerUserNickName" width="120" label="买家昵称" align="center"/>
+      <el-table-column prop="storeName" width="120" label="店铺名称" align="center"/>
       <el-table-column prop="orderStatus" width="180" label="订单状态" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderStatus=='unpaid'">待付款</span>
-          <span v-if="scope.row.orderStatus=='paid'">已付款</span>
-          <span v-if="scope.row.orderStatus=='delivered'">已发货/待收货</span>
-          <span v-if="scope.row.orderStatus=='canceled'">订单已取消/订单关闭</span>
-          <span v-if="scope.row.orderStatus=='finish'">已完成</span>
+          <span v-if="scope.row.orderRespVO.orderStatus=='unpaid'">待付款</span>
+          <span v-if="scope.row.orderRespVO.orderStatus=='paid'">已付款</span>
+          <span v-if="scope.row.orderRespVO.orderStatus=='delivered'">已发货/待收货</span>
+          <span v-if="scope.row.orderRespVO.orderStatus=='canceled'">订单已取消/订单关闭</span>
+          <span v-if="scope.row.orderRespVO.orderStatus=='finish'">已完成</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createDate" width="160" label="创建时间" align="center">
+      <el-table-column prop="orderType" width="120" label="配送方式" align="center">
         <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.createDate) }}
+          <span v-if="scope.row.orderRespVO.logisticsMode=='0'">没有物流</span>
+          <span v-if="scope.row.orderRespVO.logisticsMode=='1'">门店自提</span>
+          <span v-if="scope.row.orderRespVO.logisticsMode=='2'">物流配送</span>
         </template>
       </el-table-column>
-      <el-table-column prop="updateDate" width="160" label="更新时间" align="center">
+      <el-table-column prop="orderCategory" width="120" label="支付方式" align="center">
         <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.updateDate) }}
+          <span v-if="scope.row.orderRespVO.payType=='offline'">线下方式</span>
+          <span v-if="scope.row.orderRespVO.payType=='online'">在线方式</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="createDate" width="180" label="创建时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.orderRespVO.createDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateDate" width="180" label="更新时间" align="center">
+        <template slot-scope="scope">
+          {{ unix2CurrentTime(scope.row.orderRespVO.updateDate) }}
         </template>
       </el-table-column>
       <el-table-column label=" 操作" fixed="right" width="250" align="center">
@@ -102,15 +114,13 @@ export default {
     return {
       data: '',
       imageUrl: this.Const.imageUrl,
+      value6: '',
       formInline: {
-        storeId: '',
-        orderType: '',
-        customerUserNo: '',
-        expressNumber: '',
-        orderNumber: '',
-        // payDateBegin:'',
-        // payDateEnd:'',
-        receiveMerchantNumber: ''
+        keyWords: '',
+        logisticsMode: '',
+        orderStatus: '',
+        dateBegin: '',
+        dateEnd: ''
       },
       listLoading: false,
       total: 0,
@@ -129,6 +139,14 @@ export default {
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1
+      const arrData = this.value6
+      if (arrData) {
+        this.listQuery.dateBegin = (new Date(arrData[0])).getTime()
+        this.listQuery.dateEnd = (new Date(arrData[1])).getTime()
+      } else {
+        this.listQuery.dateBegin = ''
+        this.listQuery.dateEnd = ''
+      }
       this.getList()
     },
     /**
@@ -146,7 +164,7 @@ export default {
      * 查看详情
      */
     getOrderDetails(index, row) {
-      const orderNumber = row.orderNumber
+      const orderNumber = row.orderRespVO.orderNumber
       this.$router.push({
         path: '/order/orderDetails',
         query: {
@@ -158,7 +176,7 @@ export default {
      * 查看支付列表
      */
     getPayList(index, row) {
-      const orderNumber = row.orderNumber
+      const orderNumber = row.orderRespVO.orderNumber
       this.$router.push({
         path: '/order/payManage',
         query: {

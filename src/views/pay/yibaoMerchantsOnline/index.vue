@@ -35,7 +35,6 @@
       style="width: 100%"
     >
       <el-table-column type="index" width="50" label="序号" align="center"/>
-      <el-table-column prop="thirdInnerNumber" width="200" label="第三方支付内部流水号" align="center"/>
       <el-table-column prop="requestNumber" width="200" label="入网请求编号" align="center"/>
       <el-table-column prop="merchantNumber" width="200" label="商户编号" align="center"/>
       <el-table-column
