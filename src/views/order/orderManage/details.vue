@@ -1,41 +1,35 @@
 <template>
-  <div style="padding:30px;">
+  <div class="new-t" style="padding:30px;">
     <div class="block">
-      <div class="clearfix">
-        <span>订单详情</span>
-      </div>
       <el-row class="order-row">
-        <el-col :span="12">
-          <div>订单编号：{{ formInline.orderNumber }}</div>
-        </el-col>
-        <el-col :span="12" class="order-col">
+        <el-col :span="24" class="order-col">
           <div v-if="formInline.orderStatus=='unpaid'">订单状态：待付款</div>
           <div v-if="formInline.orderStatus=='paid'">订单状态：已付款</div>
           <div v-if="formInline.orderStatus=='delivered'">订单状态：已发货/待收货</div>
           <div v-if="formInline.orderStatus=='canceled'">订单状态：订单已取消/订单关闭</div>
           <div v-if="formInline.orderStatus=='finish'">订单状态：已完成</div>
         </el-col>
+        <el-col :span="6" class="o-font">
+          <div>订单编号：{{ formInline.orderNumber }}</div>
+        </el-col>
+        <el-col :span="6">
+          <div>
+            订单属性：
+            <span v-if="formInline.orderCategory=='1'">批发订单</span>
+            <span v-if="formInline.orderCategory=='2'">小云店订单</span>
+            <span v-if="formInline.orderCategory=='3'">零售订单</span>
+            <span v-if="formInline.orderCategory=='4'">门店订单</span>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div>
+            配送方式：
+            <span v-if="formInline.logisticsMode=='0'">没有物流</span>
+            <span v-if="formInline.logisticsMode=='1'">门店自提</span>
+            <span v-if="formInline.logisticsMode=='2'">物流配送</span>
+          </div>
+        </el-col>
       </el-row>
-      <!-- <el-table
-        v-loading.body="listLoading"
-        :data="tableData"
-        highlight-current-row
-        border
-        style="width: 100%"
-      >
-        <el-table-column type="index" width="50" label="序号" align="center"/>
-        <el-table-column prop="mainImgUrl" label="banner图" align="center">
-        <template slot-scope="scope">
-          <img :src="imageUrl+scope.row.mainImgUrl" width="40" height="40">
-        </template>
-        </el-table-column>
-        <el-table-column prop="click" label="是否可点击" align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.click==false">不可点击</span>
-          <span v-if="scope.row.click==true">可点击</span>
-        </template>
-        </el-table-column>
-      </el-table>-->
       <el-row class="order-row1">
         <div class="order-t">收货人信息</div>
         <el-col :span="6">
@@ -50,7 +44,7 @@
             <span>{{ consigneeInfo.userPhone }}</span>
           </div>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="12">
           <div>
             收货地址：
             <span>{{ consigneeInfo.detailAddress }}</span>
@@ -61,55 +55,104 @@
         <div class="order-t">订单信息</div>
         <el-col :span="6">
           <div>
-            店铺ID：
-            <span>{{ formInline.storeId }}</span>
+            店铺名称：
+            <span>周大福珠宝店</span>
           </div>
         </el-col>
         <el-col :span="6">
           <div>
-            订单编号：
-            <span>{{ formInline.orderNumber }}</span>
+            店铺ID：
+            <span>{{ formInline.storeId }}</span>
           </div>
         </el-col>
         <el-col :span="12">
           <div>
-            订单分类：
-            <span v-if="formInline.orderCategory=='1'">批发订单</span>
-            <span v-if="formInline.orderCategory=='2'">小云店订单</span>
-            <span v-if="formInline.orderCategory=='3'">零售订单</span>
-            <span v-if="formInline.orderCategory=='4'">门店订单</span>
+            商户编号：
+            <span>{{ formInline.receiveMerchantNumber }}</span>
           </div>
         </el-col>
         <el-col :span="6">
           <div>
             创建时间：
-            <span>{{ unix2CurrentTime(formInline.createDate) }}</span>
+            <span v-if="createDateShow">{{ unix2CurrentTime(formInline.createDate) }}</span>
           </div>
         </el-col>
         <el-col :span="6">
           <div>
             支付时间：
-            <span>{{ unix2CurrentTime(formInline.payDate) }}</span>
+            <span v-if="payDateShow">{{ unix2CurrentTime(formInline.payDate) }}</span>
           </div>
         </el-col>
         <el-col :span="6">
           <div>
             发货时间：
-            <span>{{ unix2CurrentTime(formInline.deliverDate) }}</span>
+            <span v-if="deliverDateShow">{{ unix2CurrentTime(formInline.deliverDate) }}</span>
           </div>
         </el-col>
         <el-col :span="6">
           <div>
             完成时间：
-            <span>{{ unix2CurrentTime(formInline.finishDate) }}</span>
+            <span v-if="finishDateShow">{{ unix2CurrentTime(formInline.finishDate) }}</span>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div>
+            买家昵称：
+            <span>李小妮</span>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div>
+            用户编号：
+            <span>{{ formInline.customerUserNo }}</span>
           </div>
         </el-col>
         <el-col :span="6">
           <div>
             买家留言：
-            <span>假数据啊</span>
+            <span>{{ formInline.userMemo }}</span>
           </div>
         </el-col>
+      </el-row>
+      <el-table
+        v-loading.body="listLoading"
+        :data="tableData"
+        highlight-current-row
+        style="width: 100%"
+      >
+        <el-table-column type="index" width="50" label="" align="center"/>
+        <el-table-column prop="mainImgUrl" label="周大福珠宝" align="center">
+          <template slot-scope="scope">
+            <img :src="imageUrl+scope.row.mainImgUrl" width="40" height="40">
+          </template>
+        </el-table-column>
+        <el-table-column width="250" >
+          <template slot-scope="scope">
+            <div>{{ scope.row.goodsName }}</div>
+            <div>商品ID：<span>{{ scope.row.goodsId }}</span></div>
+            <div><span>{{ scope.row.goodsDesc }}</span></div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="sellPrice" label="商品价格" align="center">
+          <template slot-scope="scope">
+            ￥{{ scope.row.sellPrice }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="num" label="数量" align="center"/>
+        <el-table-column prop="amount" label="金额小计" align="center">
+          <template slot-scope="scope">
+            ￥{{ scope.row.amount }}
+          </template>
+        </el-table-column>
+        <el-table-column label="优惠" align="center"/>
+        <el-table-column prop="stockNum" label="订单总金额" align="center">
+          <template>
+            ￥{{ formInline.payAmount }}
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-row class="all-m">
+        共<span>7</span>件商品 | 实付金额：<span>￥{{ formInline.payAmount }}</span>
       </el-row>
       <el-row class="order-row1">
         <div class="order-t">支付信息</div>
@@ -134,7 +177,7 @@
         <el-col :span="24">
           <div>
             支付凭证：
-            <img :src="payVoucher" style="width:400px;height:auto">
+            <img v-if="showImg" :src="payVoucher" style="width:400px;height:auto">
           </div>
         </el-col>
       </el-row>
@@ -197,170 +240,6 @@
           </div>
         </el-col>
       </el-row>
-      <!--
-      <el-form
-        :inline="true"
-        :label-width="formLabelWidth"
-        :model="orderDetailVOList"
-        class="demo-form-inline"
-      >
-        <el-form-item label="商品名称">
-          <el-input v-model="orderDetailVOList.goodsName" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="商品数量">
-          <el-input v-model="orderDetailVOList.num" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="商品ID">
-          <el-input v-model="orderDetailVOList.goodsId" disabled="disabled"/>
-        </el-form-item>
-      </el-form>
-      <el-form
-        :inline="true"
-        :label-width="formLabelWidth"
-        :model="formInline"
-        class="demo-form-inline"
-      >
-        <el-form-item label="店铺ID">
-          <el-input v-model="formInline.storeId" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="订单编号">
-          <el-input v-model="formInline.orderNumber" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="订单金额">
-          <el-input v-model="formInline.orderAmount" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="物流方式">
-          <el-select v-model="formInline.logisticsMode" disabled="disabled" placeholder="请选择">
-            <el-option label="未知" value>未知</el-option>
-            <el-option label="其他" value="0">没有物流</el-option>
-            <el-option label="门店自提" value="1">门店自提</el-option>
-            <el-option label="物流配送" value="2">物流配送</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="发票信息">
-          <el-input v-model="formInline.receiptInfo" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="邮费信息">
-          <el-input v-model="postageType" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="订单状态">
-          <el-input v-model="formInline.orderStatus" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="订单分类">
-          <el-select v-model="formInline.orderCategory" disabled="disabled" placeholder="请选择">
-            <el-option label="未知" value>未知</el-option>
-            <el-option label="批发订单" value="1">批发订单</el-option>
-            <el-option label="小云店订单" value="2">小云店订单</el-option>
-            <el-option label="零售订单" value="3">零售订单</el-option>
-            <el-option label="门店订单" value="4">门店订单</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="收款方商户编号">
-          <el-input v-model="formInline.receiveMerchantNumber" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="付款方用户编号">
-          <el-input v-model="formInline.customerUserNo" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="店铺ID">
-          <el-input v-model="formInline.storeId" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label=" 支付状态">
-          <el-select v-model="formInline.payStatus" disabled="disabled" placeholder="请选择">
-            <el-option label="未知" value>未知</el-option>
-            <el-option label="已支付" value="0">已支付</el-option>
-            <el-option label="未支付" value="1">未支付</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="支付金额">
-          <el-input v-model="formInline.payAmount" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="支付时间">
-          <template>{{ unix2CurrentTime(formInline.payDate) }}</template>
-        </el-form-item>
-        <el-form-item label="支付方式">
-          <el-select v-model="formInline.payWay" disabled="disabled" placeholder="请选择">
-            <el-option label="未知" value>未知</el-option>
-            <el-option label="线下支付" value="offline_pay">线下支付</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label=" 商品数量">
-          <el-input v-model="formInline.num" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="退款状态">
-          <el-select v-model="formInline.refundStatus" disabled="disabled" placeholder="请选择">
-            <el-option label="未知" value>未知</el-option>
-            <el-option label="已退款" value="1">已退款</el-option>
-            <el-option label="退款失" value="2">退款失</el-option>
-            <el-option label="退款中" value="0">退款中</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="用户备注">
-          <el-input v-model="formInline.userMemo" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="物流方式">
-          <el-select v-model="formInline.logisticsMode" placeholder="请选择">
-            <el-option label="未知" value>未知</el-option>
-            <el-option label="门店自提" value="1">门店自提</el-option>
-            <el-option label="物流配送" value="2">物流配送</el-option>
-            <el-option label="没有物流" value="0">没有物流</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label=" 取货状态">
-          <el-select v-model="formInline.claimStatus" disabled="disabled" placeholder="请选择">
-            <el-option label="未知" value>未知</el-option>
-            <el-option label="待取货" value="0">待取货</el-option>
-            <el-option label="已取货" value="1">已取货</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="取货码">
-          <el-input v-model="formInline.claimGoodsNum" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="快递状态">
-          <el-select v-model="formInline.expressStatus" disabled="disabled" placeholder="请选择">
-            <el-option label="未知" value>未知</el-option>
-            <el-option label="待发货" value="0">待发货</el-option>
-            <el-option label="已发货" value="1">已发货</el-option>
-            <el-option label="已收货" value="2">已收货</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="快递单号">
-          <el-input v-model="formInline.expressNumber" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label=" 快递公司名称">
-          <el-input v-model="formInline.expressCompany" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="订单取消原因">
-          <el-input v-model="formInline.cancelReason" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="取消时间">
-          <el-input v-model="formInline.cancelDate" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="商家备注">
-          <el-input v-model="formInline.remark" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label=" 发货时间">
-          <template>{{ unix2CurrentTime(formInline.deliverDate) }}</template>
-        </el-form-item>
-        <el-form-item label="完成时间">
-          <template>{{ unix2CurrentTime(formInline.finishDate) }}</template>
-        </el-form-item>
-        <el-form-item label="创建时间">
-          <template>{{ unix2CurrentTime(formInline.createDate) }}</template>
-        </el-form-item>
-        <el-form-item label="用户删除标识">
-          <el-select v-model="formInline.customerDelFlag" disabled="disabled" placeholder="请选择">
-            <el-option label="未知" value>未知</el-option>
-            <el-option label="未删除" value="0">未删除</el-option>
-            <el-option label="已删除" value="1">已删除</el-option>
-            <el-option label="彻底删除" value="2">彻底删除</el-option>
-          </el-select>
-        </el-form-item>
-        <div>
-          <el-form-item class="pay-img" label="支付凭证">
-            <img :src="payVoucher" style="width:400px;height:auto">
-          </el-form-item>
-        </div>
-      </el-form>-->
     </div>
   </div>
 </template>
@@ -372,6 +251,11 @@ export default {
     return {
       imageUrl: this.Const.imageUrl,
       payVoucherShow: true,
+      payDateShow: false,
+      createDateShow: false,
+      deliverDateShow: false,
+      finishDateShow: false,
+      showImg: false,
       consigneeInfo: {},
       postageType: '',
       payVoucher: '',
@@ -395,54 +279,117 @@ export default {
       getOrderDetails(orderNumber).then(response => {
         this.listLoading = false
         this.formInline = response.data
+        const createDateShow = response.data.createDate
+        const payDateShow = response.data.payDate
+        const deliverDateShow = response.data.deliverDate
+        const finishDateShow = response.data.finishDate
+        if (createDateShow) {
+          this.createDateShow = true
+        }
+        if (payDateShow) {
+          this.payDateShow = true
+        }
+        if (deliverDateShow) {
+          this.deliverDateShow = true
+        }
+        if (finishDateShow) {
+          this.finishDateShow = true
+        }
+        //    payDateShow:false,
+        // deliverDateShow:false,
+        // finishDateShow:false,
         this.consigneeInfo = response.data.consigneeInfo
-        // var tableData = []
+        // const orderDetailVOList = response.data.orderDetailVOList
+        // var newData = []
         // for (var i = 0; i < orderDetailVOList.length; i++) {
-        //   tableData.push(eval('(' + orderDetailVOList[i].goodsSnapshot + ')'))
+        //   newData.push(eval('(' + orderDetailVOList[i].goodsSnapshot + ')'))
         // }
-        // this.tableData = tableData
+        // for (var j = 0; j < newData.length; j++) {
+        //   orderDetailVOList[j].mainImgUrl = newData[j].mainImgUrl
+        // }
+        // this.tableData = orderDetailVOList
+        // console.log(orderDetailVOList)
         this.postageType = response.data.postageinfo.postageType
-        this.payVoucher = this.imageUrl + '/' + response.data.payVoucher
+        if (response.data.payVoucher) {
+          this.payVoucher = this.imageUrl + '/' + response.data.payVoucher
+          this.showImg = true
+        }
       })
     }
   }
 }
 </script>
 <style>
+.block{
+  margin-top: 0;
+}
 .pay-img img {
   width: 400px;
   height: auto;
 }
 .order-row {
-  padding: 20px;
-  color: #e02840;
-  font-size: 16px;
+  padding: 30px;
+  font-size: 18px;
+  border-bottom: 1px solid #F5F5F5;
+  padding-bottom: 20px;
+}
+.order-row .el-col-6{
+  padding:10px 0;
+}
+.order-col {
+  font-size: 24px;
+  padding-bottom: 20px;
+  color: #DD1B34;
+  font-weight: bold
+}
+.o-font{
+  color: #DD1B34;
 }
 .order-row1 {
-  padding: 10px 20px;
+  padding: 10px 0;
+  margin: 0 30px;
+  margin-top: 10px
 }
 .order-row1 .el-col-6,
 .order-row1 .el-col-12,
 .order-row1 .el-col-24 {
   color: #999;
-  font-size: 14px;
+  font-size: 16px;
   height: unset;
   padding: 10px 0;
 }
 .order-row1 span {
-  color: #333;
+  color: #000;
 }
 .order-row .el-col-12 {
   height: unset;
 }
-.order-col {
-  text-align: right;
-}
 .order-row1 > .order-t {
-  border-bottom: 1px solid #f2f2f2;
-  font-size: 16px;
-  color: #333;
+  border-bottom: 1px dotted #f2f2f2;
+  font-size: 18px;
+  color: #000;
   padding-bottom: 10px;
+}
+.new-t .el-table th{
+  background: #FCFCFC;
+  font-size: 18px;
+  border-top: 1px solid #F2F2F2;
+  font-weight: normal;
+  color: #000;
+}
+.all-m{
+  height: 100px;
+  line-height: 100px;
+  border-bottom: 1px solid #F2F2F2;
+  text-align: right;
+  font-size: 16px;
+  padding-right: 40px
+}
+.all-m span{
+  color: #E02840;
+}
+.all-m span:last-child{
+  font-size: 30px;
 }
 </style>
 
