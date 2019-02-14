@@ -29,8 +29,8 @@
       <el-form-item label="是否冻结">
         <el-select v-model="formInline.freeze" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
-          <el-option label="已开通" value="true">已冻结</el-option>
-          <el-option label="未开通" value="false">未冻结</el-option>
+          <el-option label="已冻结" value="true">已冻结</el-option>
+          <el-option label="未冻结" value="false">未冻结</el-option>
         </el-select>
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -133,12 +133,12 @@
         <el-form-item :label-width="formLabelWidth" label="商户编号" prop="merchantNumber">
           <el-input v-model="addAccountData.merchantNumber"/>
         </el-form-item>
-        <el-form-item label="商户类型" prop="merchantType">
+        <!-- <el-form-item label="商户类型" prop="merchantType">
           <el-select v-model="addAccountData.merchantType" placeholder="请选择">
             <el-option label="全部" value>全部</el-option>
             <el-option label="优生活平台" value="0">优生活平台</el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="账户类型" prop="accountType">
           <el-select v-model="addAccountData.accountType" placeholder="请选择">
             <el-option label="全部" value>全部</el-option>
@@ -173,12 +173,14 @@ export default {
         merchantNumber: '',
         merchantType: '',
         accountType: '',
-        status: '',
-        freeze: ''
+        status: 'on',
+        freeze: 'false'
       },
       listLoading: false,
       total: 0,
       listQuery: {
+        status: 'on',
+        freeze: 'false',
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
@@ -186,9 +188,6 @@ export default {
       rules: {
         merchantNumber: [
           { required: true, message: '商户编号不能为空', trigger: 'blur' }
-        ],
-        merchantType: [
-          { required: true, message: '商户类型不能为空', trigger: 'blur' }
         ],
         accountType: [
           { required: true, message: '账户类型不能为空', trigger: 'blur' }

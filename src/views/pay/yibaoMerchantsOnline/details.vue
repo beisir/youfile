@@ -24,7 +24,7 @@
         <el-form-item label="联系电话：" prop="linkmanPhone">
           <el-input :readonly="readonly" v-model="merchantVOData.linkmanPhone"/>
         </el-form-item>
-        <el-form-item label="联系人邮箱：" prop="linkmanEmail">
+        <el-form-item label="联系人邮箱：">
           <el-input :readonly="readonly" v-model="merchantVOData.linkmanEmail"/>
         </el-form-item>
         <el-form-item label="商户编号：" prop="merchantNumber">
@@ -339,7 +339,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="开户行支行：" prop="subBankName">
+        <el-form-item label="开户行支行：">
           <el-input
             :readonly="readonly"
             v-model="merchantVOData.subBankName"
