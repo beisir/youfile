@@ -80,7 +80,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
-    <el-dialog :visible.sync="dialogShow" title="商户详情">
+    <el-dialog :visible.sync="dialogShow" class="new-dialog" title="商户详情">
       <el-form
         :inline="true"
         :label-width="formLabelWidth"
@@ -355,6 +355,9 @@ export default {
 <style>
 .same-wid input {
   width: 160px;
+}
+.new-dialog .el-dialog__body input{
+  width: 200px;
 }
 </style>
 
