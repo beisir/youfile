@@ -295,20 +295,17 @@ export default {
         if (finishDateShow) {
           this.finishDateShow = true
         }
-        //    payDateShow:false,
-        // deliverDateShow:false,
-        // finishDateShow:false,
         this.consigneeInfo = response.data.consigneeInfo
-        // const orderDetailVOList = response.data.orderDetailVOList
-        // var newData = []
-        // for (var i = 0; i < orderDetailVOList.length; i++) {
-        //   newData.push(eval('(' + orderDetailVOList[i].goodsSnapshot + ')'))
-        // }
-        // for (var j = 0; j < newData.length; j++) {
-        //   orderDetailVOList[j].mainImgUrl = newData[j].mainImgUrl
-        // }
-        // this.tableData = orderDetailVOList
-        // console.log(orderDetailVOList)
+        const orderDetailVOList = response.data.orderDetailVOList
+        var newData = []
+        for (var i = 0; i < orderDetailVOList.length; i++) {
+          newData.push(JSON.parse(orderDetailVOList[i].goodsSnapshot))
+        }
+        for (var j = 0; j < newData.length; j++) {
+          orderDetailVOList[j].mainImgUrl = newData[j].mainImgUrl
+        }
+        this.tableData = orderDetailVOList
+        console.log(orderDetailVOList)
         this.postageType = response.data.postageinfo.postageType
         if (response.data.payVoucher) {
           this.payVoucher = this.imageUrl + '/' + response.data.payVoucher

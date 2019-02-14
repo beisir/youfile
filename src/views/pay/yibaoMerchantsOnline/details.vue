@@ -187,7 +187,7 @@
         <el-form-item label="法人身份证号：" prop="legalIdCard">
           <el-input :readonly="readonly" v-model="merchantVOData.legalIdCard"/>
         </el-form-item>
-        <el-form-item label="组织机构代码有效期至：" prop="organExpireEndDate">
+        <el-form-item label="组织机构代码有效期至：">
           <el-date-picker
             v-model="merchantVOData.organExpireEndDate"
             type="date"
@@ -195,7 +195,7 @@
             style="width: 100%;"
           />
         </el-form-item>
-        <el-form-item label="组织机构代码证是否长期有效：" prop="organType">
+        <el-form-item label="组织机构代码证是否长期有效：">
           <el-select v-model="merchantVOData.organType" placeholder="请选择" disabled="disabled">
             <el-option
               v-for="item in organTypeData"
@@ -358,7 +358,7 @@
             </el-table>
           </div>
         </el-form-item>
-        <el-form-item label="结算方式：" prop="settleType">
+        <el-form-item label="结算方式：" >
           <el-select v-model="merchantVOData.settleType" placeholder="请选择" disabled="disabled">
             <el-option label="请选择" value>请选择</el-option>
             <el-option label="自助结算" value="1">自助结算</el-option>
@@ -459,20 +459,6 @@ export default {
             trigger: 'blur'
           }
         ],
-        organExpireEndDate: [
-          {
-            required: true,
-            message: '组织机构代码有效期至不能为空',
-            trigger: 'blur'
-          }
-        ],
-        organType: [
-          {
-            required: true,
-            message: '组织机构代码证是否长期有效不能为空',
-            trigger: 'blur'
-          }
-        ],
         bankCard: [
           { required: true, message: '银行账户不能为空', trigger: 'blur' }
         ],
@@ -493,9 +479,6 @@ export default {
         ],
         subBankName: [
           { required: true, message: '开户行支行不能为空', trigger: 'blur' }
-        ],
-        settleType: [
-          { required: true, message: '结算方式不能为空', trigger: 'blur' }
         ],
         scenePhoneUrl: [
           { required: true, message: '收银台场景照不能为空', trigger: 'blur' }
