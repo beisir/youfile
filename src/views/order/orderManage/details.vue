@@ -53,7 +53,9 @@
         <el-col v-if="formInline.logisticsMode=='2'" :span="12">
           <div>
             收货地址：
-            <span v-if="consigneeInfoShow">{{ consigneeInfo.city }}{{ consigneeInfo.province }}{{ consigneeInfo.county }}{{ consigneeInfo.detailAddress }}</span>
+            <span
+              v-if="consigneeInfoShow"
+            >{{ consigneeInfo.city }}{{ consigneeInfo.province }}{{ consigneeInfo.county }}{{ consigneeInfo.detailAddress }}</span>
           </div>
         </el-col>
       </el-row>
@@ -160,11 +162,14 @@
           </el-table-column>
           <el-table-column label="优惠" align="center"/>
           <el-table-column prop="payAmount" width="180" label="订单总金额" align="center">
-            <template slot-scope="scope"><span class="t-payAmount">￥{{ scope.row.payAmount }}</span></template>
+            <template slot-scope="scope">
+              <span class="t-payAmount">￥{{ scope.row.payAmount }}</span>
+            </template>
           </el-table-column>
         </el-table>
       </div>
-      <el-row class="all-m">共
+      <el-row class="all-m">
+        共
         <span>{{ formInline.num }}</span>件商品 | 实付金额：
         <span>￥{{ formInline.payAmount }}</span>
       </el-row>
@@ -186,7 +191,11 @@
         <el-col v-if="formInline.payType=='offline'" :span="24">
           <div>
             支付凭证：
-            <img v-if="showImg" :src="payVoucher" style="width:400px;height:auto;vertical-align: top">
+            <img
+              v-if="showImg"
+              :src="payVoucher"
+              style="width:400px;height:auto;vertical-align: top"
+            >
           </div>
         </el-col>
       </el-row>
@@ -217,20 +226,50 @@
       <el-row v-if="receiptInfoShow" class="order-row1">
         <div class="order-t">发票信息</div>
         <el-col :span="24">
+          <div v-if="receiptInfo.receiptInfo=='个人'">
+            发票类型：
+            <span>{{ receiptInfo.receiptInfo }}</span>
+          </div>
+        </el-col>
+        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
           <div>
             发票类型：
             <span>{{ receiptInfo.invoiceCategory }}</span>
           </div>
         </el-col>
-        <el-col :span="24">
+        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
           <div>
             发票抬头：
             <span>{{ receiptInfo.invoiceTitle }}</span>
           </div>
         </el-col>
-        <el-col :span="24">
+        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
           <div>
             纳税人识别号：
+            <span>{{ receiptInfo.identificationNumber }}</span>
+          </div>
+        </el-col>
+        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+          <div>
+            注册地址：
+            <span>{{ receiptInfo.registeredAddress }}</span>
+          </div>
+        </el-col>
+        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+          <div>
+            注册电话：
+            <span>{{ receiptInfo.registererMobile }}</span>
+          </div>
+        </el-col>
+        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+          <div>
+            开户银行：
+            <span>{{ receiptInfo.depositBank }}</span>
+          </div>
+        </el-col>
+        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+          <div>
+            开户账号：
             <span>{{ receiptInfo.depositBankNumber }}</span>
           </div>
         </el-col>
@@ -427,15 +466,16 @@ export default {
 .all-m span:last-child {
   font-size: 30px;
 }
-.new-t .el-table th{
-  z-index: 99
+.new-t .el-table th {
+  z-index: 99;
 }
-.xian_last{
+.xian_last {
   width: 1px;
   height: 100%;
   background: #f2f2f2;
   z-index: 98;
-  position: absolute;right: 210px;
+  position: absolute;
+  right: 210px;
 }
 .new-t .el-table td div {
   color: #000;
@@ -461,19 +501,19 @@ export default {
   height: auto;
   margin-right: 3px;
   vertical-align: middle;
-  margin-top: -1px
+  margin-top: -1px;
 }
-.table-c{
-  padding:0 30px;
+.table-c {
+  padding: 0 30px;
   margin-top: 20px;
   position: relative;
 }
-.new-t .el-table td div span.t-payAmount{
+.new-t .el-table td div span.t-payAmount {
   font-size: 20px;
   font-weight: normal;
   color: #000;
 }
-.new-t .el-table td .g-srtle{
+.new-t .el-table td .g-srtle {
   font-size: 14px;
 }
 </style>

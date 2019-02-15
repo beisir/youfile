@@ -72,8 +72,8 @@
       </el-table-column>
       <el-table-column prop="orderCategory" width="120" label="支付方式" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderRespVO.payType=='offline'">线下方式</span>
-          <span v-if="scope.row.orderRespVO.payType=='online'">在线方式</span>
+          <span v-if="scope.row.orderRespVO.payType=='offline'">其他支付方式</span>
+          <span v-if="scope.row.orderRespVO.payType=='online'">在线支付</span>
         </template>
       </el-table-column>
       <el-table-column prop="createDate" width="180" label="创建时间" align="center">

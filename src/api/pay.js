@@ -100,3 +100,10 @@ export function registerStatus(params) {
     params
   })
 }
+export function confirmReg(params) {
+  return request({
+    url: '/register/merchant/pay/yeepay/register/confirm',
+    method: 'get',
+    params
+  })
+}

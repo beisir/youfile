@@ -71,9 +71,15 @@
       <el-table-column prop="updateDate" label="更新时间" width="180" align="center">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateDate) }}</template>
       </el-table-column>
-      <el-table-column prop="onlinePay" label="操作" fixed="right" width="150" align="center">
+      <el-table-column prop="onlinePay" label="操作" fixed="right" width="200" align="left">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="getDetails(scope.$index, scope.row )">详情</el-button>
+          <el-button
+            v-if="scope.row.registerStatus!='register_success'"
+            size="mini"
+            type="primary"
+            @click="registerStatus(scope.$index, scope.row )"
+          >入网状态</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -87,6 +93,25 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+    <el-dialog :visible.sync="statusNewShow" title="入网状态">
+      <el-form>
+        <el-form-item label="入网状态">
+          <el-select v-model="statusNew" disabled="disabled" placeholder="请选择">
+            <el-option label="全部" value>全部</el-option>
+            <el-option label="注册成功" value="register_success">注册成功</el-option>
+            <el-option label="审核中" value="register_processing">审核中</el-option>
+            <el-option label="初始化" value="init">初始化</el-option>
+            <el-option label="未知" value="unkonown">未知</el-option>
+            <el-option label="注册失败" value="register_fail">注册失败</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="statusNew=='register_success'" align="center">
+          <template>
+            <el-button type="primary" @click="confirmReg">确定</el-button>
+          </template>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
     <el-dialog :visible.sync="merchantSignShow" title="商户编号">
       <el-form :model="formData" :rules="rules" :ref="formData">
         <el-form-item :label-width="formLabelWidth" prop="merchantSign" label="商户编号">
@@ -143,12 +168,19 @@
   </div>
 </template>
 <script>
-import { getMerchantList, getMerchantDetails } from '@/api/pay'
+import {
+  getMerchantList,
+  getMerchantDetails,
+  registerStatus,
+  confirmReg
+} from '@/api/pay'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
       imageUrl: this.Const.imageUrl,
+      statusNew: '',
+      statusNewShow: false,
       formInline: {
         merchantNumber: '',
         registerStatus: ''
@@ -176,7 +208,8 @@ export default {
       merchantMes: '',
       jsonData: {},
       rowData: {},
-      value6: ''
+      value6: '',
+      requestNumber: ''
     }
   },
   created() {
@@ -189,8 +222,8 @@ export default {
       this.listQuery.pageNum = 1
       const arrData = this.value6
       if (arrData) {
-        this.listQuery.openPayBeginDate = (new Date(arrData[0])).getTime()
-        this.listQuery.openPayEndDate = (new Date(arrData[1])).getTime()
+        this.listQuery.openPayBeginDate = new Date(arrData[0]).getTime()
+        this.listQuery.openPayEndDate = new Date(arrData[1]).getTime()
       } else {
         this.listQuery.openPayBeginDate = ''
         this.listQuery.openPayEndDate = ''
@@ -227,6 +260,35 @@ export default {
           })
         }
       })
+    },
+    // 查看入网状态
+    registerStatus(index, row) {
+      const requestNumber = row.requestNumber
+      this.requestNumber = requestNumber
+      registerStatus({ requestNumber: requestNumber }).then(response => {
+        this.statusNew = response.data
+        this.statusNewShow = true
+      })
+    },
+    // 确认入网
+    confirmReg() {
+      this.$confirm('确定要入网吗？', '提示', {
+        confirmNuttonText: '确定',
+        concelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          const requestNumber = this.requestNumber
+          confirmReg({ requestNumber: requestNumber }).then(response => {
+            this.$message({
+              type: 'success',
+              message: response.msg
+            })
+            this.statusNewShow = false
+            this.getList()
+          })
+        })
+        .catch(() => {})
     },
     getDetails(index, row) {
       const requestNumber = row.requestNumber
