@@ -184,7 +184,7 @@
           </div>
         </el-col>
       </el-row>
-      <el-row v-if="formInline.payType=='offline'" class="order-row1">
+      <el-row v-if="formInline.logisticsMode=='2'" class="order-row1">
         <div class="order-t">物流信息</div>
         <el-col :span="24">
           <div>
@@ -199,7 +199,7 @@
           </div>
         </el-col>
       </el-row>
-      <el-row v-if="formInline.payType=='online'" class="order-row1">
+      <el-row v-if="formInline.logisticsMode=='1'" class="order-row1">
         <div class="order-t">自提信息</div>
         <el-col :span="24">
           <div>
