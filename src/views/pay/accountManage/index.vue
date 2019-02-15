@@ -173,14 +173,12 @@ export default {
         merchantNumber: '',
         // merchantType: '',
         accountType: '',
-        status: 'on',
-        freeze: 'false'
+        status: '',
+        freeze: ''
       },
       listLoading: false,
       total: 0,
       listQuery: {
-        status: 'on',
-        freeze: 'false',
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },

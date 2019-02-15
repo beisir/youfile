@@ -152,7 +152,7 @@ export default {
       value6: '',
       formInline: {
         merchantNumber: '',
-        registerStatus: 'register_success'
+        registerStatus: ''
       },
       formData: {
         merchantSign: ''
@@ -170,7 +170,6 @@ export default {
       listQuery: {
         registerChannel: 'YEEPAY',
         thirdMerchantRole: 'sub_merchant',
-        registerStatus: 'register_success',
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },

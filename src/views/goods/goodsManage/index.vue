@@ -122,7 +122,6 @@ export default {
       total: 0,
       listQuery: {
         pageNum: 1, // 页码
-        status: 1,
         pageSize: 10 // 每页数量
       },
       tableData: []

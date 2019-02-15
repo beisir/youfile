@@ -115,12 +115,11 @@ export default {
         merchantType: '',
         merchantName: '',
         merchantNumber: '',
-        onlinePay: '1'
+        onlinePay: ''
       },
       listLoading: false,
       total: 0,
       listQuery: {
-        onlinePay: '1',
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },

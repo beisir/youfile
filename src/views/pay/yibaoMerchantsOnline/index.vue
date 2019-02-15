@@ -151,7 +151,7 @@ export default {
       imageUrl: this.Const.imageUrl,
       formInline: {
         merchantNumber: '',
-        registerStatus: 'register_success'
+        registerStatus: ''
       },
       formData: {
         merchantSign: ''
@@ -168,7 +168,6 @@ export default {
       dialogTableVisible: false,
       listQuery: {
         registerChannel: 'YEEPAY',
-        registerStatus: 'register_success',
         thirdMerchantRole: 'ledger_merchant',
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
