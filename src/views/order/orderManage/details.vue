@@ -322,7 +322,9 @@ export default {
         const orderDetailVOList = response.data.orderRespVO.orderDetailVOList
         var newData = []
         for (var i = 0; i < orderDetailVOList.length; i++) {
-          newData.push(JSON.parse(orderDetailVOList[i].goodsSnapshot))
+          if (orderDetailVOList[i].goodsSnapshot) {
+            newData.push(JSON.parse(orderDetailVOList[i].goodsSnapshot))
+          }
         }
         for (var j = 0; j < newData.length; j++) {
           orderDetailVOList[j].mainImgUrl = newData[j].mainImgUrl
