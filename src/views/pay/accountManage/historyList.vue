@@ -85,7 +85,7 @@
         </template>
       </el-table-column>
       <!-- <el-table-column prop="remark" label="备注" align="center"/> -->
-      <el-table-column prop="goodsName" label="商品名称" align="center"/>
+      <!-- <el-table-column prop="goodsName" label="商品名称" align="center"/>
       <el-table-column prop="canSettle" label="是否可结算" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.canSettle=='0'">否</span>
@@ -97,7 +97,7 @@
           <span v-if="scope.row.hasSettle=='0'">否</span>
           <span v-if="scope.row.hasSettle=='1'">是</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination
       :current-page="listQuery.page"

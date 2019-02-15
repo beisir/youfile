@@ -174,7 +174,7 @@
           <div>
             支付方式：
             <span v-if="formInline.payType=='offline'">其他支付方式</span>
-            <span v-if="formInline.payType=='online'">在线方式</span>
+            <span v-if="formInline.payType=='online'">在线支付</span>
           </div>
         </el-col>
         <el-col v-if="formInline.payType=='online'" :span="24">
