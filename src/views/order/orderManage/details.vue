@@ -138,11 +138,11 @@
           <el-table-column width="250">
             <template slot-scope="scope">
               <div>{{ scope.row.goodsName }}</div>
-              <div>
+              <div class="g-srtle">
                 <span>商品ID：</span>
                 {{ scope.row.goodsId }}
               </div>
-              <div>{{ scope.row.goodsDesc }}</div>
+              <div class="g-srtle">{{ scope.row.goodsDesc }}</div>
             </template>
           </el-table-column>
           <el-table-column prop="sellPrice" label="商品价格" align="center">
@@ -177,13 +177,6 @@
             <span>{{ formInline.paymentNumber }}</span>
           </div>
         </el-col>
-        <!--
-        <el-col :span="24">
-          <div>
-            收款方商户编号：
-            <span>{{ formInline.receiveMerchantNumber }}</span>
-          </div>
-        </el-col>-->
         <el-col v-if="formInline.payType=='offline'" :span="24">
           <div>
             支付凭证：
@@ -401,7 +394,7 @@ export default {
 }
 .new-t .el-table th {
   background: #fcfcfc;
-  font-size: 18px;
+  font-size: 16px;
   border-top: 1px solid #f2f2f2;
   font-weight: normal;
   color: #000;
@@ -432,6 +425,7 @@ export default {
 }
 .new-t .el-table td div {
   color: #000;
+  font-size: 16px;
 }
 .new-t .el-table td div span {
   color: #999;
@@ -461,9 +455,12 @@ export default {
   position: relative;
 }
 .new-t .el-table td div span.t-payAmount{
-  font-size: 18px;
+  font-size: 20px;
   font-weight: normal;
   color: #000;
+}
+.new-t .el-table td .g-srtle{
+  font-size: 14px;
 }
 </style>
 

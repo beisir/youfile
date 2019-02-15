@@ -45,6 +45,11 @@
           ￥{{ scope.row.orderRespVO.orderAmount }}
         </template>
       </el-table-column>
+      <el-table-column prop="num" width="120" label="商品数量" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.orderRespVO.num }}
+        </template>
+      </el-table-column>
       <el-table-column prop="customerUserNickName" width="120" label="买家昵称" align="center"/>
       <el-table-column prop="storeName" width="120" label="店铺名称" align="center"/>
       <el-table-column prop="orderStatus" width="180" label="订单状态" align="center">

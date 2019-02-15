@@ -1,7 +1,7 @@
 <template>
   <div class="body-cont">
     <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
-      <el-form-item label="">
+      <el-form-item label>
         <el-input v-model="formInline.keyWords" style="width:250px" placeholder="订单编号、店铺ID、运单号"/>
       </el-form-item>
       <el-form-item label="订单状态">
@@ -33,17 +33,23 @@
       />
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
-    <el-table v-loading.body="listLoading" :data="tableData" max-height="800" highlight-current-row border style="width: 100%">
+    <el-table
+      v-loading.body="listLoading"
+      :data="tableData"
+      max-height="800"
+      highlight-current-row
+      border
+      style="width: 100%"
+    >
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="orderNumber" width="180" label="订单编号" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.orderRespVO.orderNumber }}
-        </template>
+        <template slot-scope="scope">{{ scope.row.orderRespVO.orderNumber }}</template>
       </el-table-column>
       <el-table-column prop="orderAmount" width="150" label="订单金额（元）" align="center">
-        <template slot-scope="scope">
-          ￥{{ scope.row.orderRespVO.orderAmount }}
-        </template>
+        <template slot-scope="scope">￥{{ scope.row.orderRespVO.orderAmount }}</template>
+      </el-table-column>
+      <el-table-column prop="num" width="120" label="商品数量" align="center">
+        <template slot-scope="scope">{{ scope.row.orderRespVO.num }}</template>
       </el-table-column>
       <el-table-column prop="customerUserNickName" width="120" label="买家昵称" align="center"/>
       <el-table-column prop="storeName" width="120" label="店铺名称" align="center"/>
@@ -70,14 +76,10 @@
         </template>
       </el-table-column>
       <el-table-column prop="createDate" width="180" label="创建时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.orderRespVO.createDate) }}
-        </template>
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.orderRespVO.createDate) }}</template>
       </el-table-column>
       <el-table-column prop="updateDate" width="180" label="更新时间" align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.orderRespVO.updateDate) }}
-        </template>
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.orderRespVO.updateDate) }}</template>
       </el-table-column>
       <el-table-column label=" 操作" fixed="right" width="250" align="center">
         <template slot-scope="scope">
@@ -86,11 +88,7 @@
             type="primary"
             @click="getOrderDetails(scope.$index, scope.row )"
           >查看详情</el-button>
-          <el-button
-            size="mini"
-            type="warning"
-            @click="getPayList(scope.$index, scope.row )"
-          >查看支付列表</el-button>
+          <el-button size="mini" type="warning" @click="getPayList(scope.$index, scope.row )">查看支付列表</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -141,8 +139,8 @@ export default {
       this.listQuery.pageNum = 1
       const arrData = this.value6
       if (arrData) {
-        this.listQuery.dateBegin = (new Date(arrData[0])).getTime()
-        this.listQuery.dateEnd = (new Date(arrData[1])).getTime()
+        this.listQuery.dateBegin = new Date(arrData[0]).getTime()
+        this.listQuery.dateEnd = new Date(arrData[1]).getTime()
       } else {
         this.listQuery.dateBegin = ''
         this.listQuery.dateEnd = ''

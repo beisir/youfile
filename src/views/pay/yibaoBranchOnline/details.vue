@@ -231,7 +231,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="经营场所门头照：" prop="storePhotoUrl">
+            <el-form-item label="经营场所门头照：">
               <el-upload
                 :limit="1"
                 :file-list="storePhotoUrlList"
@@ -242,7 +242,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="收银台场景照：" prop="scenePhoneUrl">
+            <el-form-item
+              label="收银台场景照："
+            >
               <el-upload
                 :limit="1"
                 :file-list="scenePhoneUrlList"
@@ -520,12 +522,6 @@ export default {
         ],
         settleType: [
           { required: true, message: '结算方式不能为空', trigger: 'blur' }
-        ],
-        scenePhoneUrl: [
-          { required: true, message: '收银台场景照不能为空', trigger: 'blur' }
-        ],
-        storePhotoUrl: [
-          { required: true, message: '经营场所门头照不能为空', trigger: 'blur' }
         ],
         industryLicenseUrl: [
           { required: true, message: '行业许可证不能为空', trigger: 'blur' }
