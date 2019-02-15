@@ -57,14 +57,13 @@
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="accountNumber" label="账户编号" align="center"/>
       <el-table-column prop="merchantNumber" label="商户编号" align="center"/>
-      <el-table-column prop="accountBalance" label="账户余额" align="center">
+      <!-- <el-table-column prop="accountBalance" label="账户余额" align="center">
         <template slot-scope="scope">{{ scope.row.accountBalance }}元</template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="amount" label="金额" align="center">
         <template slot-scope="scope">{{ scope.row.amount }}元</template>
       </el-table-column>
       <el-table-column prop="paymentNumber" label="支付编号" align="center"/>
-
       <el-table-column prop="changeType" label="类型" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.changeType=='in'" style="color: #E6A23C">账户收入</span>
@@ -85,7 +84,7 @@
           <span v-if="scope.row.inAccountDate!=null">{{ unix2CurrentTime(scope.row.inAccountDate) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="备注" align="center"/>
+      <!-- <el-table-column prop="remark" label="备注" align="center"/> -->
       <el-table-column prop="goodsName" label="商品名称" align="center"/>
       <el-table-column prop="canSettle" label="是否可结算" align="center">
         <template slot-scope="scope">

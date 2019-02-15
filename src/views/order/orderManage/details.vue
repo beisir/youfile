@@ -36,11 +36,11 @@
         <el-col :span="6">
           <div v-if="formInline.logisticsMode=='2'">
             收货人姓名：
-            <span>{{ customerUserNickName }}</span>
+            <span v-if="consigneeInfoShow">{{ consigneeInfo.userName }}</span>
           </div>
           <div v-if="formInline.logisticsMode=='1'">
             取货人姓名：
-            <span>{{ customerUserNickName }}</span>
+            <span v-if="consigneeInfoShow">{{ consigneeInfo.userName }}</span>
           </div>
         </el-col>
         <el-col :span="6">
@@ -103,7 +103,7 @@
         <el-col :span="6">
           <div>
             买家昵称：
-            <span>李小妮</span>
+            <span>{{ customerUserNickName }}</span>
           </div>
         </el-col>
         <el-col :span="6">
