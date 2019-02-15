@@ -332,7 +332,9 @@ export default {
         }
         this.tableData = orderDetailVOList
         this.tableIndex = orderDetailVOList.length
-        this.postageType = response.data.orderRespVO.postageinfo.postageType
+        if (response.data.orderRespVO.postageinfo) {
+          this.postageType = response.data.orderRespVO.postageinfo.postageType
+        }
         if (response.data.orderRespVO.payVoucher) {
           this.payVoucher =
             this.imageUrl + '/' + response.data.orderRespVO.payVoucher
