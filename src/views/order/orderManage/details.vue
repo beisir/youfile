@@ -31,10 +31,15 @@
         </el-col>
       </el-row>
       <el-row class="order-row1">
-        <div class="order-t">收货人信息</div>
+        <div v-if="formInline.logisticsMode=='2'" class="order-t">收货人信息</div>
+        <div v-if="formInline.logisticsMode=='1'" class="order-t">取货人信息</div>
         <el-col :span="6">
-          <div>
+          <div v-if="formInline.logisticsMode=='2'">
             收货人姓名：
+            <span>{{ customerUserNickName }}</span>
+          </div>
+          <div v-if="formInline.logisticsMode=='1'">
+            取货人姓名：
             <span>{{ customerUserNickName }}</span>
           </div>
         </el-col>
@@ -44,7 +49,7 @@
             <span v-if="consigneeInfoShow">{{ consigneeInfo.userPhone }}</span>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col v-if="formInline.logisticsMode=='2'" :span="12">
           <div>
             收货地址：
             <span v-if="consigneeInfoShow">{{ consigneeInfo.detailAddress }}</span>
