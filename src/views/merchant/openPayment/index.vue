@@ -61,7 +61,7 @@
       <el-table-column prop="onlinePay" label="在线支付状态" width="160" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.onlinePay==&quot;1&quot;">已开通</span>
-          <span v-if="scope.row.onlinePay==&quot;2&quot;">未开通</span>
+          <span v-if="scope.row.onlinePay==&quot;0&quot;">未开通</span>
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="160" align="center">
