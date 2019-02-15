@@ -93,3 +93,10 @@ export function getHistoryList(params) {
     params
   })
 }
+export function registerStatus(params) {
+  return request({
+    url: '/register/merchant/pay/yeepay/register/query',
+    method: 'get',
+    params
+  })
+}

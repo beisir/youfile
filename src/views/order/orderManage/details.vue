@@ -4,6 +4,7 @@
       <el-row class="order-row">
         <el-col :span="24" class="order-col">
           <div v-if="formInline.orderStatus=='unpaid'">订单状态：待付款</div>
+          <div v-if="formInline.orderStatus=='wait_deliver'">订单状态：待发货</div>
           <div v-if="formInline.orderStatus=='paid'">订单状态：已付款</div>
           <div v-if="formInline.orderStatus=='delivered'">订单状态：已发货/待收货</div>
           <div v-if="formInline.orderStatus=='canceled'">订单状态：订单已取消/订单关闭</div>
@@ -15,9 +16,9 @@
         <el-col :span="6">
           <div>
             订单属性：
-            <span v-if="formInline.orderCategory=='1'">批发订单</span>
-            <span v-if="formInline.orderCategory=='2'">小云店订单</span>
-            <span v-if="formInline.orderCategory=='3'">零售订单</span>
+            <span v-if="formInline.orderCategory=='1'">进货单</span>
+            <span v-if="formInline.orderCategory=='2'">云产品订单</span>
+            <span v-if="formInline.orderCategory=='3'">商品订单</span>
             <span v-if="formInline.orderCategory=='4'">门店订单</span>
           </div>
         </el-col>
@@ -52,7 +53,7 @@
         <el-col v-if="formInline.logisticsMode=='2'" :span="12">
           <div>
             收货地址：
-            <span v-if="consigneeInfoShow">{{ consigneeInfo.detailAddress }}</span>
+            <span v-if="consigneeInfoShow">{{ consigneeInfo.city }}{{ consigneeInfo.province }}{{ consigneeInfo.county }}{{ consigneeInfo.detailAddress }}</span>
           </div>
         </el-col>
       </el-row>
@@ -172,7 +173,7 @@
         <el-col :span="24">
           <div>
             支付方式：
-            <span v-if="formInline.payType=='offline'">线下方式</span>
+            <span v-if="formInline.payType=='offline'">其他支付方式</span>
             <span v-if="formInline.payType=='online'">在线方式</span>
           </div>
         </el-col>
