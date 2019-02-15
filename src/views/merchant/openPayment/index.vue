@@ -101,7 +101,8 @@
 import {
   getListMerchantRetail,
   closePay,
-  savePayMes
+  savePayMes,
+  getPayMes
 } from '@/api/merchant'
 import { unix2CurrentTime } from '@/utils'
 export default {
@@ -175,19 +176,30 @@ export default {
     getDetailsFun(index, row) {
       var merchantNumber = row.merchantNumber
       this.merchantNumber = merchantNumber
-      this.$confirm('是否关闭商户在线支付?', '提示', {
+      this.$confirm('是否开通商户在线支付?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          const data = { merchantNumber: merchantNumber, onlinePay: true }
-          savePayMes(data).then(response => {
-            this.$message({
-              type: 'success',
-              message: '保存成功!'
+          getPayMes(merchantNumber).then(response => {
+            var data = {}
+            if (response.data) {
+              data = {
+                merchantNumber: merchantNumber,
+                onlinePay: true,
+                id: response.data.id
+              }
+            } else {
+              data = { merchantNumber: merchantNumber, onlinePay: true }
+            }
+            savePayMes(data).then(response => {
+              this.$message({
+                type: 'success',
+                message: '保存成功!'
+              })
+              this.getList()
             })
-            this.getList()
           })
         })
         .catch(() => {})

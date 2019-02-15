@@ -241,7 +241,11 @@
 import { getOrderDetails } from '@/api/order'
 import { unix2CurrentTime } from '@/utils'
 import storeIcon from '@/assets/img/icon.png'
+// import Londing from from './components/LineChart'
 export default {
+  // components:{
+  //   Loading
+  // },
   data() {
     return {
       imageUrl: this.Const.imageUrl,

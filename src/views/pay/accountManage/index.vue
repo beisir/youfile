@@ -7,12 +7,12 @@
       <el-form-item label="商户编号">
         <el-input v-model="formInline.merchantNumber" placeholder="请输入商户编号"/>
       </el-form-item>
-      <el-form-item label="商户类型">
+      <!-- <el-form-item label="商户类型">
         <el-select v-model="formInline.merchantType" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
           <el-option label="优生活平台" value="0">优生活平台</el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="账户类型">
         <el-select v-model="formInline.accountType" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
@@ -171,7 +171,7 @@ export default {
       formInline: {
         accountNumber: '',
         merchantNumber: '',
-        merchantType: '',
+        // merchantType: '',
         accountType: '',
         status: 'on',
         freeze: 'false'
