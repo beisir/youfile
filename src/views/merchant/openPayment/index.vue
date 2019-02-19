@@ -135,9 +135,12 @@ export default {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1
       const arrData = this.value6
+      console.log(arrData)
       if (arrData) {
-        this.listQuery.openPayBeginDate = new Date(arrData[0]).getTime()
-        this.listQuery.openPayEndDate = new Date(arrData[1]).getTime()
+        this.listQuery.openPayBeginDate = arrData[0]
+        this.listQuery.openPayEndDate = arrData[1]
+        // this.listQuery.openPayBeginDate = new Date(arrData[0]).getTime()
+        // this.listQuery.openPayEndDate = new Date(arrData[1]).getTime()
       } else {
         this.listQuery.openPayBeginDate = ''
         this.listQuery.openPayEndDate = ''

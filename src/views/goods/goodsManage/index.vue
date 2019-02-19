@@ -47,6 +47,7 @@
       </el-table-column>
       <el-table-column prop="wholesalePrice" width="120" label="批发价" align="center"/>
       <el-table-column prop="sellPrice" width="120" label="零售价" align="center"/>
+      <el-table-column prop="stockNum" width="120" label="库存" align="center"/>
       <el-table-column prop="status" width="120" label="状态" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.status==0" style="color: #E6A23C">待上架</span>

@@ -81,6 +81,7 @@
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="支付状态">
           <el-select v-model="payStatus" placeholder="请选择">
+            <el-option label="待发货" value="wait_deliver">待发货</el-option>
             <el-option label="已付款" value="paid">已付款</el-option>
             <el-option label="待付款" value="unpaid">待付款</el-option>
             <el-option label="已发货/待收货" value="delivered">已发货/待收货</el-option>

@@ -7,7 +7,7 @@
           <div v-if="formInline.orderStatus=='wait_deliver'">订单状态：待发货</div>
           <div v-if="formInline.orderStatus=='paid'">订单状态：已付款</div>
           <div v-if="formInline.orderStatus=='delivered'">订单状态：已发货/待收货</div>
-          <div v-if="formInline.orderStatus=='canceled'">订单状态：订单已取消/订单关闭</div>
+          <div v-if="formInline.orderStatus=='canceled'">订单状态：订单已取消/订单关闭<span class="cancelReason">原因：{{ formInline.cancelReason }}</span></div>
           <div v-if="formInline.orderStatus=='finish'">订单状态：已完成</div>
         </el-col>
         <el-col :span="6" class="o-font">
@@ -123,7 +123,6 @@
         </el-col>
       </el-row>
       <div class="table-c">
-        <div class="xian_last"/>
         <el-row class="row-img">
           <div>
             <img :src="storeIcon">
@@ -143,7 +142,7 @@
               <img :src="imageUrl+scope.row.mainImgUrl" width="70" height="70">
             </template>
           </el-table-column>
-          <el-table-column width="250">
+          <el-table-column width="350">
             <template slot-scope="scope">
               <div>{{ scope.row.goodsName }}</div>
               <div class="g-srtle">
@@ -228,13 +227,13 @@
         <el-col :span="24">
           <div v-if="receiptInfo.receiptInfo=='个人'">
             发票类型：
-            <span>{{ receiptInfo.receiptInfo }}</span>
+            <span>{{ receiptInfo.invoiceType }}{{ receiptInfo.receiptInfo }}</span>
           </div>
         </el-col>
         <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
           <div>
             发票类型：
-            <span>{{ receiptInfo.invoiceCategory }}</span>
+            <span>{{ receiptInfo.invoiceType }}{{ receiptInfo.invoiceCategory }}</span>
           </div>
         </el-col>
         <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
@@ -318,7 +317,7 @@ export default {
     unix2CurrentTime,
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 7) {
-        if (rowIndex % 2 === 0) {
+        if (rowIndex % this.tableIndex === 0) {
           return {
             rowspan: this.tableIndex,
             colspan: 1
@@ -469,13 +468,9 @@ export default {
 .new-t .el-table th {
   z-index: 99;
 }
-.xian_last {
-  width: 1px;
-  height: 100%;
-  background: #f2f2f2;
-  z-index: 98;
-  position: absolute;
-  right: 210px;
+.new-t .el-table th>.cell{
+  min-width: 80px;
+  padding: 0;
 }
 .new-t .el-table td div {
   color: #000;
@@ -515,6 +510,19 @@ export default {
 }
 .new-t .el-table td .g-srtle {
   font-size: 14px;
+}
+
+.new-t .el-table td:last-child{
+  border-left: 1px solid #f2f2f2;
+}
+.new-t .el-table tr:nth-child(n+2) td:last-child{
+  border-left: 0;
+}
+.cancelReason{
+  font-size: 18px;
+  color: #666;
+  font-weight: normal;
+  margin-left: 20px;
 }
 </style>
 

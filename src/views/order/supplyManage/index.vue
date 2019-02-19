@@ -7,6 +7,7 @@
       <el-form-item label="订单状态">
         <el-select v-model="formInline.orderStatus" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
+          <el-option label="待发货" value="wait_deliver">待发货</el-option>
           <el-option label="待付款" value="unpaid">待付款</el-option>
           <el-option label="已付款" value="paid">已付款</el-option>
           <el-option label="已发货/待收货" value="delivered">已发货/待收货</el-option>
@@ -55,6 +56,7 @@
       <el-table-column prop="storeName" width="120" label="店铺名称" align="center"/>
       <el-table-column prop="orderStatus" width="180" label="订单状态" align="center">
         <template slot-scope="scope">
+          <span v-if="scope.row.orderRespVO.orderStatus=='wait_deliver'">待发货</span>
           <span v-if="scope.row.orderRespVO.orderStatus=='unpaid'">待付款</span>
           <span v-if="scope.row.orderRespVO.orderStatus=='paid'">已付款</span>
           <span v-if="scope.row.orderRespVO.orderStatus=='delivered'">已发货/待收货</span>
