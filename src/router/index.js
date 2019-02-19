@@ -266,6 +266,15 @@ export const asyncRouterMap = [
         meta: {
           title: 'settlementManage'
         }
+      },
+      {
+        path: '/settlementManage/aountList',
+        component: () => import('@/views/settlement/settlementManage/aountList'),
+        name: 'aountList',
+        meta: {
+          title: 'aountList'
+        },
+        hidden: true
       }
     ]
   },

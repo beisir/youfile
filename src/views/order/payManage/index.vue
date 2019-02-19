@@ -31,12 +31,26 @@
           <span v-if="scope.row.channel=='wx_mini_app'">微信小程序支付</span>
         </template>
       </el-table-column>
-      <el-table-column prop="status" width="150" label="支付状态" align="center"/>
+      <el-table-column width="150" label="支付状态" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.status=='unkowon'">未知</span>
+          <span v-if="scope.row.status=='refunded'">已退款</span>
+          <span v-if="scope.row.status=='cancel'">已撤销</span>
+          <span v-if="scope.row.status=='initial'">未支付</span>
+          <span v-if="scope.row.status=='inpayment'">支付中</span>
+          <span v-if="scope.row.status=='paid'">已支付</span>
+          <span v-if="scope.row.status=='failure'">支付失败</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="paidDate" width="170" label="支付完成时间" align="center">
-        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.paidDate) }}</template>
+        <template slot-scope="scope">
+          <span v-if="scope.row.paidDate!=null"> {{ unix2CurrentTime(scope.row.paidDate) }}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="timeoutDate" width="170" label="支付过期时间" align="center">
-        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.timeoutDate) }}</template>
+        <template slot-scope="scope">
+          <span v-if="scope.row.timeoutDate!=null"> {{ unix2CurrentTime(scope.row.timeoutDate) }}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="createDate" width="170" label="创建日期" align="center">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createDate) }}</template>
@@ -56,8 +70,13 @@
           <span v-if="scope.row.canDivideAccount=='1'">是</span>
         </template>
       </el-table-column>
-      <el-table-column prop="hasRefund" width="150" label="是否已退款" align="center"/>
-      <el-table-column label=" 操作" fixed="right" width="150" align="center">
+      <el-table-column prop="hasRefund" width="150" label="是否已退款" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.hasRefund==false">否</span>
+          <span v-if="scope.row.hasRefund==true">是</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label=" 操作" fixed="right" width="150" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -65,7 +84,7 @@
             @click="getPayDetails(scope.$index, scope.row )"
           >查询支付状态</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination
       :current-page="listQuery.page"
@@ -77,7 +96,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
-    <el-dialog :visible.sync="dialogShow" class="el-dialog1" title="支付状态">
+    <!-- <el-dialog :visible.sync="dialogShow" class="el-dialog1" title="支付状态">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="支付状态">
           <el-select v-model="payStatus" placeholder="请选择">
@@ -93,11 +112,11 @@
       <el-row class="submit-btn">
         <el-button type="primary" @click="editMes()">确定</el-button>
       </el-row>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
-import { getPayList, getPayDetails, confirmPay } from '@/api/order'
+import { getPayList } from '@/api/order'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
@@ -135,27 +154,27 @@ export default {
         this.total = response.data == null ? 0 : response.data.totalCount
       })
     },
-    // 查看支付状态详情
-    getPayDetails(index, row) {
-      const paymentNumber = row.paymentNumber
-      this.paymentNumber = paymentNumber
-      getPayDetails(paymentNumber).then(response => {
-        this.payStatus = response.data
-        this.dialogShow = true
-      })
-    },
-    // 确定支付
-    editMes() {
-      const paymentNumber = this.paymentNumber
-      confirmPay(paymentNumber).then(response => {
-        this.$message({
-          type: 'success',
-          message: response.msg
-        })
-        this.dialogShow = false
-        this.getList()
-      })
-    },
+    // // 查看支付状态详情
+    // getPayDetails(index, row) {
+    //   const paymentNumber = row.paymentNumber
+    //   this.paymentNumber = paymentNumber
+    //   getPayDetails(paymentNumber).then(response => {
+    //     this.payStatus = response.data
+    //     this.dialogShow = true
+    //   })
+    // },
+    // // 确定支付
+    // editMes() {
+    //   const paymentNumber = this.paymentNumber
+    //   confirmPay(paymentNumber).then(response => {
+    //     this.$message({
+    //       type: 'success',
+    //       message: response.msg
+    //     })
+    //     this.dialogShow = false
+    //     this.getList()
+    //   })
+    // },
     /**
      * 改变每页数量
      * @param size 页大小

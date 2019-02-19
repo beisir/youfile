@@ -21,6 +21,7 @@ export default {
     refund: '差错退款',
     settlement: '结算',
     settlementManage: '商户结算管理',
+    aountList: '查询结算账户明细',
     merchant: '商户',
     retailList: '商户管理',
     qualificationsManage: '资质管理',
