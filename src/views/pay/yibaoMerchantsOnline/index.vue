@@ -79,7 +79,7 @@
             size="mini"
             type="primary"
             @click="registerStatus(scope.$index, scope.row )"
-          >入网状态</el-button>
+          >确认入网</el-button>
         </template>
       </el-table-column>
     </el-table>

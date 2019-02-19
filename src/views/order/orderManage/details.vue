@@ -225,48 +225,48 @@
       <el-row v-if="receiptInfoShow" class="order-row1">
         <div class="order-t">发票信息</div>
         <el-col :span="24">
-          <div v-if="receiptInfo.receiptInfo=='个人'">
+          <div v-if="receiptInfo.invoiceType=='个人'">
             发票类型：
             <span>{{ receiptInfo.invoiceType }}{{ receiptInfo.receiptInfo }}</span>
           </div>
         </el-col>
-        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+        <el-col v-if="receiptInfo.invoiceType!='个人'" :span="24">
           <div>
             发票类型：
             <span>{{ receiptInfo.invoiceType }}{{ receiptInfo.invoiceCategory }}</span>
           </div>
         </el-col>
-        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+        <el-col v-if="receiptInfo.invoiceType!='个人'" :span="24">
           <div>
             发票抬头：
             <span>{{ receiptInfo.invoiceTitle }}</span>
           </div>
         </el-col>
-        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+        <el-col v-if="receiptInfo.invoiceType!='个人'" :span="24">
           <div>
             纳税人识别号：
             <span>{{ receiptInfo.identificationNumber }}</span>
           </div>
         </el-col>
-        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+        <el-col v-if="receiptInfo.invoiceType!='个人'" :span="24">
           <div>
             注册地址：
             <span>{{ receiptInfo.registeredAddress }}</span>
           </div>
         </el-col>
-        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+        <el-col v-if="receiptInfo.invoiceType!='个人'" :span="24">
           <div>
             注册电话：
             <span>{{ receiptInfo.registererMobile }}</span>
           </div>
         </el-col>
-        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+        <el-col v-if="receiptInfo.invoiceType!='个人'" :span="24">
           <div>
             开户银行：
             <span>{{ receiptInfo.depositBank }}</span>
           </div>
         </el-col>
-        <el-col v-if="receiptInfo.receiptInfo!='个人'" :span="24">
+        <el-col v-if="receiptInfo.invoiceType!='个人'" :span="24">
           <div>
             开户账号：
             <span>{{ receiptInfo.depositBankNumber }}</span>
