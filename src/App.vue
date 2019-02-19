@@ -160,5 +160,8 @@ label {
 .el-date-editor .el-range-separator{
   width: 10%
 }
+.el-date-editor .el-range-input{
+  width: 25%;
+}
 </style>
 

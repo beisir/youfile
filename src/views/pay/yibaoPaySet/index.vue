@@ -22,8 +22,8 @@
         type="daterange"
         range-separator="至 "
         start-placeholder="开始日期"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
+        format="yyyy-MM-dd HH:mm:ss"
+        value-format="yyyy-MM-dd HH:mm:ss"
         end-placeholder="结束日期"
       />
       <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -249,8 +249,8 @@ export default {
       this.listQuery.pageNum = 1
       const arrData = this.value6
       if (arrData) {
-        this.listQuery.openPayBeginDate = (new Date(arrData[0])).getTime()
-        this.listQuery.openPayEndDate = (new Date(arrData[1])).getTime()
+        this.listQuery.openPayBeginDate = arrData[0]
+        this.listQuery.openPayEndDate = arrData[1]
       } else {
         this.listQuery.openPayBeginDate = ''
         this.listQuery.openPayEndDate = ''
