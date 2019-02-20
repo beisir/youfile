@@ -14,7 +14,7 @@
       <el-table-column prop="goodsName" label="商品名称" align="center"/>
       <el-table-column prop="paymentNumber" width="180" label="交易单号" align="center"/>
       <el-table-column prop="amount" label="收款总金额(元)" align="center"/>
-      <el-table-column label="入账时间" width="180" align="center">
+      <el-table-column label="时间" width="180" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.inAccountDate!=null"> {{ unix2CurrentTime(scope.row.inAccountDate) }}</span>
         </template>

@@ -29,7 +29,7 @@
       <el-form-item label="结算批次号">
         <el-input v-model="formInline.settleBatchNumber" placeholder="请输入结算批次号"/>
       </el-form-item>
-      <el-form-item label="入账时间">
+      <el-form-item label="时间">
         <el-date-picker
           v-model="formInline.inAccountDateStart"
           placeholder="开始日期"
@@ -79,7 +79,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="settleBatchNumber" label="结算批次号" align="center"/>
-      <el-table-column prop="inAccountDate" label="入账时间" align="center">
+      <el-table-column prop="inAccountDate" label="时间" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.inAccountDate!=null">{{ unix2CurrentTime(scope.row.inAccountDate) }}</span>
         </template>
