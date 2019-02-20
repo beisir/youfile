@@ -23,21 +23,15 @@
       <el-form-item label="结算批次号">
         <el-input v-model="formInline.settleBatchNumber" placeholder="请输入结算批次号"/>
       </el-form-item>
-      <el-form-item label="时间">
-        <el-date-picker
-          v-model="formInline.inAccountDateStart"
-          placeholder="开始日期"
-          value-format="timestamp"
-          date-type="time"
-        />
-        <span>-</span>
-        <el-date-picker
-          v-model="formInline.inAccountDateEnd"
-          placeholder="结束日期"
-          value-format="timestamp"
-          date-type="time"
-        />
-      </el-form-item>
+      <el-date-picker
+        v-model="value6"
+        type="daterange"
+        range-separator="至 "
+        start-placeholder="开始日期"
+        format="yyyy-MM-dd HH:mm:ss"
+        value-format="yyyy-MM-dd HH:mm:ss"
+        end-placeholder="结束日期"
+      />
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
     <el-table
@@ -124,7 +118,8 @@ export default {
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
-      tableData: []
+      tableData: [],
+      value6: ''
     }
   },
   created() {
@@ -134,13 +129,15 @@ export default {
     unix2CurrentTime,
     onSubmit() {
       const formInline = this.formInline
-      const inAccountDateStart = formInline.inAccountDateStart
-      const inAccountDateEnd = formInline.inAccountDateEnd
-      if (inAccountDateStart > inAccountDateEnd) {
-        this.$message.error('请选择结束时间大于开始时间！')
-        return
-      }
+      const arrData = this.value6
       this.listQuery = Object.assign(this.listQuery, formInline)
+      if (arrData) {
+        this.listQuery.inAccountDateStart = arrData[0]
+        this.listQuery.inAccountDateEnd = arrData[1]
+      } else {
+        this.listQuery.inAccountDateStart = ''
+        this.listQuery.inAccountDateEnd = ''
+      }
       this.listQuery.pageNum = 1
       this.getList()
     },
