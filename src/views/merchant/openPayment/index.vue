@@ -64,11 +64,10 @@
           <span v-if="scope.row.onlinePay==&quot;0&quot;">未开通</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="160" align="center">
-        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createTime) }}</template>
-      </el-table-column>
-      <el-table-column prop="updateTime" label="更新时间" width="160" align="center">
-        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateTime) }}</template>
+      <el-table-column prop="openPayDate" label="开通/关闭时间" width="160" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.openPayDate!=null">{{ unix2CurrentTime(scope.row.openPayDate) }}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="onlinePay" label="操作" width="200" fixed="right" align="center">
         <template slot-scope="scope">
