@@ -23,12 +23,12 @@
       </el-form-item>
       <el-date-picker
         v-model="value6"
-        type="daterange"
-        range-separator="至 "
+        type="datetimerange"
+        range-separator="至"
         start-placeholder="开始日期"
+        end-placeholder="结束日期"
         format="yyyy-MM-dd HH:mm:ss"
         value-format="yyyy-MM-dd HH:mm:ss"
-        end-placeholder="结束日期"
       />
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
@@ -135,6 +135,7 @@ export default {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1
       const arrData = this.value6
+      console.log(arrData)
       if (arrData) {
         this.listQuery.openPayBeginDate = arrData[0]
         this.listQuery.openPayEndDate = arrData[1]
