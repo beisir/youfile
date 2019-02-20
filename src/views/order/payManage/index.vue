@@ -25,7 +25,6 @@
           <span v-if="scope.row.payWay=='wx_mini_app_pay'">小程序支付</span>
         </template>
       </el-table-column>
-      <el-table-column prop="accountNumber" width="150" label="账户编号" align="center"/>
       <el-table-column prop="channel" width="150" label="支付通道" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.channel=='wx_mini_app'">微信小程序支付</span>
