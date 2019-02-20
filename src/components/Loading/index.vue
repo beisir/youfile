@@ -1,5 +1,5 @@
 <template>
-  <div v-if="listLoading" class="loading" >
+  <div class="loading" >
     <div class="spinner">
       <div class="spinner-container container1">
         <div class="circle1"/>

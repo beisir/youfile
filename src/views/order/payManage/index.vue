@@ -29,6 +29,7 @@
       <el-table-column prop="channel" width="150" label="支付通道" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.channel=='wx_mini_app'">微信小程序支付</span>
+          <span v-if="scope.row.channel=='yeepay'">易宝支付</span>
         </template>
       </el-table-column>
       <el-table-column width="150" label="支付状态" align="center">
