@@ -17,7 +17,7 @@
           <el-option label="微信小程序支付" value="wx_mini_app_pay">微信小程序支付</el-option>
         </el-select>
       </el-form-item>
-      <el-date-picker
+      <!-- <el-date-picker
         v-model="value6"
         type="daterange"
         range-separator="至 "
@@ -25,7 +25,7 @@
         format="yyyy-MM-dd HH:mm:ss"
         value-format="yyyy-MM-dd HH:mm:ss"
         end-placeholder="结束日期"
-      />
+      /> -->
       <el-button type="primary" @click="onSubmit">查询</el-button>
       <el-button type="primary" @click="addData">子商户配置</el-button>
     </el-form>
@@ -236,7 +236,6 @@ export default {
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
-      value6: '',
       tableData: []
     }
   },
@@ -247,14 +246,14 @@ export default {
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
       this.listQuery.pageNum = 1
-      const arrData = this.value6
-      if (arrData) {
-        this.listQuery.openPayBeginDate = arrData[0]
-        this.listQuery.openPayEndDate = arrData[1]
-      } else {
-        this.listQuery.openPayBeginDate = ''
-        this.listQuery.openPayEndDate = ''
-      }
+      // const arrData = this.value6
+      // if (arrData) {
+      //   this.listQuery.beginDate = arrData[0]
+      //   this.listQuery.endDate = arrData[1]
+      // } else {
+      //   this.listQuery.beginDate = ''
+      //   this.listQuery.endDate = ''
+      // }
       this.getList()
     },
     /**

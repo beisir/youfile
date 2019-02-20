@@ -1,12 +1,6 @@
 <template>
   <div style="padding:30px;">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="账户编号">
-        <el-input v-model="formInline.accountNumber" placeholder="请输入账户编号"/>
-      </el-form-item>
-      <el-form-item label="商户编号">
-        <el-input v-model="formInline.merchantNumber" placeholder="请输入商户编号"/>
-      </el-form-item>
       <el-form-item label="支付编号">
         <el-input v-model="formInline.paymentNumber" placeholder="请输入支付编号"/>
       </el-form-item>
@@ -120,9 +114,7 @@ export default {
     return {
       imageUrl: this.Const.imageUrl,
       formInline: {
-        accountNumber: '',
         changeType: '',
-        merchantNumber: '',
         inAccountDateStart: '',
         inAccountDateEnd: ''
       },

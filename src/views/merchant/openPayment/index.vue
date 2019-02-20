@@ -138,8 +138,6 @@ export default {
       if (arrData) {
         this.listQuery.openPayBeginDate = arrData[0]
         this.listQuery.openPayEndDate = arrData[1]
-        // this.listQuery.openPayBeginDate = new Date(arrData[0]).getTime()
-        // this.listQuery.openPayEndDate = new Date(arrData[1]).getTime()
       } else {
         this.listQuery.openPayBeginDate = ''
         this.listQuery.openPayEndDate = ''

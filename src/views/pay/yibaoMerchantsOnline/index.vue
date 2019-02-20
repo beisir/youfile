@@ -222,11 +222,11 @@ export default {
       this.listQuery.pageNum = 1
       const arrData = this.value6
       if (arrData) {
-        this.listQuery.openPayBeginDate = arrData[0]
-        this.listQuery.openPayEndDate = arrData[1]
+        this.listQuery.beginDate = arrData[0]
+        this.listQuery.endDate = arrData[1]
       } else {
-        this.listQuery.openPayBeginDate = ''
-        this.listQuery.openPayEndDate = ''
+        this.listQuery.beginDate = ''
+        this.listQuery.endDate = ''
       }
       this.getList()
     },
@@ -235,6 +235,7 @@ export default {
      */
     getList() {
       this.listLoading = true
+      console.log(this.listQuery)
       getMerchantList(this.listQuery).then(response => {
         const data = response.data
         if (data) {

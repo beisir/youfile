@@ -1,8 +1,14 @@
 <template>
   <div class="body-cont">
     <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
-      <el-form-item label="">
-        <el-input v-model="formInline.keyWords" style="width:250px" placeholder="订单编号、店铺ID、运单号"/>
+      <el-form-item label="订单编号">
+        <el-input v-model="formInline.orderNumber" style="width:250px" placeholder="订单编号"/>
+      </el-form-item>
+      <el-form-item label="运单号">
+        <el-input v-model="formInline.expressNumber" style="width:250px" placeholder="运单号"/>
+      </el-form-item>
+      <el-form-item label="店铺ID">
+        <el-input v-model="formInline.storeId" style="width:250px" placeholder="店铺ID"/>
       </el-form-item>
       <el-form-item label="订单状态">
         <el-select v-model="formInline.orderStatus" placeholder="请选择">
@@ -53,6 +59,11 @@
       </el-table-column>
       <el-table-column prop="customerUserNickName" width="120" label="买家昵称" align="center"/>
       <el-table-column prop="storeName" width="120" label="店铺名称" align="center"/>
+      <el-table-column width="120" label="店铺Id" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.orderRespVO.storeId }}
+        </template>
+      </el-table-column>
       <el-table-column prop="orderStatus" width="180" label="订单状态" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.orderRespVO.orderStatus=='wait_deliver'">待发货</span>
@@ -148,8 +159,8 @@ export default {
       this.listQuery.pageNum = 1
       const arrData = this.value6
       if (arrData) {
-        this.listQuery.openPayBeginDate = arrData[0]
-        this.listQuery.openPayEndDate = arrData[1]
+        this.listQuery.dateBegin = arrData[0]
+        this.listQuery.dateEnd = arrData[1]
       } else {
         this.listQuery.dateBegin = ''
         this.listQuery.dateEnd = ''
