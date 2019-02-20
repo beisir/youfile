@@ -24,7 +24,6 @@
       <el-form-item label="配送方式">
         <el-select v-model="formInline.logisticsMode" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
-          <el-option label="其他" value="0">没有物流</el-option>
           <el-option label="门店自提" value="1">门店自提</el-option>
           <el-option label="物流配送" value="2">物流配送</el-option>
         </el-select>
