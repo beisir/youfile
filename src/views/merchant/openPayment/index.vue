@@ -44,7 +44,7 @@
       <el-table-column prop="merchantNumber" width="160" label="商户编号" align="center"/>
       <el-table-column prop="merchantName" width="160" label="商户名称" align="center"/>
       <el-table-column prop="linkman" width="160" label="联系人" align="center"/>
-      <el-table-column prop="linkmanPhone" width="160" label="联系电话" align="center"/>
+      <el-table-column prop="linkmanPhone" width="180" label="联系电话" align="center"/>
       <el-table-column prop="merchantCharacter" width="160" label="商户性质" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantCharacter==&quot;1&quot;">个人</span>
@@ -52,7 +52,7 @@
           <span v-if="scope.row.merchantCharacter==&quot;3&quot;">企业</span>
         </template>
       </el-table-column>
-      <el-table-column prop="merchantType" label="商户类型" width="160" align="center">
+      <el-table-column prop="merchantType" label="商户类型" width="180" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantType==&quot;1&quot;">批发商</span>
           <span v-if="scope.row.merchantType==&quot;2&quot;">零售商</span>
@@ -64,7 +64,7 @@
           <span v-if="scope.row.onlinePay==&quot;0&quot;">未开通</span>
         </template>
       </el-table-column>
-      <el-table-column prop="openPayDate" label="开通/关闭时间" width="160" align="center">
+      <el-table-column prop="openPayDate" label="开通/关闭时间" width="220" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.openPayDate!=null">{{ unix2CurrentTime(scope.row.openPayDate) }}</span>
         </template>
