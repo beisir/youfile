@@ -7,19 +7,6 @@
       <el-form-item label="商户编号">
         <el-input v-model="formInline.merchantNumber" placeholder="请输入商户编号"/>
       </el-form-item>
-      <el-form-item label="账户类型">
-        <el-select v-model="formInline.accountType" placeholder="请选择">
-          <el-option label="全部" value>全部</el-option>
-          <el-option label="余额账户" value="balance">余额账户</el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="账户状态">
-        <el-select v-model="formInline.status" placeholder="请选择">
-          <el-option label="全部" value>全部</el-option>
-          <el-option label="已开通" value="on">已开通</el-option>
-          <el-option label="未开通" value="off">未开通</el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="是否冻结">
         <el-select v-model="formInline.freeze" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>

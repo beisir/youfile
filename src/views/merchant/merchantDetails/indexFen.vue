@@ -1106,7 +1106,6 @@ export default {
     },
     handleSuccesSettlement(response) {
       const imgUrl = response.obj
-      console.log(imgUrl)
       this.settlementCardUrlListShow = true
       this.merchantVOData.settlementCardUrl = imgUrl
     },
@@ -1191,41 +1190,39 @@ export default {
     getParams() {
       const routerParams = this.$route.query.merchantNo
       getMerchantRetail(routerParams).then(response => {
+        var datas = response.data
         let obj = {}
-        this.merchantRetailId = response.data.merchantVO.id
-        obj = Object.assign(response.data.merchantVO, obj)
-        if (response.data.merchantVO.merchantCharacter === '3') {
+        this.merchantRetailId = datas.merchantVO.id
+        if (datas.merchantVO.merchantCharacter === '3') {
           this.enterpriseShow = true
         } else {
           this.enterpriseShow = false
         }
-        if (response.data.merchantQualificationVO) {
-          obj = Object.assign(response.data.merchantQualificationVO, obj)
-          console.log(response.data.merchantQualificationVO.id)
+        if (datas.merchantQualificationVO) {
           this.merchantQualificationVOId =
-            response.data.merchantQualificationVO.id
+            datas.merchantQualificationVO.id
           const imgUrl =
-            response.data.merchantQualificationVO.businessLicenseUrl
+            datas.merchantQualificationVO.businessLicenseUrl
           const idCardFaceUrl =
-            response.data.merchantQualificationVO.idCardFaceUrl
+            datas.merchantQualificationVO.idCardFaceUrl
           const idCardConUrl =
-            response.data.merchantQualificationVO.idCardConUrl
+            datas.merchantQualificationVO.idCardConUrl
           const handIdCardUrl =
-            response.data.merchantQualificationVO.handIdCardUrl
+            datas.merchantQualificationVO.handIdCardUrl
           const unifiedCertificateUrl =
-            response.data.merchantQualificationVO.unifiedCertificateUrl
+            datas.merchantQualificationVO.unifiedCertificateUrl
           const taxRegisterCertificateUrl =
-            response.data.merchantQualificationVO.taxRegisterCertificateUrl
+            datas.merchantQualificationVO.taxRegisterCertificateUrl
           const organCodeCertificateUrl =
-            response.data.merchantQualificationVO.organCodeCertificateUrl
+            datas.merchantQualificationVO.organCodeCertificateUrl
           const bankOrganUrl =
-            response.data.merchantQualificationVO.bankOrganUrl
+            datas.merchantQualificationVO.bankOrganUrl
           const storePhotoUrl =
-            response.data.merchantQualificationVO.storePhotoUrl
+            datas.merchantQualificationVO.storePhotoUrl
           const scenePhoneUrl =
-            response.data.merchantQualificationVO.scenePhoneUrl
+            datas.merchantQualificationVO.scenePhoneUrl
           const industryLicenseUrl =
-            response.data.merchantQualificationVO.industryLicenseUrl
+            datas.merchantQualificationVO.industryLicenseUrl
           if (unifiedCertificateUrl) {
             this.getImageUrl(unifiedCertificateUrl, 'unifiedCertificateUrl')
           }
@@ -1266,16 +1263,15 @@ export default {
             this.getImageUrl(handIdCardUrl, 'handIdCardUrl')
           }
         }
-        if (response.data.merchantSettleVO) {
-          this.merchantSettleVOId = response.data.merchantSettleVO.id
-          obj = Object.assign(response.data.merchantSettleVO, obj)
+        if (datas.merchantSettleVO) {
+          this.merchantSettleVOId = datas.merchantSettleVO.id
           const settlementCardUrl =
-            response.data.merchantSettleVO.settlementCardUrl
+            datas.merchantSettleVO.settlementCardUrl
           if (settlementCardUrl) {
             this.getImageUrl(settlementCardUrl, 'settlementCardUrl')
           }
           const handBankCardUrl =
-            response.data.merchantSettleVO.handBankCardUrl
+            datas.merchantSettleVO.handBankCardUrl
           if (handBankCardUrl) {
             this.getImageUrl(handBankCardUrl, 'handBankCardUrl')
           }
@@ -1283,13 +1279,16 @@ export default {
         if (obj.merchantCharacter === '2') {
           this.gtShow = true
         }
+        delete datas.merchantSettleVO['id']
+        delete datas.merchantQualificationVO['id']
+        delete datas.merchantVO['id']
+        obj = Object.assign(datas.merchantSettleVO, datas.merchantQualificationVO, datas.merchantVO, obj)
         this.merchantVOData = obj
-        this.merchantNumber = response.data.merchantNumber
+        this.merchantNumber = datas.merchantNumber
       })
     },
     eidthData() {
       const formData1 = this.merchantVOData
-      console.log(this.merchantQualificationVOId)
       this.$refs[formData1].validate(valid => {
         if (valid) {
           this.listLoading = true

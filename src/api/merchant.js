@@ -3,7 +3,7 @@ import request_upload_api from '@/utils/request_upload'
 
 export function getListMerchantRetail(params) {
   return request({
-    url: '/merchant/list',
+    url: '/merchant/pay/config/list',
     method: 'post',
     data: params
   })
@@ -22,7 +22,6 @@ export function editMerchantRetail(params) {
   })
 }
 export function getImgUrl(params) {
-  // return 'https://youlife-private-prod.oss-cn-beijing.aliyuncs.com/' + params.filePath
   return request_upload_api({
     url: '/base/image/sign',
     method: 'get',

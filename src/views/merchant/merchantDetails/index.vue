@@ -938,26 +938,25 @@ export default {
       const routerParams = this.$route.query.merchantNo
       getMerchantRetail(routerParams).then(response => {
         let obj = {}
-        this.merchantRetailId = response.data.merchantVO.id
-        obj = Object.assign(response.data.merchantVO, obj)
-        if (response.data.merchantQualificationVO) {
-          obj = Object.assign(response.data.merchantQualificationVO, obj)
+        var datas = response.data
+        this.merchantRetailId = datas.merchantVO.id
+        if (datas.merchantQualificationVO) {
           this.merchantQualificationVOId =
-            response.data.merchantQualificationVO.id
+            datas.merchantQualificationVO.id
           const imgUrl =
-            response.data.merchantQualificationVO.businessLicenseUrl
+            datas.merchantQualificationVO.businessLicenseUrl
           const idCardFaceUrl =
-            response.data.merchantQualificationVO.idCardFaceUrl
+            datas.merchantQualificationVO.idCardFaceUrl
           const idCardConUrl =
-            response.data.merchantQualificationVO.idCardConUrl
+            datas.merchantQualificationVO.idCardConUrl
           const unifiedCertificateUrl =
-            response.data.merchantQualificationVO.unifiedCertificateUrl
+            datas.merchantQualificationVO.unifiedCertificateUrl
           const taxRegisterCertificateUrl =
-            response.data.merchantQualificationVO.taxRegisterCertificateUrl
+            datas.merchantQualificationVO.taxRegisterCertificateUrl
           const organCodeCertificateUrl =
-            response.data.merchantQualificationVO.organCodeCertificateUrl
+            datas.merchantQualificationVO.organCodeCertificateUrl
           const bankOrganUrl =
-            response.data.merchantQualificationVO.bankOrganUrl
+            datas.merchantQualificationVO.bankOrganUrl
           if (unifiedCertificateUrl) {
             this.getImageUrl(unifiedCertificateUrl, 'unifiedCertificateUrl')
           }
@@ -986,17 +985,20 @@ export default {
             this.getImageUrl(idCardConUrl, 'idCardConUrl')
           }
         }
-        if (response.data.merchantSettleVO) {
-          this.merchantSettleVOId = response.data.merchantSettleVO.id
-          obj = Object.assign(response.data.merchantSettleVO, obj)
+        if (datas.merchantSettleVO) {
+          this.merchantSettleVOId = datas.merchantSettleVO.id
           const settlementCardUrl =
-            response.data.merchantSettleVO.settlementCardUrl
+            datas.merchantSettleVO.settlementCardUrl
           if (settlementCardUrl) {
             this.getImageUrl(settlementCardUrl, 'settlementCardUrl')
           }
         }
+        delete datas.merchantSettleVO['id']
+        delete datas.merchantQualificationVO['id']
+        delete datas.merchantVO['id']
+        obj = Object.assign(datas.merchantSettleVO, datas.merchantQualificationVO, datas.merchantVO, obj)
         this.merchantVOData = obj
-        this.merchantNumber = response.data.merchantNumber
+        this.merchantNumber = datas.merchantNumber
       })
     },
     eidthData() {
