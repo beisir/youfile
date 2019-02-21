@@ -7,9 +7,15 @@ export function getList(params) {
   })
 }
 export function getAccountList(params) {
-  console.log(params)
   return request({
-    url: '/settle/account/detail/' + params.merchantNumber,
+    url: '/settle/account/in/' + params.merchantNumber,
+    method: 'get',
+    params
+  })
+}
+export function getAccountOutList(params) {
+  return request({
+    url: '/settle/account/out/' + params.merchantNumber,
     method: 'get',
     params
   })

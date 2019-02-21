@@ -1,8 +1,8 @@
 <template>
   <div class="body-cont">
-    <!-- <el-form :inline="true" class="demo-form-inline border-form">
+    <el-form :inline="true" class="demo-form-inline border-form">
       <el-button type="warning" @click="addSubmit">添加热门分类</el-button>
-    </el-form> -->
+    </el-form>
     <el-table
       v-loading.body="listLoading"
       :data="tableData"
@@ -21,12 +21,13 @@
       <el-table-column prop="onlinePay" label="操作" fixed="right" width="200" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="editData(scope.$index, scope.row )">编辑</el-button>
+          <el-button size="mini" type="warning" @click="removeData(scope.$index, scope.row )">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog :visible.sync="dialogShow" :title="title" class="el-dialog1">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="选择分类：">
+        <el-form-item :label-width="formLabelWidth" label="选择分类：">
           <el-select
             v-model="categoryCode"
             placeholder="请选择"
@@ -41,7 +42,7 @@
           </el-select>
         </el-form-item>
         <div>
-          <el-form-item label="图片：">
+          <el-form-item :label-width="formLabelWidth" label="图片：">
             <el-upload
               :on-remove="handleRemove"
               :limit="1"
@@ -88,7 +89,8 @@ export default {
       tableData: [],
       formData: [],
       dataData: {},
-      showData: []
+      showData: [],
+      addClassData: {}
     }
   },
   created() {
@@ -124,11 +126,11 @@ export default {
       this.logoUrlListShow = true
       this.dialogShow = true
     },
-    // addSubmit() {
-    //   this.dialogShow = true
-    //   this.title="添加信息"
-    //   this.logoUrlListShow = false
-    // },
+    addSubmit() {
+      this.dialogShow = true
+      this.title = '添加信息'
+      this.logoUrlListShow = false
+    },
     handleRemove(file, fileList) {
       this.logoUrlListShow = false
     },
@@ -137,8 +139,12 @@ export default {
       const logoUrl = response.obj
       this.logoUrlListShow = true
       var showData = this.showData
-      var cateIndex = this.cateIndex
-      showData[cateIndex].imageUrl = logoUrl
+      if (this.title === '添加信息') {
+        this.addClassData.imageUrl = logoUrl
+      } else {
+        var cateIndex = this.cateIndex
+        showData[cateIndex].imageUrl = logoUrl
+      }
       this.showData = showData
     },
     // 下拉选择
@@ -149,19 +155,42 @@ export default {
       })
       return obj.name
     },
+    // 删除分类
+    removeData(index, row) {
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var showData = this.showData
+        showData.splice(index, 1)
+        var data = this.dataData
+        data.attrValue = JSON.stringify(showData)
+        this.getUpdate(data)
+      })
+    },
     handleSelectionChange(event) {
       const formData = this.formData
       const name = this.getDataName(formData, event)
       var showData = this.showData
-      var cateIndex = this.cateIndex
-      showData[cateIndex].name = name
-      showData[cateIndex].categoryCode = event
+      if (this.title === '添加信息') {
+        this.addClassData.name = name
+        this.addClassData.categoryCode = event
+      } else {
+        var cateIndex = this.cateIndex
+        showData[cateIndex].name = name
+        showData[cateIndex].categoryCode = event
+      }
       this.showData = showData
     },
     editMes() {
       var data = this.dataData
       var showData = this.showData
+      showData.push(this.addClassData)
       data.attrValue = JSON.stringify(showData)
+      this.getUpdate(data)
+    },
+    getUpdate(data) {
       updateSale(data).then(response => {
         this.$message({
           type: 'success',

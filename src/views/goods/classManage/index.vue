@@ -27,45 +27,6 @@
         </tr>
       </div>
     </el-tree>
-    <!-- <el-table
-      v-loading.body="listLoading"
-      :data="tableData"
-      border
-      style="width: 100%">
-      <el-table-column
-        type="index"
-        width="50"
-        label="序号"
-        align="center"/>
-      <el-table-column
-        prop="name"
-        label="分类名称"
-        align="center"/>
-      <el-table-column
-        prop="categoryCode"
-        label="分类编码"
-        align="center"/>
-      <el-table-column
-        prop="sort"
-        label="排序"
-        align="center"/>
-      <el-table-column
-        prop="createDate"
-        label="创建时间"
-        align="center">
-        <template slot-scope="scope">
-          {{ unix2CurrentTime(scope.row.createDate) }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="分类"
-        align="center">
-        <template slot-scope="scope">
-          <el-tree :data="scope.row.subGoodsCategoryList" :props="defaultProps" @node-click="handleNodeClick"/>
-        </template>
-      </el-table-column>
-    </el-table>-->
     <el-dialog :visible.sync="dialogShow" :title="title">
       <el-form
         :inline="true"

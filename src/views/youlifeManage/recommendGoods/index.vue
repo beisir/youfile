@@ -10,9 +10,9 @@
     >
       <el-tab-pane
         v-for="(item) in tableData"
-        :key="item.name"
-        :label="item.name"
-        :name="item.name"
+        :key="item.laberName"
+        :label="item.laberName"
+        :name="item.laberName"
       >
         <el-form :inline="true" class="demo-form-inline">
           <el-form-item label="名称">
@@ -198,7 +198,11 @@ export default {
       recommendList(this.owner).then(response => {
         var datas = response.data
         this.dataData = datas.data
-        this.tableData = datas.show
+        const tableData = datas.show
+        for (var k of tableData) {
+          k.laberName = k.name
+        }
+        this.tableData = tableData
         this.editableTabsValue2 = datas.show[0].name
         this.listLoading = false
         const logoList = []

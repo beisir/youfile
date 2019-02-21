@@ -52,8 +52,11 @@
           <span v-if="scope.row.timeoutDate!=null"> {{ unix2CurrentTime(scope.row.timeoutDate) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createDate" width="170" label="创建日期" align="center">
+      <el-table-column prop="createDate" width="170" label="创建时间" align="center">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createDate) }}</template>
+      </el-table-column>
+      <el-table-column prop="updateDate" width="170" label="更新时间" align="center">
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateDate) }}</template>
       </el-table-column>
       <el-table-column prop="fee" width="150" label="手续费" align="center"/>
       <el-table-column prop="thirdFee" width="180" label="第三方支付手续费" align="center"/>
