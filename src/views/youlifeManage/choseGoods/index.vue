@@ -149,7 +149,6 @@ export default {
         pageSize: 10 // 每页数量
       },
       formInline: {
-        name: ''
       },
       title: '',
       formLabelWidth: '130px',

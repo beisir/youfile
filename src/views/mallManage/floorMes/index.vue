@@ -156,7 +156,7 @@
               :label-width="formLabelWidth"
               v-model="floorInfo.floorAreaCode"
               placeholder="请选择"
-              @change="changeFloorArea($event)"
+              @change="changeFloorArea($event,true)"
             >
               <el-option label="暂无选择" value="0">暂无选择</el-option>
               <el-option
@@ -304,7 +304,9 @@ export default {
           if (floorInfo) {
             this.floorInfo = response.data.floorInfo
             const eventCode = floorInfo.balconyCode
+            const floorCode = floorInfo.floorCode
             this.changeFloor(eventCode)
+            this.changeTwoClass(floorCode, false)
           } else {
             this.floorInfo = {
               balconyCode: '0',
@@ -446,11 +448,18 @@ export default {
       this.floorInfo.floorCode = '0'
       this.floorInfo.floorAreaCode = '0'
     },
-    changeTwoClass(event) {
+    changeTwoClass(event, isNotInit) {
       this.formData.parentCode = event
-      this.childAreaList = this.childList.childList
+      const childList = this.childList
+      for (var i = 0; i < childList.length; i++) {
+        if (childList[i].code === event) {
+          this.childAreaList = this.childList[i].childList
+        }
+      }
       this.floorInfo.floorCode = event
-      this.floorInfo.floorAreaCode = '0'
+      if (isNotInit) {
+        this.floorInfo.floorAreaCode = '0'
+      }
     },
     changeFloorArea(event) {
       this.floorInfo.floorAreaCode = event
