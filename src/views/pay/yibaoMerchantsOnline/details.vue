@@ -946,8 +946,8 @@ export default {
           }
           yeepayRegister(data)
             .then(response => {
-              const message = response.data.message
-              const code = response.data.code
+              const message = response.data
+              const code = response.code
               if (code === '1') {
                 this.$message({
                   message: message,
@@ -966,7 +966,7 @@ export default {
             })
             .catch(response => {
               this.listLoading = false
-              const message = response.data.message
+              const message = response.msg
               this.$message.error(message)
             })
         } else {
