@@ -1,6 +1,6 @@
 <template>
   <div style="padding:30px;">
-    <div v-if="listLoading" class="loading" >
+    <div v-if="listLoading" class="loading">
       <div class="spinner">
         <div class="spinner-container container1">
           <div class="circle1"/>
@@ -594,9 +594,6 @@ export default {
       settlementCardUrlList: [],
       handBankCardUrlList: [],
       enterpriseShow: true,
-      merchantRetailId: '',
-      merchantQualificationVOId: '',
-      merchantSettleVOId: '',
       merchantVOData: {}
     }
   },
@@ -756,17 +753,15 @@ export default {
       const routerParams = this.$route.query.merchantNo
       getMerchantRetail(routerParams).then(response => {
         let obj = {}
-        this.merchantRetailId = response.data.merchantVO.id
-        obj = Object.assign(response.data.merchantVO, obj)
-        if (response.data.merchantVO.merchantCharacter === '3') {
-          this.enterpriseShow = true
-        } else {
-          this.enterpriseShow = false
+        if (response.data.merchantVO) {
+          obj = Object.assign(response.data.merchantVO, obj)
+          if (response.data.merchantVO.merchantCharacter === '3') {
+            this.enterpriseShow = true
+          } else {
+            this.enterpriseShow = false
+          }
         }
         if (response.data.merchantQualificationVO) {
-          obj = Object.assign(response.data.merchantQualificationVO, obj)
-          this.merchantQualificationVOId =
-            response.data.merchantQualificationVO.id
           const imgUrl =
             response.data.merchantQualificationVO.businessLicenseUrl
           const idCardFaceUrl =
@@ -828,10 +823,9 @@ export default {
           if (handIdCardUrl) {
             this.getImageUrl(handIdCardUrl, 'handIdCardUrl')
           }
+          obj = Object.assign(response.data.merchantQualificationVO, obj)
         }
         if (response.data.merchantSettleVO) {
-          this.merchantSettleVOId = response.data.merchantSettleVO.id
-          obj = Object.assign(response.data.merchantSettleVO, obj)
           const settlementCardUrl =
             response.data.merchantSettleVO.settlementCardUrl
           if (settlementCardUrl) {
@@ -842,6 +836,7 @@ export default {
           if (handBankCardUrl) {
             this.getImageUrl(handBankCardUrl, 'handBankCardUrl')
           }
+          obj = Object.assign(response.data.merchantSettleVO, obj)
         }
         this.merchantVOData = obj
         this.merchantNumber = response.data.merchantNumber
@@ -1005,25 +1000,25 @@ export default {
   min-width: 180px;
 }
 
-.loading{
+.loading {
   height: 100%;
   width: 100%;
   position: fixed;
   top: 0;
   left: 180px;
-  background:rgba(0, 0, 0, 0.7);
-  z-index: 9999
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
 }
-.loading span{
-  color: #409EFF;
+.loading span {
+  color: #409eff;
   margin-left: 35%;
 }
 .spinner {
-  margin-left:40%;
-  margin-top:20%;
+  margin-left: 40%;
+  margin-top: 20%;
   width: 80px;
   height: 80px;
-  margin-bottom:40px;
+  margin-bottom: 40px;
   position: relative;
 }
 .container1 > div,
@@ -1031,7 +1026,7 @@ export default {
 .container3 > div {
   width: 15px;
   height: 15px;
-  background-color: #409EFF;
+  background-color: #409eff;
   border-radius: 100%;
   position: absolute;
   -webkit-animation: bouncedelay 1.2s infinite ease-in-out;

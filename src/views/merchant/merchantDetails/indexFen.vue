@@ -1192,35 +1192,31 @@ export default {
       getMerchantRetail(routerParams).then(response => {
         var datas = response.data
         let obj = {}
-        this.merchantRetailId = datas.merchantVO.id
-        if (datas.merchantVO.merchantCharacter === '3') {
-          this.enterpriseShow = true
-        } else {
-          this.enterpriseShow = false
+        if (datas.merchantVO) {
+          this.merchantRetailId = datas.merchantVO.id
+          if (datas.merchantVO.merchantCharacter === '3') {
+            this.enterpriseShow = true
+          } else {
+            this.enterpriseShow = false
+          }
+          delete datas.merchantVO['id']
+          obj = Object.assign(datas.merchantVO, obj)
         }
         if (datas.merchantQualificationVO) {
-          this.merchantQualificationVOId =
-            datas.merchantQualificationVO.id
-          const imgUrl =
-            datas.merchantQualificationVO.businessLicenseUrl
-          const idCardFaceUrl =
-            datas.merchantQualificationVO.idCardFaceUrl
-          const idCardConUrl =
-            datas.merchantQualificationVO.idCardConUrl
-          const handIdCardUrl =
-            datas.merchantQualificationVO.handIdCardUrl
+          this.merchantQualificationVOId = datas.merchantQualificationVO.id
+          const imgUrl = datas.merchantQualificationVO.businessLicenseUrl
+          const idCardFaceUrl = datas.merchantQualificationVO.idCardFaceUrl
+          const idCardConUrl = datas.merchantQualificationVO.idCardConUrl
+          const handIdCardUrl = datas.merchantQualificationVO.handIdCardUrl
           const unifiedCertificateUrl =
             datas.merchantQualificationVO.unifiedCertificateUrl
           const taxRegisterCertificateUrl =
             datas.merchantQualificationVO.taxRegisterCertificateUrl
           const organCodeCertificateUrl =
             datas.merchantQualificationVO.organCodeCertificateUrl
-          const bankOrganUrl =
-            datas.merchantQualificationVO.bankOrganUrl
-          const storePhotoUrl =
-            datas.merchantQualificationVO.storePhotoUrl
-          const scenePhoneUrl =
-            datas.merchantQualificationVO.scenePhoneUrl
+          const bankOrganUrl = datas.merchantQualificationVO.bankOrganUrl
+          const storePhotoUrl = datas.merchantQualificationVO.storePhotoUrl
+          const scenePhoneUrl = datas.merchantQualificationVO.scenePhoneUrl
           const industryLicenseUrl =
             datas.merchantQualificationVO.industryLicenseUrl
           if (unifiedCertificateUrl) {
@@ -1262,27 +1258,25 @@ export default {
           if (handIdCardUrl) {
             this.getImageUrl(handIdCardUrl, 'handIdCardUrl')
           }
+          delete datas.merchantQualificationVO['id']
+          obj = Object.assign(datas.merchantQualificationVO, obj)
         }
         if (datas.merchantSettleVO) {
           this.merchantSettleVOId = datas.merchantSettleVO.id
-          const settlementCardUrl =
-            datas.merchantSettleVO.settlementCardUrl
+          const settlementCardUrl = datas.merchantSettleVO.settlementCardUrl
           if (settlementCardUrl) {
             this.getImageUrl(settlementCardUrl, 'settlementCardUrl')
           }
-          const handBankCardUrl =
-            datas.merchantSettleVO.handBankCardUrl
+          const handBankCardUrl = datas.merchantSettleVO.handBankCardUrl
           if (handBankCardUrl) {
             this.getImageUrl(handBankCardUrl, 'handBankCardUrl')
           }
+          delete datas.merchantSettleVO['id']
+          obj = Object.assign(datas.merchantSettleVO, obj)
         }
         if (obj.merchantCharacter === '2') {
           this.gtShow = true
         }
-        delete datas.merchantSettleVO['id']
-        delete datas.merchantQualificationVO['id']
-        delete datas.merchantVO['id']
-        obj = Object.assign(datas.merchantSettleVO, datas.merchantQualificationVO, datas.merchantVO, obj)
         this.merchantVOData = obj
         this.merchantNumber = datas.merchantNumber
       })

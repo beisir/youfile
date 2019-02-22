@@ -242,9 +242,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-              label="收银台场景照："
-            >
+            <el-form-item label="收银台场景照：">
               <el-upload
                 :limit="1"
                 :file-list="scenePhoneUrlList"
@@ -606,9 +604,6 @@ export default {
       industryLicenseUrlList: [],
       settlementCardUrlList: [],
       enterpriseShow: true,
-      merchantRetailId: '',
-      merchantQualificationVOId: '',
-      merchantSettleVOId: '',
       merchantVOData: {},
       onlinePayConfigShow: false
     }
@@ -765,17 +760,15 @@ export default {
       const routerParams = this.$route.query.merchantNo
       getMerchantRetail(routerParams).then(response => {
         let obj = {}
-        this.merchantRetailId = response.data.merchantVO.id
-        obj = Object.assign(response.data.merchantVO, obj)
-        if (response.data.merchantVO.merchantCharacter === '3') {
-          this.enterpriseShow = true
-        } else {
-          this.enterpriseShow = false
+        if (response.data.merchantVO) {
+          obj = Object.assign(response.data.merchantVO, obj)
+          if (response.data.merchantVO.merchantCharacter === '3') {
+            this.enterpriseShow = true
+          } else {
+            this.enterpriseShow = false
+          }
         }
         if (response.data.merchantQualificationVO) {
-          obj = Object.assign(response.data.merchantQualificationVO, obj)
-          this.merchantQualificationVOId =
-            response.data.merchantQualificationVO.id
           const imgUrl =
             response.data.merchantQualificationVO.businessLicenseUrl
           const idCardFaceUrl =
@@ -837,22 +830,22 @@ export default {
           if (handIdCardUrl) {
             this.getImageUrl(handIdCardUrl, 'handIdCardUrl')
           }
+          obj = Object.assign(response.data.merchantQualificationVO, obj)
         }
         if (response.data.merchantMiniprogramVO) {
           obj = Object.assign(response.data.merchantMiniprogramVO, obj)
         }
         if (response.data.merchantSettleVO) {
-          this.merchantSettleVOId = response.data.merchantSettleVO.id
-          obj = Object.assign(response.data.merchantSettleVO, obj)
           const settlementCardUrl =
             response.data.merchantSettleVO.settlementCardUrl
           if (settlementCardUrl) {
             this.getImageUrl(settlementCardUrl, 'settlementCardUrl')
           }
+          obj = Object.assign(response.data.merchantSettleVO, obj)
         }
         if (response.data.merchantOnlinePayConfigVO) {
-          obj = Object.assign(response.data.merchantOnlinePayConfigVO, obj)
           this.onlinePayConfigShow = true
+          obj = Object.assign(response.data.merchantOnlinePayConfigVO, obj)
         }
         this.merchantVOData = obj
         this.merchantNumber = response.data.merchantNumber
