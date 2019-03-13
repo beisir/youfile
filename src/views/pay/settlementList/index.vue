@@ -49,7 +49,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="settleAmount" label="结算金额" align="center"/>
-      <el-table-column prop="actualSettleAmoun" width="160" label="实际结算金额" align="center"/>
+      <el-table-column prop="actualSettleAmount" width="160" label="实际结算金额" align="center"/>
       <el-table-column prop="settleDate" label="结算时间" width="180" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.settleDate?unix2CurrentTime(scope.row.settleDate):'' }}</span>
