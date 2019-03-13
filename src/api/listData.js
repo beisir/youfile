@@ -8,7 +8,6 @@ export function getList(params) {
   })
 }
 export function getSettleList(params) {
-  console.log(params)
   return request({
     url: '/settle/page',
     method: 'get',
@@ -27,6 +26,19 @@ export function getBatchDetails(params) {
     url: '/divide/detail/page',
     method: 'get',
     params
+  })
+}
+export function confirmBatch(params) {
+  return request({
+    url: '/divide/detail/divide/query',
+    method: 'get',
+    params
+  })
+}
+export function divideBatch(params) {
+  return request({
+    url: '/divide/detail/divide/confirm?divideDetailNumber=' + params,
+    method: 'get'
   })
 }
 // export function getPurchaserList(params) {

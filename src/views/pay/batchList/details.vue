@@ -68,6 +68,16 @@
       <el-table-column prop="updateDate" width="180" label="更新时间" align="center">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateDate) }}</template>
       </el-table-column>
+      <el-table-column label=" 操作" fixed="right" width="120" align="center">
+        <template slot-scope="scope">
+          <el-button
+            v-if="scope.row.status!='success'"
+            size="mini"
+            type="primary"
+            @click="confirmBatch(scope.$index, scope.row )"
+          >确认分账</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       :current-page="listQuery.page"
@@ -79,23 +89,45 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+    <el-dialog :visible.sync="dialogShow" title="分账状态详情">
+      <el-form>
+        <el-form-item label="分账状态">
+          <el-select v-model="batchStatus" disabled="disabled" placeholder="请选择">
+            <el-option label="全部" value>全部</el-option>
+            <el-option label="未知" value="unknown">未知</el-option>
+            <el-option label="初始化" value="init">初始化</el-option>
+            <el-option label="分账中" value="doing">分账中</el-option>
+            <el-option label="分帐失败" value="fail">分帐失败</el-option>
+            <el-option label="分帐成功" value="success">分帐成功</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="batchStatus=='success'" align="center">
+          <template>
+            <el-button type="primary" @click="confirmReg">确定</el-button>
+          </template>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { getBatchDetails } from '@/api/listData'
+import { getBatchDetails, confirmBatch, divideBatch } from '@/api/listData'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
       tableData: [],
       formInline: {},
+      dialogShow: false,
       value6: '',
       total: 0,
       listQuery: {
         pageNum: 1, // 页码
         pageSize: 10 // 每页数量
       },
-      listLoading: false
+      listLoading: false,
+      batchStatus: '',
+      divideDetailNumber: ''
     }
   },
   created() {
@@ -143,6 +175,29 @@ export default {
         this.tableData = response.data == null ? [] : response.data.result
         this.listLoading = false
         this.total = response.data == null ? 0 : response.data.totalCount
+      })
+    },
+    // 确认分账
+    confirmBatch(index, row) {
+      var divideDetailNumber = row.divideDetailNumber
+      this.divideDetailNumber = divideDetailNumber
+      this.dialogShow = true
+      confirmBatch({ divideDetailNumber: divideDetailNumber }).then(
+        response => {
+          this.batchStatus = response.data
+        }
+      )
+    },
+    // 确认分账
+    confirmReg() {
+      var divideDetailNumber = this.divideDetailNumber
+      divideBatch(divideDetailNumber).then(response => {
+        this.dialogShow = false
+        this.$message({
+          message: response.data,
+          type: 'success'
+        })
+        this.getList()
       })
     }
   }
