@@ -1,6 +1,6 @@
 module.exports = {
   NODE_ENV: '"production"',
   ENV_CONFIG: '"prod"',
-  BASE_API: '"https://bossapi.youlife.me"',
-  IMAGE_UPLOAD_API: '"https://store.youlife.me"'
+  BASE_API: '"https://bossapi.youlife.net.cn"',
+  IMAGE_UPLOAD_API: '"https://store.youlife.net.cn"'
 }
