@@ -2,13 +2,13 @@
   <div class="body-cont">
     <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
       <el-form-item label="订单编号">
-        <el-input v-model="formInline.orderNumber" style="width:250px" placeholder="订单编号"/>
+        <el-input v-model="formInline.orderNumber" placeholder="订单编号"/>
       </el-form-item>
       <el-form-item label="运单号">
-        <el-input v-model="formInline.expressNumber" style="width:250px" placeholder="运单号"/>
+        <el-input v-model="formInline.expressNumber" placeholder="运单号"/>
       </el-form-item>
       <el-form-item label="店铺ID">
-        <el-input v-model="formInline.storeId" style="width:250px" placeholder="店铺ID"/>
+        <el-input v-model="formInline.storeId" placeholder="店铺ID"/>
       </el-form-item>
       <el-form-item label="订单状态">
         <el-select v-model="formInline.orderStatus" placeholder="请选择">
@@ -133,7 +133,9 @@ export default {
       imageUrl: this.Const.imageUrl,
       value6: '',
       formInline: {
-        keyWords: '',
+        orderNumber: '',
+        expressNumber: '',
+        storeId: '',
         logisticsMode: '',
         orderStatus: '',
         dateBegin: '',

@@ -47,11 +47,6 @@
           <span v-if="scope.row.paidDate!=null"> {{ unix2CurrentTime(scope.row.paidDate) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="timeoutDate" width="170" label="支付过期时间" align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.timeoutDate!=null"> {{ unix2CurrentTime(scope.row.timeoutDate) }}</span>
-        </template>
-      </el-table-column>
       <el-table-column prop="createDate" width="170" label="创建时间" align="center">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createDate) }}</template>
       </el-table-column>

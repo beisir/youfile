@@ -40,11 +40,11 @@
             <span v-if="consigneeInfoShow">{{ consigneeInfo.userName }}</span>
           </div>
           <div v-if="formInline.logisticsMode=='1'">
-            取货人姓名：
-            <span v-if="consigneeInfoShow">{{ consigneeInfo.userName }}</span>
+            取货人电话：
+            <span>{{ formInline.pickerPhone }}</span>
           </div>
         </el-col>
-        <el-col :span="6">
+        <el-col v-if="formInline.logisticsMode=='2'" :span="6">
           <div>
             联系电话：
             <span v-if="consigneeInfoShow">{{ consigneeInfo.userPhone }}</span>

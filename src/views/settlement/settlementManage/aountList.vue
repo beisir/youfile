@@ -143,6 +143,7 @@ export default {
     clickTab(e) {
       const paneName = e.paneName
       this.paneNameIndex = paneName
+      this.listQuery.pageNum = 1
       this.getList(paneName)
     }
   }

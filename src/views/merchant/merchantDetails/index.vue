@@ -891,7 +891,7 @@ export default {
       getImgUrl(params).then(response => {
         const fileList = []
         var objResUrl = this.privateImageUrl + response.obj
-        fileList.push({ url: response.obj })
+        fileList.push({ url: objResUrl })
         if (name === 'businessLicenseUrl') {
           this.businessLicenseUrl = objResUrl
           this.fileList = fileList
@@ -939,24 +939,23 @@ export default {
       getMerchantRetail(routerParams).then(response => {
         let obj = {}
         var datas = response.data
-        this.merchantRetailId = datas.merchantVO.id
+        if (datas.merchantVO) {
+          this.merchantRetailId = datas.merchantVO.id
+          delete datas.merchantVO['id']
+          obj = Object.assign(datas.merchantVO, obj)
+        }
         if (datas.merchantQualificationVO) {
-          this.merchantQualificationVOId =
-            datas.merchantQualificationVO.id
-          const imgUrl =
-            datas.merchantQualificationVO.businessLicenseUrl
-          const idCardFaceUrl =
-            datas.merchantQualificationVO.idCardFaceUrl
-          const idCardConUrl =
-            datas.merchantQualificationVO.idCardConUrl
+          this.merchantQualificationVOId = datas.merchantQualificationVO.id
+          const imgUrl = datas.merchantQualificationVO.businessLicenseUrl
+          const idCardFaceUrl = datas.merchantQualificationVO.idCardFaceUrl
+          const idCardConUrl = datas.merchantQualificationVO.idCardConUrl
           const unifiedCertificateUrl =
             datas.merchantQualificationVO.unifiedCertificateUrl
           const taxRegisterCertificateUrl =
             datas.merchantQualificationVO.taxRegisterCertificateUrl
           const organCodeCertificateUrl =
             datas.merchantQualificationVO.organCodeCertificateUrl
-          const bankOrganUrl =
-            datas.merchantQualificationVO.bankOrganUrl
+          const bankOrganUrl = datas.merchantQualificationVO.bankOrganUrl
           if (unifiedCertificateUrl) {
             this.getImageUrl(unifiedCertificateUrl, 'unifiedCertificateUrl')
           }
@@ -984,19 +983,18 @@ export default {
           if (idCardConUrl) {
             this.getImageUrl(idCardConUrl, 'idCardConUrl')
           }
+          delete datas.merchantQualificationVO['id']
+          obj = Object.assign(datas.merchantQualificationVO, obj)
         }
         if (datas.merchantSettleVO) {
           this.merchantSettleVOId = datas.merchantSettleVO.id
-          const settlementCardUrl =
-            datas.merchantSettleVO.settlementCardUrl
+          const settlementCardUrl = datas.merchantSettleVO.settlementCardUrl
           if (settlementCardUrl) {
             this.getImageUrl(settlementCardUrl, 'settlementCardUrl')
           }
+          delete datas.merchantSettleVO['id']
+          obj = Object.assign(datas.merchantSettleVO, obj)
         }
-        delete datas.merchantSettleVO['id']
-        delete datas.merchantQualificationVO['id']
-        delete datas.merchantVO['id']
-        obj = Object.assign(datas.merchantSettleVO, datas.merchantQualificationVO, datas.merchantVO, obj)
         this.merchantVOData = obj
         this.merchantNumber = datas.merchantNumber
       })

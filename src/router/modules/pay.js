@@ -36,6 +36,25 @@ const orderRouter = {
           name: 'YibaoPaySet',
           component: () => import('@/views/pay/yibaoPaySet/index'), // Parent router-view
           meta: { title: 'yibaoPaySet' }
+        },
+        {
+          path: 'settlementList',
+          name: 'SettlementList',
+          component: () => import('@/views/pay/settlementList/index'), // Parent router-view
+          meta: { title: 'settlementList' }
+        },
+        {
+          path: 'batchList',
+          name: 'BatchList',
+          component: () => import('@/views/pay/batchList/index'), // Parent router-view
+          meta: { title: 'batchList' }
+        },
+        {
+          path: 'batchDetails',
+          name: 'BatchDetails',
+          component: () => import('@/views/pay/batchList/details'), // Parent router-view
+          meta: { title: 'batchDetails' },
+          hidden: true
         }
       ]
     },

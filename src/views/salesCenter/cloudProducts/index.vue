@@ -49,6 +49,7 @@
           <span v-if="scope.row.orderStatus==='unpaid'" style="color: #E6A23C">待付款</span>
           <span v-else-if="scope.row.orderStatus==='paid'" style="color: #67C23A">已付款</span>
           <span v-else-if="scope.row.orderStatus==='canceled'" style="color: #909399">已取消</span>
+          <span v-else-if="scope.row.orderStatus==='finish'" style="color: #909344">已完成</span>
         </template>
       </el-table-column>
       <el-table-column prop="yunStore.name" label="店名" align="center"/>
@@ -132,6 +133,10 @@ export default {
         {
           label: '已取消',
           value: 'canceled'
+        },
+        {
+          label: '已完成',
+          value: 'finish'
         }
       ],
       pickerOptions: {

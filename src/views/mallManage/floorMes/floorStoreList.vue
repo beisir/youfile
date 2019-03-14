@@ -9,7 +9,8 @@
     <el-table v-loading.body="listLoading" :data="tableData" highlight-current-row border style="width: 100%">
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="name" label="店铺名称" align="center"/>
-      <el-table-column prop="phone" label="手机号" align="center"/>
+      <el-table-column prop="storeId" label="店铺Id" align="center"/>
+      <!-- <el-table-column prop="phone" label="手机号" align="center"/> -->
       <el-table-column prop="logo" label="店铺logo" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.logo" width="40" height="40" class="head_pic">
