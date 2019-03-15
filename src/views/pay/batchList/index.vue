@@ -8,7 +8,7 @@
         <el-select v-model="formInline.status" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
           <el-option label="未分账" value="batch_init">未分账</el-option>
-          <el-option label="分账成功" value="batch_success">分账成功</el-option>
+          <el-option label="已分账" value="batch_success">已分账</el-option>
         </el-select>
       </el-form-item>
       <el-date-picker
@@ -38,7 +38,7 @@
       <el-table-column prop="status" label="分账批次状态" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.status=='batch_init'" style="color: #E73E48">未分账</span>
-          <span v-if="scope.row.status=='batch_success'" style="color: #E6A23C">分账成功</span>
+          <span v-if="scope.row.status=='batch_success'" style="color: #E6A23C">已分账</span>
         </template>
       </el-table-column>
       <el-table-column prop="totalFail" label="分账失败数字" align="center"/>
