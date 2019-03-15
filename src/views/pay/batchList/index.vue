@@ -7,8 +7,7 @@
       <el-form-item label="分账批次状态">
         <el-select v-model="formInline.status" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
-          <el-option label="初始化" value="batch_init">初始化</el-option>
-          <el-option label="分账中" value="batch_doing">分账中</el-option>
+          <el-option label="未分账" value="batch_init">未分账</el-option>
           <el-option label="分账成功" value="batch_success">分账成功</el-option>
         </el-select>
       </el-form-item>
@@ -38,8 +37,7 @@
       <el-table-column prop="totalMerchant" label="分账总商户数" align="center"/>
       <el-table-column prop="status" label="分账批次状态" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.status=='batch_init'" style="color: #E73E48">初始化</span>
-          <span v-if="scope.row.status=='batch_doing'" style="color: #E6A23C">分账中</span>
+          <span v-if="scope.row.status=='batch_init'" style="color: #E73E48">未分账</span>
           <span v-if="scope.row.status=='batch_success'" style="color: #E6A23C">分账成功</span>
         </template>
       </el-table-column>

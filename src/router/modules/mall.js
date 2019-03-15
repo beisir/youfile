@@ -22,7 +22,7 @@ const mallRouter = {
     },
     {
       path: '/bannerManage/index',
-      component: () => import('@/views/mallManage/bannerManage/index'),
+      component: () => import('@/views/mallManage/iconManage/index'),
       name: 'bannerManage',
       meta: {
         title: 'bannerManage'
@@ -39,7 +39,7 @@ const mallRouter = {
     },
     {
       path: '/activeManage/index',
-      component: () => import('@/views/mallManage/activeManage/index'),
+      component: () => import('@/views/mallManage/iconManage/index'),
       name: 'activeManage',
       meta: {
         title: 'activeManage'
@@ -82,11 +82,28 @@ const mallRouter = {
     },
     {
       path: '/floorManage/index',
-      component: () => import('@/views/mallManage/floorManage/index'),
+      component: () => import('@/views/mallManage/iconManage/index'),
       name: 'floorManage',
       meta: {
         title: 'floorManage'
       }
+    },
+    {
+      path: '/classManage/index',
+      component: () => import('@/views/mallManage/iconManage/index'),
+      name: 'classManage',
+      meta: {
+        title: 'classManage'
+      }
+    },
+    {
+      path: '/classifyManage/index',
+      component: () => import('@/views/mallManage/classifyManage/index'),
+      name: 'classManage',
+      meta: {
+        title: 'classManage'
+      },
+      hidden: true
     }
   ]
 }

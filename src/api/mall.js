@@ -189,3 +189,37 @@ export function addSale(params) {
     data: params
   })
 }
+// 分类管理
+export function getClassList(mallCode) {
+  return request({
+    url: '/mall/category/tree/' + mallCode,
+    method: 'get'
+  })
+}
+export function getClassDetails(categoryCode) {
+  return request({
+    url: '/mall/category/' + categoryCode,
+    method: 'get'
+  })
+}
+export function deteleClass(categoryCode) {
+  return request({
+    url: '/mall/category/' + categoryCode,
+    method: 'delete'
+  })
+}
+export function saveClass(params) {
+  return request({
+    url: '/mall/category/save',
+    method: 'post',
+    data: params
+  })
+}
+export function updateClass(params) {
+  return request({
+    url: '/mall/category/update',
+    method: 'put',
+    data: params
+  })
+}
+
