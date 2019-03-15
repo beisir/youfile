@@ -60,3 +60,17 @@ export function deteleGoods(goodsId) {
     method: 'delete'
   })
 }
+// 绑定平台分类
+export function bindClass(params) {
+  return request({
+    url: '/plat/mall/category/relation',
+    method: 'post',
+    data: params
+  })
+}
+export function getbindList(platformCategoryCode) {
+  return request({
+    url: '/plat/mall/category/relation/mall/cate/' + platformCategoryCode + '/three',
+    method: 'get'
+  })
+}

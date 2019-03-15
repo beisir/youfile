@@ -23,6 +23,13 @@ const goodsRouter = {
       name: 'ClassManage',
       component: () => import('@/views/goods/classManage/index'),
       meta: { title: 'classManage' }
+    },
+    {
+      path: 'bindList',
+      name: 'BindList',
+      component: () => import('@/views/goods/classManage/bindList'),
+      meta: { title: 'bindList' },
+      hidden: true
     }
   ]
 }

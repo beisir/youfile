@@ -1,6 +1,6 @@
 <template>
   <div class="bodyCont">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
+    <el-form :inline="true" class="demo-form-inline border-form">
       <el-button type="primary" @click="onSubmit">添加分类</el-button>
     </el-form>
     <el-table :data="tableData" highlight-current-row border max-height="800" style="width: 100%">
@@ -31,7 +31,7 @@
                   <el-table-column label="更新时间" prop="updateDate" align="center">
                     <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateDate) }}</template>
                   </el-table-column>
-                  <el-table-column label="操作" width="160" align="center">
+                  <el-table-column label="操作" width="320" align="center">
                     <template slot-scope="scope">
                       <el-button
                         size="mini"
@@ -43,6 +43,16 @@
                         type="warning"
                         @click="removeCode(scope.$index,scope.row)"
                       >删除</el-button>
+                      <!-- <el-button
+                        size="mini"
+                        type="info"
+                        @click="bindClass(scope.$index,scope.row)"
+                      >绑定</el-button>
+                      <el-button
+                        size="mini"
+                        type="success"
+                        @click="getbindList(scope.$index,scope.row)"
+                      >查看绑定</el-button> -->
                     </template>
                   </el-table-column>
                 </el-table>
@@ -155,6 +165,73 @@
         <el-button type="primary" @click="addClass">确 定</el-button>
       </el-row>
     </el-dialog>
+    <el-dialog :visible.sync="showMall" :title="name">
+      <el-form :inline="true" :label-width="formLabelWidth">
+        <el-row>
+          <el-form-item label="选择商贸云" required>
+            <el-select
+              :label-width="formLabelWidth"
+              v-model="mallName"
+              @change="alertMall($event)">
+              <el-option
+                v-for="item in mallList"
+                :label="item.name"
+                :value="item.code"
+                :key="item.id"
+              />
+            </el-select>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="选择一级分类">
+            <el-select
+              :label-width="formLabelWidth"
+              v-model="mallCName"
+              @change="changeClass($event)">
+              <el-option
+                v-for="item in mallClassData"
+                :label="item.name"
+                :value="item"
+                :key="item.id"
+              />
+            </el-select>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="选择二级分类">
+            <el-select
+              :label-width="formLabelWidth"
+              v-model="mallCtName"
+              @change="changeTClass($event)">
+              <el-option
+                v-for="item in mallTClassData"
+                :label="item.name"
+                :value="item"
+                :key="item.id"
+              />
+            </el-select>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="选择三级分类" required>
+            <el-select
+              :label-width="formLabelWidth"
+              v-model="mallCthName"
+              @change="changeThClass($event)">
+              <el-option
+                v-for="item in mallThClassData"
+                :label="item.name"
+                :value="item"
+                :key="item.id"
+              />
+            </el-select>
+          </el-form-item>
+        </el-row>
+        <el-row class="submit-btn">
+          <el-button type="primary" @click="addBind">确 定</el-button>
+        </el-row>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -163,13 +240,30 @@ import {
   deteleClass,
   getClassDetails,
   saveClass,
-  updateClass
+  updateClass,
+  bindClass
 } from '@/api/goods'
 import { unix2CurrentTime } from '@/utils'
+import { getList, getClassList as getMClassList } from '@/api/mall'
 export default {
   data() {
     return {
       title: '添加分类',
+      name: '绑定商贸云分类',
+      showMall: false,
+      mallList: [],
+      mallName: '',
+      mallCName: '',
+      mallCtName: '',
+      mallCthName: '',
+      mallClassData: [],
+      mallTClassData: [],
+      mallThClassData: [],
+      updateData: {
+        mallCategoryCode: '',
+        mallCode: '',
+        platformCategoryCode: ''
+      },
       uploadImgUrl: process.env.IMAGE_UPLOAD_API,
       logoUrlListShow: false,
       addClassData: false,
@@ -382,48 +476,68 @@ export default {
     },
     changeTwoClass(event) {
       this.formData.parentCategoryCode = event
+    },
+    // 绑定商贸云分类
+    bindClass(index, row) {
+      var categoryCode = row.categoryCode
+      this.updateData.platformCategoryCode = categoryCode
+      this.showMall = true
+      getList().then(res => {
+        this.mallList = res.data
+      })
+    },
+    // 选择商贸云
+    alertMall(e) {
+      this.updateData.mallCode = e
+      getMClassList(e).then(res => {
+        this.mallClassData = res.data
+      })
+    },
+    // 选择分类
+    changeClass(event) {
+      this.mallCName = event.name
+      this.mallTClassData = event.subCategoryList
+    },
+    changeTClass(event) {
+      this.mallCtName = event.name
+      this.mallThClassData = event.subCategoryList
+    },
+    changeThClass(event) {
+      this.mallCthName = event.name
+      this.updateData.mallCategoryCode = event.categoryCode
+    },
+    // 初始化绑定数据
+    initFromBind() {
+      this.updateData.mallCategoryCode = ''
+      this.mallCode.mallCategoryCode = ''
+      this.platformCategoryCode.mallCategoryCode = ''
+    },
+    // 绑定商贸云分类
+    addBind() {
+      var updateData = this.updateData
+      bindClass(updateData).then(res => {
+        this.$message({
+          message: res.msg,
+          type: 'success'
+        })
+        this.showMall = false
+        this.initFromBind()
+      })
+    },
+    // 查看绑定列表
+    getbindList(index, row) {
+      var categoryCode = row.categoryCode
+      this.$router.push({
+        path: '/goods/bindList',
+        query: {
+          categoryCode: categoryCode
+        }
+      })
     }
   }
 }
 </script>
 <style>
-.custom-tree-node td {
-  width: 200px;
-  border: 1px solid #ebeef5;
-  border-right: 0;
-  height: 50px;
-  text-align: center;
-  line-height: 50px;
-  border-bottom: 0;
-}
-.el-tree-node:focus > .el-tree-node__content {
-  background: #fff;
-}
-.custom-tree-node > td {
-  background: #ebeef5;
-}
-.el-tree-node__content {
-  height: 50px;
-}
-.custom-tree-node tr:hover {
-  background-color: #f5f7fa;
-}
-.custom-tree-node tr td:last-child {
-  border-right: 1px solid #ebeef5;
-}
-.el-tree-node__content > .el-tree-node__expand-icon {
-  padding: 19px 10px;
-  border-top: 1px solid #ebeef5;
-}
-.tree-header tr td {
-  font-weight: bold;
-  font-size: 14px;
-  color: #909399;
-}
-.el-tree-node__content:hover,
-.el-tree-node is-focusable {
-  background: #fff;
-}
 .bodyCont {
   margin: 30px;
   border: 1px solid #ebeef5;

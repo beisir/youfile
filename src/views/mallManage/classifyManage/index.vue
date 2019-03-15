@@ -13,10 +13,10 @@
     >
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-table :data="props.row.subGoodsCategoryList" border style="width: 100%">
+          <el-table :data="props.row.subCategoryList" border style="width: 100%">
             <el-table-column type="expand">
               <template slot-scope="props">
-                <el-table :data="props.row.subGoodsCategoryList" border style="width: 100%">
+                <el-table :data="props.row.subCategoryList" border style="width: 100%">
                   <el-table-column label="分类名称" prop="name" align="center"/>
                   <el-table-column label="分类编码" prop="categoryCode" align="center"/>
                   <el-table-column label="排序" prop="sort" align="center"/>
@@ -124,7 +124,7 @@
             @change="changeTwoClass($event)"
           >
             <el-option
-              v-for="item in subGoodsCategoryList"
+              v-for="item in subCategoryList"
               :label="item.name"
               :value="item.categoryCode"
               :key="item.id"
@@ -180,11 +180,11 @@ export default {
       listLoading: false,
       logoList: [],
       tableData: [],
-      subGoodsCategoryList: [],
+      subCategoryList: [],
       oneClass: true,
       twoClass: true,
       defaultProps: {
-        children: 'subGoodsCategoryList',
+        children: 'subCategoryList',
         label: 'name'
       },
       formData: {
@@ -378,7 +378,7 @@ export default {
       const tableData = this.tableData
       for (var i = 0; i < tableData.length; i++) {
         if (tableData[i].categoryCode === event) {
-          this.subGoodsCategoryList = tableData[i].subGoodsCategoryList
+          this.subCategoryList = tableData[i].subCategoryList
         }
       }
     },
