@@ -1,30 +1,86 @@
 <template>
   <div class="bodyCont">
-    <el-button type="primary" @click="onSubmit">添加楼层</el-button>
-    <el-button type="warning" @click="onBindFloor">绑定店铺</el-button>
-    <div class="custom-tree-node tree-header">
-      <tr>
-        <td style="width:32px;border-left:0">#</td>
-        <td>楼座名称</td>
-        <td>楼层</td>
-        <td>排序</td>
-        <td>操作</td>
-      </tr>
-    </div>
-    <el-tree :data="tableData" :props="defaultProps" :expand-on-click-node="false" node-key="id">
-      <div slot-scope="{ node, data }" class="custom-tree-node">
-        <tr>
-          <td>{{ data.name }}</td>
-          <td>{{ data.floorNum==0?"": data.floorNum }}</td>
-          <td>{{ data.sort }}</td>
-          <td>
-            <el-button size="mini" type="primary" @click="editCode(data.code)">编辑</el-button>
-            <el-button size="mini" type="warning" @click="removeCode(data.code)">删除</el-button>
-            <el-button size="mini" type="warning" @click="getStoreList(data.code)">店铺列表</el-button>
-          </td>
-        </tr>
-      </div>
-    </el-tree>
+    <el-form :inline="true" class="demo-form-inline border-form">
+      <el-button type="primary" @click="onSubmit">添加楼层</el-button>
+      <el-button type="warning" @click="onBindFloor">绑定店铺</el-button>
+    </el-form>
+    <el-table
+      v-loading.body="listLoading"
+      :data="tableData"
+      border
+      highlight-current-row
+      max-height="800"
+      style="width: 100%"
+    >
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-table :data="props.row.childList" border style="width: 100%">
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-table :data="props.row.childList" border style="width: 100%">
+                  <el-table-column label="楼座名称" prop="name" align="center"/>
+                  <el-table-column label="楼层" prop="floorNum" align="center">
+                    <template slot-scope="scope">{{ scope.row.floorNum==0?"": scope.row.floorNum }}</template>
+                  </el-table-column>
+                  <el-table-column label="排序" prop="sort" align="center"/>
+                  <el-table-column label="操作" width="250" align="center">
+                    <template slot-scope="scope">
+                      <el-button
+                        size="mini"
+                        type="primary"
+                        @click="editCode(scope.$index, scope.row )"
+                      >编辑</el-button>
+                      <el-button
+                        size="mini"
+                        type="warning"
+                        @click="removeCode(scope.$index, scope.row )"
+                      >删除</el-button>
+                      <el-button
+                        size="mini"
+                        type="warning"
+                        @click="getStoreList(scope.$index,scope.row)"
+                      >店铺列表</el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </template>
+            </el-table-column>
+            <el-table-column label="楼座名称" prop="name" align="center"/>
+            <el-table-column label="楼层" prop="floorNum" align="center">
+              <template slot-scope="scope">{{ scope.row.floorNum==0?"": scope.row.floorNum }}</template>
+            </el-table-column>
+            <el-table-column label="排序" prop="sort" align="center"/>
+            <el-table-column label="操作" width="250" align="center">
+              <template slot-scope="scope">
+                <el-button size="mini" type="primary" @click="editCode(scope.$index, scope.row )">编辑</el-button>
+                <el-button
+                  size="mini"
+                  type="warning"
+                  @click="removeCode(scope.$index, scope.row )"
+                >删除</el-button>
+                <el-button
+                  size="mini"
+                  type="warning"
+                  @click="getStoreList(scope.$index,scope.row)"
+                >店铺列表</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-table-column>
+      <el-table-column label="楼座名称" prop="name" align="center"/>
+      <el-table-column label="楼层" prop="floorNum" align="center">
+        <template slot-scope="scope">{{ scope.row.floorNum==0?"": scope.row.floorNum }}</template>
+      </el-table-column>
+      <el-table-column label="排序" prop="sort" align="center"/>
+      <el-table-column label="操作" width="250" align="center">
+        <template slot-scope="scope">
+          <el-button size="mini" type="primary" @click="editCode(scope.$index, scope.row )">编辑</el-button>
+          <el-button size="mini" type="warning" @click="removeCode(scope.$index, scope.row )">删除</el-button>
+          <el-button size="mini" type="warning" @click="getStoreList(scope.$index,scope.row)">店铺列表</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <el-dialog :visible.sync="dialogShow" :title="title">
       <el-form
         :inline="true"
@@ -260,7 +316,8 @@ export default {
         this.listLoading = false
       })
     },
-    removeCode(code) {
+    removeCode(index, row) {
+      var code = row.code
       this.$confirm('是否确定删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -278,7 +335,8 @@ export default {
         .catch(() => {})
     },
     // 查看店铺列表
-    getStoreList(code) {
+    getStoreList(index, row) {
+      var code = row.code
       this.$router.push({
         path: '/floorMes/floorStoreList',
         query: {
@@ -339,7 +397,8 @@ export default {
       })
     },
     // 编辑分类
-    editCode(code) {
+    editCode(index, row) {
+      var code = row.code
       this.headerClass = false
       this.oneClass = false
       this.twoClass = false
