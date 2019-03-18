@@ -43,7 +43,7 @@
                         type="warning"
                         @click="removeCode(scope.$index,scope.row)"
                       >删除</el-button>
-                      <!-- <el-button
+                      <el-button
                         size="mini"
                         type="info"
                         @click="bindClass(scope.$index,scope.row)"
@@ -52,7 +52,7 @@
                         size="mini"
                         type="success"
                         @click="getbindList(scope.$index,scope.row)"
-                      >查看绑定</el-button> -->
+                      >查看绑定</el-button>
                     </template>
                   </el-table-column>
                 </el-table>

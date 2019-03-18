@@ -4,6 +4,7 @@ export default {
     goods: 'Goods',
     goodsManage: 'Goods Manage',
     classManage: 'Class Manage',
+    bindList: 'Bind List',
     order: 'Order',
     orderManage: 'Order Manage',
     payManage: 'Pay Manage',

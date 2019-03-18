@@ -130,11 +130,14 @@
           >
             <el-option
               v-for="item in childList"
-              :label="item.name"
+              :label="item.floorNum"
               :value="item.code"
               :key="item.id"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item v-if="formData.floorNum!=0 && editShowFloor" :label-width="formLabelWidth" label="楼层" prop="floorNum">
+          <el-input v-model="formData.floorNum" disabled="disabled"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="名称" prop="name">
           <el-input v-model="formData.name"/>
@@ -296,7 +299,8 @@ export default {
       floorInfo: {},
       storeInfo: {},
       storeInfoShow: false,
-      childAreaList: []
+      childAreaList: [],
+      editShowFloor: false
     }
   },
   created() {
@@ -405,6 +409,7 @@ export default {
       this.initFormData()
       this.title = '编辑楼层'
       this.addClassData = true
+      this.editShowFloor = true
       getFloorDetails(code).then(response => {
         this.formData = response.data
         this.dialogShow = true
@@ -424,6 +429,7 @@ export default {
       this.addClassData = false
       this.dialogShow = true
       this.title = '添加楼层'
+      this.editShowFloor = false
       this.isShowAdd = true
       this.headerClass = true
       this.initFormData()
@@ -450,6 +456,12 @@ export default {
             params.parentCode = '0'
           } else if (type === '2') {
             params.parentCode = formData.rootCode
+            var childList = this.childList
+            for (var v of childList) {
+              if (v.code === formData.parentCode) {
+                params.floorNum = v.floorNum
+              }
+            }
           } else {
             params.parentCode = formData.parentCode
           }
@@ -477,15 +489,10 @@ export default {
       })
     },
     clickitem(e) {
-      // this.formData.parentCode = ''
-      // this.formData.rootCode = ''
       if (e === '1') {
         this.oneClass = false
         this.twoClass = false
       } else if (e === '2') {
-        this.oneClass = true
-        this.twoClass = false
-      } else {
         this.oneClass = true
         this.twoClass = true
       }

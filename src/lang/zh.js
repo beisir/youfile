@@ -4,6 +4,7 @@ export default {
     goods: '商品',
     goodsManage: '商品管理',
     classManage: '分类管理',
+    bindList: '绑定列表',
     order: '订单/供货单',
     orderManage: '订单管理',
     payManage: '支付管理',

@@ -79,6 +79,12 @@
             @click="onGoods(scope.$index, scope.row)"
           >上架</el-button>
           <el-button
+            v-if="scope.row.status==0"
+            size="mini"
+            type="primary"
+            @click="onGoods(scope.$index, scope.row)"
+          >上架</el-button>
+          <el-button
             v-if="scope.row.status==1"
             size="mini"
             type="info"

@@ -1,34 +1,33 @@
 <template>
   <div class="bodyCont">
-    <el-table :data="tableData" highlight-current-row border max-height="800" style="width: 100%">
-      <el-table-column label="分类名称" prop="name" align="center"/>
-      <el-table-column label="分类编码" prop="categoryCode" align="center"/>
-      <el-table-column label="排序" prop="sort"/>
-      <el-table-column label="创建时间" prop="createDate" align="center">
-        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createDate) }}</template>
-      </el-table-column>
-      <el-table-column label="更新时间" prop="updateDate" align="center">
-        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateDate) }}</template>
-      </el-table-column>
-      <el-table-column label="操作" width="160" align="center">
-        <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="editCode(scope.$index,scope.row)">编辑</el-button>
-          <el-button size="mini" type="warning" @click="removeCode(scope.$index,scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
+    <el-table
+      :data="tableData"
+      :span-method="objectSpanMethod"
+      highlight-current-row
+      border
+      max-height="800"
+      style="width: 100%"
+    >
+      <el-table-column label="商贸城名称" prop="mallName" align="center"/>
+      <el-table-column label="商贸云编码" prop="mallCode" align="center"/>
+      <el-table-column label="一级分类名称" prop="oneCategoryName" align="center"/>
+      <el-table-column label="二级分类名称" prop="twoCategoryName" align="center"/>
+      <el-table-column label="三级分类名称" prop="threeCategoryName" align="center"/>
+      <el-table-column label="三级分类编码" prop="threeCategoryCode" align="center"/>
     </el-table>
   </div>
 </template>
 <script>
-import {
-  getbindList
-} from '@/api/goods'
+import { getbindList } from '@/api/goods'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
     return {
       dialogShow: false,
-      tableData: []
+      tableData: [],
+      rowList: [],
+      spanArr: [],
+      position: 0
     }
   },
   created() {
@@ -36,6 +35,44 @@ export default {
   },
   methods: {
     unix2CurrentTime,
+    rowspan() {
+      this.tableData.forEach((item, index) => {
+        if (index === 0) {
+          this.spanArr.push(1)
+          this.position = 0
+        } else {
+          if (
+            this.tableData[index].mallName ===
+            this.tableData[index - 1].mallName
+          ) {
+            this.spanArr[this.position] += 1
+            this.spanArr.push(0)
+          } else {
+            this.spanArr.push(1)
+            this.position = index
+          }
+        }
+      })
+    },
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      // 表格合并行
+      if (columnIndex === 0) {
+        const _row = this.spanArr[rowIndex]
+        const _col = _row > 0 ? 1 : 0
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
+      if (columnIndex === 1) {
+        const _row = this.spanArr[rowIndex]
+        const _col = _row > 0 ? 1 : 0
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
+    },
     /**
      * 获取列表
      */
@@ -44,8 +81,35 @@ export default {
       this.listLoading = true
       getbindList(categoryCode).then(response => {
         console.log(response.data)
-        this.tableData = response.data
+        var tempList = response.data
+        var map = {}
+        var dest = []
+        var tableData = []
+        for (var i = 0; i < tempList.length; i++) {
+          var ai = tempList[i]
+          if (!map[ai.mallName]) {
+            dest.push({
+              initial: ai.mallName,
+              busInfoList: [ai]
+            })
+            map[ai.mallName] = ai
+          } else {
+            for (var j = 0; j < dest.length; j++) {
+              var dj = dest[j]
+              if (dj.initial === ai.mallName) {
+                dj.busInfoList.push(ai)
+                break
+              }
+            }
+          }
+        }
+        for (var h = 0; h < dest.length; h++) {
+          Array.prototype.push.apply(tableData, dest[h].busInfoList)
+        }
+        console.log(tableData)
+        this.tableData = tableData
         this.listLoading = false
+        this.rowspan()
       })
     }
   }
