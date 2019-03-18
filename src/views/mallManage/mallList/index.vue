@@ -35,6 +35,9 @@
         <el-form-item :label-width="formLabelWidth" label="商贸云名称" prop="name">
           <el-input v-model="formData.name"/>
         </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="商贸云编码" prop="code">
+          <el-input :disabled="showDisabled" v-model="formData.code"/>
+        </el-form-item>
         <div>
           <el-form-item label="商贸云LOGO" prop="logo">
             <el-upload
@@ -70,6 +73,7 @@ export default {
       title: '编辑商贸云信息',
       formLabelWidth: '130px',
       dialogShow: false,
+      showDisabled: false,
       imageUrl: this.Const.imageUrl,
       listLoading: false,
       total: 0,
@@ -79,6 +83,9 @@ export default {
       rules: {
         name: [
           { required: true, message: '商贸云名称不能为空', trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '商贸云编码不能为空', trigger: 'blur' }
         ],
         logo: [
           { required: true, message: '商贸云LOGO不能为空', trigger: 'blur' }
@@ -109,6 +116,7 @@ export default {
       const code = row.code
       this.dialogShow = true
       this.title = '编辑商贸云'
+      this.showDisabled = true
       getMallMes(code).then(response => {
         this.formData = response.data
         const fileList = []
@@ -155,6 +163,7 @@ export default {
     // 添加商贸云信息
     addSubmit() {
       this.formData = {}
+      this.showDisabled = false
       this.logoList = []
       this.logoUrlListShow = false
       this.dialogShow = true
