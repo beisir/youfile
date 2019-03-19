@@ -199,7 +199,7 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item v-if="twoClass" label="楼层：">
+          <el-form-item label="楼层：">
             <el-select
               :label-width="formLabelWidth"
               v-model="floorInfo.floorCode"
@@ -420,6 +420,7 @@ export default {
       this.title = '编辑楼层'
       this.addClassData = true
       this.editShowFloor = true
+      this.twoshowClass = false
       getFloorDetails(code).then(response => {
         this.formData = response.data
         this.dialogShow = true
