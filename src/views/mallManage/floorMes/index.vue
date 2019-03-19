@@ -18,10 +18,7 @@
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-table :data="props.row.childList" border style="width: 100%">
-                  <el-table-column label="楼座名称" prop="name" align="center"/>
-                  <el-table-column label="楼层" prop="floorNum" align="center">
-                    <template slot-scope="scope">{{ scope.row.floorNum==0?"": scope.row.floorNum }}</template>
-                  </el-table-column>
+                  <el-table-column label="区域名称" prop="name" align="center"/>
                   <el-table-column label="排序" prop="sort" align="center"/>
                   <el-table-column label="操作" width="250" align="center">
                     <template slot-scope="scope">
@@ -45,7 +42,7 @@
                 </el-table>
               </template>
             </el-table-column>
-            <el-table-column label="楼座名称" prop="name" align="center"/>
+            <el-table-column label="楼层名称" prop="name" align="center"/>
             <el-table-column label="楼层" prop="floorNum" align="center">
               <template slot-scope="scope">{{ scope.row.floorNum==0?"": scope.row.floorNum }}</template>
             </el-table-column>
@@ -136,7 +133,15 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="formData.floorNum!=0 && editShowFloor" :label-width="formLabelWidth" label="楼层" prop="floorNum">
+        <el-form-item v-if="twoshowClass" :label-width="formLabelWidth" label="楼层" prop="floorNum">
+          <el-input v-model="formData.floorNum"/>
+        </el-form-item>
+        <el-form-item
+          v-if="formData.floorNum!=0 && editShowFloor"
+          :label-width="formLabelWidth"
+          label="楼层"
+          prop="floorNum"
+        >
           <el-input v-model="formData.floorNum" disabled="disabled"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="名称" prop="name">
@@ -267,6 +272,7 @@ export default {
       oneClass: true,
       headerClass: true,
       twoClass: true,
+      twoshowClass: true,
       defaultProps: {
         children: 'childList',
         label: 'name'
@@ -280,6 +286,9 @@ export default {
       },
       rules: {
         name: [
+          { required: true, message: '楼层名称不能为空', trigger: 'blur' }
+        ],
+        floorNum: [
           { required: true, message: '楼层名称不能为空', trigger: 'blur' }
         ],
         sort: [{ required: true, message: '排序不能为空', trigger: 'blur' }],
@@ -297,6 +306,7 @@ export default {
       storeName: '',
       storeNameShow: false,
       floorInfo: {},
+
       storeInfo: {},
       storeInfoShow: false,
       childAreaList: [],
@@ -456,12 +466,7 @@ export default {
             params.parentCode = '0'
           } else if (type === '2') {
             params.parentCode = formData.rootCode
-            var childList = this.childList
-            for (var v of childList) {
-              if (v.code === formData.parentCode) {
-                params.floorNum = v.floorNum
-              }
-            }
+            params.floorNum = formData.floorNum
           } else {
             params.parentCode = formData.parentCode
           }
@@ -492,8 +497,14 @@ export default {
       if (e === '1') {
         this.oneClass = false
         this.twoClass = false
+        this.twoshowClass = false
       } else if (e === '2') {
         this.oneClass = true
+        this.twoClass = false
+        this.twoshowClass = true
+      } else {
+        this.oneClass = true
+        this.twoshowClass = false
         this.twoClass = true
       }
       this.formData.type = e
