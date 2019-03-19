@@ -399,6 +399,7 @@ export default {
     },
     editStoreFloor() {
       const floorInfo = this.floorInfo
+      floorInfo.mallCode = this.mallCode
       editStoreFloor(floorInfo).then(response => {
         this.$message({
           type: 'success',
