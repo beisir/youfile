@@ -117,8 +117,8 @@ import {
   getSaleList,
   getSaleDetails,
   updateSale,
-  addSale,
-  deleteSale
+  addSale
+  // deleteSale
 } from '@/api/youlife'
 import { unix2CurrentTime } from '@/utils'
 export default {
@@ -175,20 +175,20 @@ export default {
     },
     // 删除
     deleteSale(index, row) {
-      const code = row.id
+      // const code = row.id
       this.$confirm('确定要删除此配置吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          deleteSale(code).then(response => {
-            this.getList()
-            this.$message({
-              message: response.data,
-              type: 'success'
-            })
-          })
+          // deleteSale(code).then(response => {
+          //   this.getList()
+          //   this.$message({
+          //     message: response.data,
+          //     type: 'success'
+          //   })
+          // })
         })
         .catch(() => {})
     },

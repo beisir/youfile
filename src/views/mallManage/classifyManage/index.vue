@@ -66,6 +66,8 @@
         </template>
       </el-table-column>
       <el-table-column label="分类名称" prop="name" align="center"/>
+      <el-table-column label="别名" prop="alias" align="center"/>
+      <el-table-column label="描述" prop="description" align="center"/>
       <el-table-column label="分类编码" prop="categoryCode" align="center"/>
       <el-table-column label="排序" prop="sort" align="center"/>
       <el-table-column label="创建时间" prop="createDate" align="center">

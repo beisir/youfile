@@ -54,6 +54,8 @@ export default {
     hotClasss: '热门分类',
     mallList: '商贸云列表',
     salesCenter: '销售中心',
+    marketingCenter: '营销中心',
+    posterModal: '模板信息',
     cloudProducts: '云产品订单',
     cloudProductsDetail: '云产品详情',
     introduction: '简述',

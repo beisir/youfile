@@ -15,19 +15,19 @@ const youlifeRouter = {
     {
       path: '/youlifeSale/index',
       component: () => import('@/views/youlifeManage/youlifeSale/index'),
-      name: 'mallSale',
+      name: 'marketingCenter',
       meta: {
-        title: 'mallSale'
+        title: 'marketingCenter'
       }
     },
-    {
-      path: '/youlifeBanner/index',
-      component: () => import('@/views/youlifeManage/youlifeBanner/index'),
-      name: 'mallBanner',
-      meta: {
-        title: 'mallBanner'
-      }
-    },
+    // {
+    //   path: '/youlifeBanner/index',
+    //   component: () => import('@/views/youlifeManage/youlifeBanner/index'),
+    //   name: 'mallBanner',
+    //   meta: {
+    //     title: 'mallBanner'
+    //   }
+    // },
     {
       path: '/recommendGoods/index',
       component: () => import('@/views/youlifeManage/recommendGoods/index'),

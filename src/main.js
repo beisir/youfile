@@ -19,7 +19,7 @@ import './icons' // icon
 import './errorLog' // error log
 import './permission' // permission control
 import './mock' // simulation data
-import { checkPermission } from '@/utils/permission'
+import checkPermission from '@/utils/permission'
 import imageUrl from './components/Const/index.vue'
 import privateImageUrl from './components/Const/index.vue'
 import owner from './components/Const/index.vue'

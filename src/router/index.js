@@ -334,6 +334,27 @@ export const asyncRouterMap = [
       }
     ]
   },
+  /** 营销中心**/
+  {
+    path: '/marketingCenter',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'marketingCenter',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: '/poster/index',
+        component: () => import('@/views/marketingCenter/poster/posterModal'),
+        name: 'posterModal',
+        meta: {
+          title: 'posterModal'
+        }
+      }
+    ]
+  },
   /** When your routing table is too long, you can split it into small modules**/
   goodsRouter,
   orderRouter,

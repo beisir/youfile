@@ -45,7 +45,7 @@
         align="center"
       />
       <el-table-column label="状态" align="center">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span v-if="scope.row.orderStatus==='unpaid'" style="color: #E6A23C">待付款</span>
           <span v-else-if="scope.row.orderStatus==='paid'" style="color: #67C23A">已付款</span>
           <span v-else-if="scope.row.orderStatus==='canceled'" style="color: #909399">已取消</span>
@@ -123,11 +123,11 @@ export default {
           value: 'all'
         },
         {
-          label: '待支付',
+          label: '待付款',
           value: 'unpaid'
         },
         {
-          label: '已支付',
+          label: '已付款',
           value: 'paid'
         },
         {
