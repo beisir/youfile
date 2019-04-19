@@ -66,7 +66,7 @@
         </template>
       </el-table-column>
       <el-table-column label="分类名称" prop="name" align="center"/>
-      <el-table-column label="别名" prop="alias" align="center"/>
+      <el-table-column label="简称" prop="alias" align="center"/>
       <el-table-column label="描述" prop="description" align="center"/>
       <el-table-column label="分类编码" prop="categoryCode" align="center"/>
       <el-table-column label="排序" prop="sort" align="center"/>
@@ -135,6 +135,12 @@
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="排序" prop="sort">
           <el-input v-model="formData.sort" type="number"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="简称" prop="sort">
+          <el-input v-model="formData.alias" type="number"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="描述" prop="sort">
+          <el-input v-model="formData.description" type="number"/>
         </el-form-item>
         <div>
           <el-form-item label="图片" class="cove-img">

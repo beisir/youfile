@@ -95,6 +95,15 @@ const mallRouter = {
       meta: {
         title: 'classManage'
       }
+    },
+    {
+      path: '/classifyManage/index',
+      component: () => import('@/views/mallManage/classifyManage/index'),
+      name: 'classManage',
+      meta: {
+        title: 'classManage'
+      },
+      hidden: true
     }
   ]
 }
