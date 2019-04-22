@@ -136,11 +136,11 @@
         <el-form-item :label-width="formLabelWidth" label="排序" prop="sort">
           <el-input v-model="formData.sort" type="number"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="简称" prop="sort">
-          <el-input v-model="formData.alias" type="number"/>
+        <el-form-item v-if="!oneClass && !twoClass" :label-width="formLabelWidth" label="简称" prop="sort">
+          <el-input v-model="formData.alias" type="text"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="描述" prop="sort">
-          <el-input v-model="formData.description" type="number"/>
+        <el-form-item v-if="!oneClass && !twoClass" :label-width="formLabelWidth" label="描述" prop="sort">
+          <el-input v-model="formData.description" type="text"/>
         </el-form-item>
         <div>
           <el-form-item label="图片" class="cove-img">

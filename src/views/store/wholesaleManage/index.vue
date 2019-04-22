@@ -1,8 +1,20 @@
 <template>
   <div class="body-cont">
     <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
+      <el-form-item label="店铺编号">
+        <el-input v-model="formInline.storeId" placeholder="店铺编号"/>
+      </el-form-item>
       <el-form-item label="店铺名称">
         <el-input v-model="formInline.name" placeholder="店铺名称"/>
+      </el-form-item>
+      <el-form-item label="手机号">
+        <el-input v-model="formInline.phone" placeholder="手机号"/>
+      </el-form-item>
+      <el-form-item label="商贸城">
+        <el-select v-model="formInline.mallCode" placeholder="请选择">
+          <el-option label="全部" value>全部</el-option>
+          <el-option v-for="item in mallList" :label="item.name" :value="item.code" :key="item.code">{{ item.name }}</el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="店铺性质">
         <el-select v-model="formInline.storeNature" placeholder="请选择">
@@ -10,12 +22,6 @@
           <el-option label="新批零" value="1">新批零</el-option>
           <el-option label="新零售" value="2">新零售</el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="店铺编号">
-        <el-input v-model="formInline.storeId" placeholder="店铺编号"/>
-      </el-form-item>
-      <el-form-item label="手机号">
-        <el-input v-model="formInline.phone" placeholder="手机号"/>
       </el-form-item>
       <el-form-item label="是否删除">
         <el-select v-model="formInline.isDel" placeholder="请选择">
@@ -37,13 +43,14 @@
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column prop="id" width="120" label="店铺编号" align="center"/>
       <el-table-column prop="merchantNumber" width="120" label="商户编号" align="center"/>
-      <el-table-column prop="name" label="店铺名称" width="150" align="center"/>
-      <el-table-column prop="phone" label="手机号" width="150" align="center"/>
       <el-table-column prop="logo" label="店铺logo" width="150" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.logo" width="40" height="40" class="head_pic">
         </template>
       </el-table-column>
+      <el-table-column prop="name" label="店铺名称" width="150" align="center"/>
+      <el-table-column prop="floorDescription" label="楼层信息" width="150" align="center"/>
+      <el-table-column prop="phone" label="手机号" width="150" align="center"/>
       <el-table-column prop="coverUrl" label="店铺封面图" width="150" align="center">
         <template slot-scope="scope">
           <img :src="imageUrl+scope.row.coverUrl" width="40" height="40" class="head_pic">
@@ -55,6 +62,7 @@
           <span v-if="scope.row.storeNature==&quot;2&quot;">新零售</span>
         </template>
       </el-table-column>
+      <el-table-column prop="mallName" label="所属商城" width="150" align="center"/>
       <el-table-column prop="businessScope" label="经营范围" width="150" align="center"/>
       <el-table-column prop="address" label="店铺地址" width="300" align="center"/>
       <el-table-column prop="isDel" label="是否删除" width="150" align="center">
@@ -211,6 +219,7 @@ import {
   getReceipt,
   updateReceipt
 } from '@/api/store'
+import { getList as getMallList } from '@/api/mall'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
@@ -289,11 +298,15 @@ export default {
         logo: [
           { required: true, message: '小云店LOGO不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      mallList: []
     }
   },
   created() {
     this.getList()
+    getMallList().then(res => {
+      this.mallList = res.data ? res.data : []
+    })
   },
   methods: {
     unix2CurrentTime,

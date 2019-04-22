@@ -521,6 +521,10 @@ export default {
           type: 'success'
         })
         this.showMall = false
+        this.mallName = ''
+        this.mallCName = ''
+        this.mallCtName = ''
+        this.mallCthName = ''
         this.initFromBind()
       })
     },
