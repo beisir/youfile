@@ -871,6 +871,7 @@ export default {
           let data = {}
           if (formData.merchantCharacter === '3') {
             data = {
+              bankBranchCode: formData.subBankCode,
               accLicenseNo: formData.openCertificateNo,
               merchantNumber: this.merchantNumber,
               thirdMerchantRole: 'ledger_merchant',
