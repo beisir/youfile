@@ -3,7 +3,7 @@ import request_upload_api from '@/utils/request_upload'
 
 export function getListMerchantRetail(params) {
   return request({
-    url: '/merchant/pay/config/list',
+    url: '/merchant/list',
     method: 'post',
     data: params
   })
