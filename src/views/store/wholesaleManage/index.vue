@@ -7,6 +7,9 @@
       <el-form-item label="店铺名称">
         <el-input v-model="formInline.name" placeholder="店铺名称"/>
       </el-form-item>
+      <el-form-item label="门牌号">
+        <el-input v-model="formInline.storeDoorNum" placeholder="门牌号"/>
+      </el-form-item>
       <el-form-item label="手机号">
         <el-input v-model="formInline.phone" placeholder="手机号"/>
       </el-form-item>
@@ -49,6 +52,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="name" label="店铺名称" width="150" align="center"/>
+      <el-table-column prop="storeDoorNum" label="门牌号" width="150" align="center"/>
       <el-table-column prop="floorDescription" label="楼层信息" width="150" align="center"/>
       <el-table-column prop="phone" label="手机号" width="150" align="center"/>
       <el-table-column prop="coverUrl" label="店铺封面图" width="150" align="center">
