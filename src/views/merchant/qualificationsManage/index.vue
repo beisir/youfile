@@ -125,7 +125,7 @@
   </div>
 </template>
 <script>
-import { getListMerchantRetail, getStoreMes, saveupdate } from '@/api/merchant'
+import { newgetListMerchantRetail, getStoreMes, saveupdate } from '@/api/merchant'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
@@ -178,7 +178,7 @@ export default {
      */
     getList() {
       this.listLoading = true
-      getListMerchantRetail(this.listQuery).then(response => {
+      newgetListMerchantRetail(this.listQuery).then(response => {
         this.tableData = response.data.result
         this.listLoading = false
         this.total = response.data.totalCount
