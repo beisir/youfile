@@ -74,3 +74,10 @@ export function getbindList(platformCategoryCode) {
     method: 'get'
   })
 }
+// 解除绑定
+export function delbind(params) {
+  return request({
+    url: '/plat/mall/category/relation/' + params.platformCategoryCode + '/' + params.mallCode + '/' + params.mallCategoryCode,
+    method: 'delete'
+  })
+}

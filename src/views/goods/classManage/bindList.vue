@@ -14,11 +14,16 @@
       <el-table-column label="二级分类名称" prop="twoCategoryName" align="center"/>
       <el-table-column label="三级分类名称" prop="threeCategoryName" align="center"/>
       <el-table-column label="三级分类编码" prop="threeCategoryCode" align="center"/>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button type="danger" size="mini" @click="unbind(scope.row)">解除绑定</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
 <script>
-import { getbindList } from '@/api/goods'
+import { getbindList, delbind } from '@/api/goods'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
@@ -34,6 +39,18 @@ export default {
     this.getList()
   },
   methods: {
+    unbind(data) {
+      delbind({
+        platformCategoryCode: this.$route.query.categoryCode,
+        mallCode: data.mallCode,
+        mallCategoryCode: data.threeCategoryCode
+      }).then(res => {
+        console.log('s', res)
+        this.getList()
+      }).catch(e => {
+        console.log(e)
+      })
+    },
     unix2CurrentTime,
     rowspan() {
       this.tableData.forEach((item, index) => {
@@ -81,7 +98,7 @@ export default {
       this.listLoading = true
       getbindList(categoryCode).then(response => {
         console.log(response.data)
-        var tempList = response.data
+        var tempList = response.data ? response.data : []
         var map = {}
         var dest = []
         var tableData = []
