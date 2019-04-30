@@ -27,16 +27,16 @@
         <el-form-item label="联系电话" prop="linkmanPhone">
           <el-input :readonly="readonly" v-model="merchantVOData.linkmanPhone"/>
         </el-form-item>
-        <el-form-item label="联系人邮箱">
+        <el-form-item label="联系人邮箱" prop="linkmanEmail">
           <el-input :readonly="readonly" v-model="merchantVOData.linkmanEmail"/>
         </el-form-item>
-        <el-form-item label="商户经营范围">
+        <el-form-item label="商户经营范围" prop="merchantScope">
           <el-input :readonly="readonly" v-model="merchantVOData.merchantScope"/>
         </el-form-item>
-        <el-form-item label="商户一级分类">
+        <el-form-item label="商户一级分类" prop="firstCategory">
           <el-input :readonly="readonly" v-model="merchantVOData.firstCategory"/>
         </el-form-item>
-        <el-form-item label="商户二级分类">
+        <el-form-item label="商户二级分类" prop="secondCategory">
           <el-input :readonly="readonly" v-model="merchantVOData.secondCategory"/>
         </el-form-item>
         <el-form-item label="详细地址" prop="address">
@@ -568,7 +568,6 @@ export default {
       dialogVisible11: false,
       readonly: false,
       activeName: 'first',
-      // 校验规则
       rules: {
         linkman: [
           { required: true, message: '联系人不能为空', trigger: 'blur' }
@@ -584,6 +583,19 @@ export default {
         ],
         merchantNumber: [
           { required: true, message: '商户编号不能为空', trigger: 'blur' }
+        ],
+        linkmanEmail: [
+          { required: true, message: '联系人邮箱不能为空', trigger: 'blur' },
+          { pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/, message: '联系人邮箱格式不正确' }
+        ],
+        merchantScope: [
+          { required: true, message: '商户经营范围不能为空', trigger: 'blur' }
+        ],
+        firstCategory: [
+          { required: true, message: '商户一级分类不能为空', trigger: 'blur' }
+        ],
+        secondCategory: [
+          { required: true, message: '商户二级分类不能为空', trigger: 'blur' }
         ],
         merchantType: [
           { required: true, message: '商户类型不能为空', trigger: 'blur' }
@@ -1286,7 +1298,7 @@ export default {
       this.$refs[formData1].validate(valid => {
         if (valid) {
           this.listLoading = true
-          const merchantQualificationVO = {
+          var merchantQualificationVO = {
             id: this.merchantQualificationVOId,
             bankOrganUrl: formData1.bankOrganUrl,
             businessLicenseNo: formData1.businessLicenseNo,
@@ -1310,7 +1322,7 @@ export default {
             unifiedCertificateNo: formData1.unifiedCertificateNo,
             unifiedCertificateUrl: formData1.unifiedCertificateUrl
           }
-          const merchantSettleVO = {
+          var merchantSettleVO = {
             id: this.merchantSettleVOId,
             merchantNumber: this.merchantNumber,
             accountName: formData1.accountName,
@@ -1329,7 +1341,7 @@ export default {
             subBankName: formData1.subBankName
           }
 
-          const merchantRetail = {
+          var merchantRetail = {
             id: this.merchantRetailId,
             merchantNumber: this.merchantNumber,
             address: formData1.address,
@@ -1352,6 +1364,23 @@ export default {
             provinceCode: formData1.provinceCode,
             secondCategory: formData1.secondCategory
           }
+          // 去空格
+          for (const key in merchantQualificationVO) {
+            if (merchantQualificationVO[key] && typeof merchantQualificationVO[key] === 'string') {
+              merchantQualificationVO[key] = merchantQualificationVO[key].replace(/\s*/g, '')
+            }
+          }
+          for (const key in merchantSettleVO) {
+            if (merchantSettleVO[key] && typeof merchantSettleVO[key] === 'string') {
+              merchantSettleVO[key] = merchantSettleVO[key].replace(/\s*/g, '')
+            }
+          }
+          for (const key in merchantRetail) {
+            if (merchantRetail[key] && typeof merchantRetail[key] === 'string') {
+              merchantRetail[key] = merchantRetail[key].replace(/\s*/g, '')
+            }
+          }
+
           const merchantDetail = {
             merchantNumber: this.merchantNumber,
             merchantQualificationVO: merchantQualificationVO,
