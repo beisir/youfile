@@ -390,7 +390,7 @@
           <span>商户结算信息</span>
         </div>
         <div v-if="!enterpriseShow">
-          <el-form-item style="width:48%" label="结算银行卡">
+          <el-form-item style="width:48%" label="结算银行卡" prop="settlementCardUrl">
             <el-upload
               :on-remove="handleRemoveSettlement"
               :limit="1"
@@ -412,6 +412,7 @@
             :span="12"
             style="width:48%"
             label="手持银行卡"
+            prop="handBankCardUrl"
           >
             <el-upload
               :on-remove="handleRemovehandBankCardUrl"

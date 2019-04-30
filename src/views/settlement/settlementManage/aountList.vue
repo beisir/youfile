@@ -34,8 +34,10 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="结算">
+        <el-button type="success" @click="exportExcel">导出</el-button>
         <el-table
           v-loading.body="listLoading"
+          id="out-table"
           :data="tableData"
           highlight-current-row
           border
@@ -74,7 +76,7 @@
         :current-page="listQuery.page"
         :page-size="listQuery.size"
         :total="total"
-        :page-sizes="[10, 30, 50, 100]"
+        :page-sizes="[10, 30, 50, 100,1000]"
         background
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
@@ -84,6 +86,8 @@
   </div>
 </template>
 <script>
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 import { getAccountList, getAccountOutList } from '@/api/settlement'
 import { unix2CurrentTime } from '@/utils'
 export default {
@@ -103,6 +107,25 @@ export default {
     this.getList(this.paneNameIndex)
   },
   methods: {
+    exportExcel() {
+      /* generate workbook object from table */
+      var wb = XLSX.utils.table_to_book(document.querySelector('#out-table'))
+      /* get binary string as output */
+      var wbout = XLSX.write(wb, {
+        bookType: 'xlsx',
+        bookSST: true,
+        type: 'array'
+      })
+      try {
+        FileSaver.saveAs(
+          new Blob([wbout], { type: 'application/octet-stream' }),
+          '结算列表.xlsx'
+        )
+      } catch (e) {
+        if (typeof console !== 'undefined') console.log(e, wbout)
+      }
+      return wbout
+    },
     unix2CurrentTime,
     /**
      * 改变每页数量
