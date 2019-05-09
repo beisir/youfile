@@ -34,9 +34,11 @@
         </el-select>
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
+      <el-button type="success" @click="exportExcel">导出</el-button>
     </el-form>
     <el-table
       v-loading.body="listLoading"
+      id="out-table"
       :data="tableData"
       highlight-current-row
       border
@@ -92,7 +94,7 @@
       :current-page="listQuery.page"
       :page-size="listQuery.size"
       :total="total"
-      :page-sizes="[10, 30, 50, 100]"
+      :page-sizes="[10, 30, 50, 100, 500]"
       background
       layout="total, sizes, prev, pager, next, jumper"
       @size-change="handleSizeChange"
@@ -225,6 +227,8 @@ import {
 } from '@/api/store'
 import { getList as getMallList } from '@/api/mall'
 import { unix2CurrentTime } from '@/utils'
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 export default {
   data() {
     return {
@@ -313,6 +317,25 @@ export default {
     })
   },
   methods: {
+    exportExcel() {
+      /* generate workbook object from table */
+      var wb = XLSX.utils.table_to_book(document.querySelector('#out-table'))
+      /* get binary string as output */
+      var wbout = XLSX.write(wb, {
+        bookType: 'xlsx',
+        bookSST: true,
+        type: 'array'
+      })
+      try {
+        FileSaver.saveAs(
+          new Blob([wbout], { type: 'application/octet-stream' }),
+          '店铺列表.xlsx'
+        )
+      } catch (e) {
+        if (typeof console !== 'undefined') console.log(e, wbout)
+      }
+      return wbout
+    },
     unix2CurrentTime,
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)

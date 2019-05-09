@@ -67,6 +67,7 @@
         width="180"
         align="center"
       />
+      <el-table-column prop="remark" label="备注" width="180" align="center"/>
       <el-table-column prop="orderNumber" label="订单号" width="180" align="center"/>
       <el-table-column
         prop="yunStoreGoodsSnapshot.discountAmount"
@@ -91,7 +92,7 @@
       :current-page="listQuery.pageNum"
       :page-size="listQuery.size"
       :total="total"
-      :page-sizes="[10, 30, 50, 100]"
+      :page-sizes="[10, 30, 50, 100, 500]"
       background
       layout="total, sizes, prev, pager, next, jumper"
       @size-change="handleSizeChange"
@@ -164,7 +165,7 @@ export default {
       try {
         FileSaver.saveAs(
           new Blob([wbout], { type: 'application/octet-stream' }),
-          'sheetjs.xlsx'
+          '云产品订单.xlsx'
         )
       } catch (e) {
         if (typeof console !== 'undefined') console.log(e, wbout)
