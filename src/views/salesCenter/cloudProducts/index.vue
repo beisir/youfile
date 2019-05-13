@@ -92,7 +92,7 @@
       :current-page="listQuery.pageNum"
       :page-size="listQuery.size"
       :total="total"
-      :page-sizes="[10, 30, 50, 100, 500]"
+      :page-sizes="[10, 30, 50, 100, 300]"
       background
       layout="total, sizes, prev, pager, next, jumper"
       @size-change="handleSizeChange"

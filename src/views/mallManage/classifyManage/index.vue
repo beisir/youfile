@@ -295,6 +295,7 @@ export default {
             this.oneClass = true
             this.twoClass = true
             this.formData.rootCode = response.data.rootCode
+            this.changeOneClass(response.data.rootCode)
             this.formData.parentCategoryCode = response.data.parentCategoryCode
           }
         }

@@ -51,7 +51,7 @@
                       <el-button
                         size="mini"
                         type="success"
-                        @click="getbindList(scope.$index,scope.row)"
+                        @click="showBindList(scope.$index,scope.row)"
                       >查看绑定</el-button>
                     </template>
                   </el-table-column>
@@ -169,10 +169,7 @@
       <el-form :inline="true" :label-width="formLabelWidth">
         <el-row>
           <el-form-item label="选择商贸云" required>
-            <el-select
-              :label-width="formLabelWidth"
-              v-model="mallName"
-              @change="alertMall($event)">
+            <el-select :label-width="formLabelWidth" v-model="mallName" @change="alertMall($event)">
               <el-option
                 v-for="item in mallList"
                 :label="item.name"
@@ -187,7 +184,8 @@
             <el-select
               :label-width="formLabelWidth"
               v-model="mallCName"
-              @change="changeClass($event)">
+              @change="changeClass($event)"
+            >
               <el-option
                 v-for="item in mallClassData"
                 :label="item.name"
@@ -202,7 +200,8 @@
             <el-select
               :label-width="formLabelWidth"
               v-model="mallCtName"
-              @change="changeTClass($event)">
+              @change="changeTClass($event)"
+            >
               <el-option
                 v-for="item in mallTClassData"
                 :label="item.name"
@@ -217,7 +216,8 @@
             <el-select
               :label-width="formLabelWidth"
               v-model="mallCthName"
-              @change="changeThClass($event)">
+              @change="changeThClass($event)"
+            >
               <el-option
                 v-for="item in mallThClassData"
                 :label="item.name"
@@ -232,6 +232,28 @@
         </el-row>
       </el-form>
     </el-dialog>
+
+    <el-dialog :visible.sync="showBindDialog" title="绑定列表">
+      <el-table
+        :data="bindTableData"
+        highlight-current-row
+        border
+        max-height="800"
+        style="width: 100%"
+      >
+        <el-table-column label="商贸城名称" prop="mallName" align="center"/>
+        <el-table-column label="商贸云编码" prop="mallCode" align="center"/>
+        <el-table-column label="一级分类名称" prop="oneCategoryName" align="center"/>
+        <el-table-column label="二级分类名称" prop="twoCategoryName" align="center"/>
+        <el-table-column label="三级分类名称" prop="threeCategoryName" align="center"/>
+        <el-table-column label="三级分类编码" prop="threeCategoryCode" align="center"/>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="danger" size="mini" @click="unbind(scope.row)">解除绑定</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -245,6 +267,7 @@ import {
 } from '@/api/goods'
 import { unix2CurrentTime } from '@/utils'
 import { getList, getClassList as getMClassList } from '@/api/mall'
+import { getbindList, delbind } from '@/api/goods'
 export default {
   data() {
     return {
@@ -305,13 +328,67 @@ export default {
         parentCategoryCode: [
           { required: true, message: '二级分类不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      // 绑定弹窗
+      showBindDialog: false,
+      bindTableData: []
     }
   },
   created() {
     this.getList()
   },
   methods: {
+    // 查看绑定
+    getBindList(code) {
+      var categoryCode = code
+      this.listLoading = true
+      getbindList(categoryCode).then(response => {
+        console.log(response.data)
+        var tempList = response.data ? response.data : []
+        var map = {}
+        var dest = []
+        var tableData = []
+        for (var i = 0; i < tempList.length; i++) {
+          var ai = tempList[i]
+          if (!map[ai.mallName]) {
+            dest.push({
+              initial: ai.mallName,
+              busInfoList: [ai]
+            })
+            map[ai.mallName] = ai
+          } else {
+            for (var j = 0; j < dest.length; j++) {
+              var dj = dest[j]
+              if (dj.initial === ai.mallName) {
+                dj.busInfoList.push(ai)
+                break
+              }
+            }
+          }
+        }
+        for (var h = 0; h < dest.length; h++) {
+          Array.prototype.push.apply(tableData, dest[h].busInfoList)
+        }
+        console.log(tableData)
+        this.bindTableData = tableData
+        this.listLoading = false
+        // this.rowspan()
+      })
+    },
+    // 解除绑定
+    unbind(data) {
+      delbind({
+        platformCategoryCode: this.unbindCode,
+        mallCode: data.mallCode,
+        mallCategoryCode: data.threeCategoryCode
+      }).then(res => {
+        // this.getList()
+        this.$message({ message: res.msg, type: 'success' })
+        this.showBindDialog = false
+      }).catch(e => {
+        console.log(e)
+      })
+    },
     unix2CurrentTime,
     handleNodeClick(data) {},
     handleRemove(file, fileList) {
@@ -380,6 +457,7 @@ export default {
             this.oneClass = true
             this.twoClass = true
             this.formData.rootCode = response.data.rootCode
+            this.changeOneClass(response.data.rootCode)
             this.formData.parentCategoryCode = response.data.parentCategoryCode
           }
         }
@@ -529,14 +607,17 @@ export default {
       })
     },
     // 查看绑定列表
-    getbindList(index, row) {
+    showBindList(index, row) {
       var categoryCode = row.categoryCode
-      this.$router.push({
-        path: '/goods/bindList',
-        query: {
-          categoryCode: categoryCode
-        }
-      })
+      this.showBindDialog = true
+      this.unbindCode = categoryCode
+      this.getBindList(categoryCode)
+      // this.$router.push({
+      //   path: '/goods/bindList',
+      //   query: {
+      //     categoryCode: categoryCode
+      //   }
+      // })
     }
   }
 }
