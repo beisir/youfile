@@ -453,12 +453,12 @@ export default {
     },
     // 编辑分类
     editCode(index, row) {
-      this.editItem = row
       var categoryCode = row.categoryCode
       this.initFormData()
       this.title = '编辑分类'
       this.addClassData = true
       getClassDetails(categoryCode).then(response => {
+        this.editItem = response.data
         const parentCategoryCode = response.data.parentCategoryCode
         this.formData = response.data
         this.nameInit = response.data.name
