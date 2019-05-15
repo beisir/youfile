@@ -3,11 +3,13 @@
     <el-form :inline="true" class="demo-form-inline border-form">
       <el-button type="primary" @click="onSubmit">添加分类</el-button>
     </el-form>
-    <el-table :data="tableData" highlight-current-row border max-height="800" style="width: 100%">
+    <el-table :data="tableData" :row-key="getRowKeys" :expand-row-keys="expands" highlight-current-row border max-height="800" style="width: 100%">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table
             :data="props.row.subGoodsCategoryList"
+            :row-key="getRowKeys"
+            :expand-row-keys="expands2"
             highlight-current-row
             border
             max-height="800"
@@ -331,7 +333,14 @@ export default {
       },
       // 绑定弹窗
       showBindDialog: false,
-      bindTableData: []
+      bindTableData: [],
+      // 展开行
+      // 获取row的key值
+      getRowKeys(row) {
+        return row.categoryCode
+      },
+      expands: [],
+      expands2: []
     }
   },
   created() {
@@ -408,6 +417,20 @@ export default {
       getClassList(this.parentCategoryCode).then(response => {
         this.tableData = response.data
         this.listLoading = false
+
+        if (this.editItem) {
+          if (this.editItem.level === 'THREE') {
+            this.expands = [this.editItem.rootCode]
+            this.expands2 = [this.editItem.parentCategoryCode]
+          }
+          if (this.editItem.level === 'TWO') {
+            this.expands = [this.editItem.parentCategoryCode]
+          }
+          this.editItem = ''
+        } else {
+          this.expands = []
+          this.expands2 = []
+        }
       })
     },
     removeCode(index, row) {
@@ -430,6 +453,7 @@ export default {
     },
     // 编辑分类
     editCode(index, row) {
+      this.editItem = row
       var categoryCode = row.categoryCode
       this.initFormData()
       this.title = '编辑分类'
