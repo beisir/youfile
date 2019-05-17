@@ -1,9 +1,8 @@
 import request from '@/utils/request'
 
 export function getAllList(type, data) {
-  const t = type || 'all'
   return request({
-    url: '/yunstore/order/merchant/orderStatus/' + t,
+    url: '/yunstore/order/yunstoreorderlist',
     method: 'get',
     params: data
   })

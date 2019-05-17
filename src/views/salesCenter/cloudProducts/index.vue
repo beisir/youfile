@@ -3,10 +3,22 @@
   <div class="body-cont">
     <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
       <el-form-item label="关键字">
-        <el-input v-model="serchKey" placeholder="关键字"/>
+        <el-input v-model="formInline.serchKey" placeholder="关键字"/>
+      </el-form-item>
+      <el-form-item label="门店编号">
+        <el-input v-model="formInline.storeId" placeholder="门店编号"/>
+      </el-form-item>
+      <el-form-item label="楼层管理员">
+        <el-input v-model="formInline.floorAdminName" placeholder="楼层管理员"/>
+      </el-form-item>
+      <el-form-item label="商贸城">
+        <el-select v-model="formInline.mallCode" placeholder="请选择">
+          <el-option label="全部" value>全部</el-option>
+          <el-option v-for="item in mallList" :label="item.name" :value="item.code" :key="item.code">{{ item.name }}</el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="订单种类">
-        <el-select v-model="type" placeholder="请选择">
+        <el-select v-model="formInline.type" placeholder="请选择">
           <el-option
             v-for="item in typeOptions"
             :key="item.value"
@@ -39,7 +51,7 @@
     <el-table id="out-table" :data="tableData" border style="width: 100%" max-height="800" highlight-current-row>
       <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column
-        prop="yunStoreGoodsSnapshot.classifyName"
+        prop="classifyName"
         label="订单"
         width="180"
         align="center"
@@ -52,14 +64,14 @@
           <span v-else-if="scope.row.orderStatus==='finish'" style="color: #909344">已完成</span>
         </template>
       </el-table-column>
-      <el-table-column prop="yunStore.name" label="店名" align="center"/>
-      <el-table-column prop="yunStoreGoodsSnapshot.promotionCode" label="优惠码" align="center"/>
+      <el-table-column prop="storeName" label="店名" align="center"/>
+      <el-table-column prop="promotionCode" label="优惠码" align="center"/>
       <el-table-column
-        prop="yunStoreGoodsSnapshot.serviceReriodMonth"
+        prop="serviceReriodMonth"
         label="服务时间（月）"
         align="center"
       />
-      <el-table-column prop="userInfoVO.mobile" label="客户手机" width="180" align="center"/>
+      <el-table-column prop="userMobile" label="客户手机" width="180" align="center"/>
       <el-table-column
         :formatter="formatTime"
         prop="createDate"
@@ -70,18 +82,21 @@
       <el-table-column prop="remark" label="备注" width="180" align="center"/>
       <el-table-column prop="orderNumber" label="订单号" width="180" align="center"/>
       <el-table-column
-        prop="yunStoreGoodsSnapshot.discountAmount"
+        prop="discountAmount"
         label="优惠码支付(元)"
         width="180"
         align="center"
       />
       <el-table-column prop="orderAmount" label="订单金额(元)" width="180" align="center"/>
+      <el-table-column prop="storeId" label="店铺编码" width="180" align="center"/>
+      <el-table-column prop="floorAdminName" label="管理员名称" width="180" align="center"/>
+      <el-table-column prop="mallName" label="所属商贸云" width="180" align="center"/>
       <el-table-column label="操作" width="220" align="left">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="toDetail(scope)">详情</el-button>
           <el-button size="mini" type="primary" @click="getPayList(scope.$index, scope.row )">查看支付列表</el-button>
           <el-button
-            v-if="scope.row.orderStatus==='paid' && (!scope.row.yunStore || !scope.row.yunStore.id)"
+            v-if="scope.row.orderStatus==='paid' && (!scope.row || !scope.row.storeId)"
             type="success"
             @click="openStore(scope)"
           >开店</el-button>
@@ -105,6 +120,7 @@ import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
 import { unix2CurrentTime } from '@/utils'
 import { getAllList, openStore } from '@/api/cloudOrder'
+import { getList as getMallList } from '@/api/mall'
 export default {
   data() {
     return {
@@ -146,11 +162,15 @@ export default {
         }
       },
       startDate: '',
-      endDate: ''
+      endDate: '',
+      mallList: []
     }
   },
   created() {
     this.getAllList()
+    getMallList().then(res => {
+      this.mallList = res.data ? res.data : []
+    })
   },
   methods: {
     exportExcel() {
@@ -194,6 +214,7 @@ export default {
         })
         return
       }
+      Object.assign(this.listQuery, this.formInline)
       getAllList(this.type, this.listQuery).then(res => {
         this.tableData = res.data.result
         this.total = res.data.totalCount
