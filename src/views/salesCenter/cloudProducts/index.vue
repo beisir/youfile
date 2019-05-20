@@ -17,6 +17,9 @@
           <el-option v-for="item in mallList" :label="item.name" :value="item.code" :key="item.code">{{ item.name }}</el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="楼层楼座">
+        <el-input v-model="formInline.floorDescription" placeholder="楼层楼座"/>
+      </el-form-item>
       <el-form-item label="订单种类">
         <el-select v-model="formInline.type" placeholder="请选择">
           <el-option
@@ -91,6 +94,7 @@
       <el-table-column prop="storeId" label="店铺编码" width="180" align="center"/>
       <el-table-column prop="floorAdminName" label="管理员名称" width="180" align="center"/>
       <el-table-column prop="mallName" label="所属商贸云" width="180" align="center"/>
+      <el-table-column prop="floorDescription" label="楼层楼座" width="180" align="center"/>
       <el-table-column label="操作" width="220" align="left">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="toDetail(scope)">详情</el-button>
