@@ -30,6 +30,9 @@
       <el-form-item label="楼层楼座">
         <el-input v-model="formInline.floorDescription" placeholder="楼层楼座"/>
       </el-form-item>
+      <el-form-item label="门牌号">
+        <el-input v-model="formInline.storeDoorNum" placeholder="门牌号"/>
+      </el-form-item>
       <el-form-item label="开始日期">
         <el-date-picker
           v-model="startDate"
@@ -67,9 +70,10 @@
           <span v-else-if="scope.row.orderStatus==='finish'" style="color: #909344">已完成</span>
         </template>
       </el-table-column>
-      <el-table-column prop="storeId" label="店铺编码" width="180" align="center"/>
       <el-table-column prop="storeName" label="店名" align="center"/>
+      <el-table-column prop="storeId" label="店铺编码" width="180" align="center"/>
       <el-table-column prop="floorDescription" label="楼层楼座" width="180" align="center"/>
+      <el-table-column prop="storeDoorNum" label="门牌号" width="180" align="center"/>
       <el-table-column prop="mallName" label="所属商贸云" width="180" align="center"/>
       <el-table-column prop="floorAdminName" label="管理员名称" width="180" align="center"/>
       <el-table-column prop="promotionCode" label="优惠码" align="center"/>
