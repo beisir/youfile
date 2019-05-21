@@ -5,6 +5,16 @@
       <el-form-item label="关键字">
         <el-input v-model="formInline.serchKey" placeholder="关键字"/>
       </el-form-item>
+      <el-form-item label="订单种类">
+        <el-select v-model="formInline.orderStatus" placeholder="请选择">
+          <el-option
+            v-for="item in typeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="门店编号">
         <el-input v-model="formInline.storeId" placeholder="门店编号"/>
       </el-form-item>
@@ -19,16 +29,6 @@
       </el-form-item>
       <el-form-item label="楼层楼座">
         <el-input v-model="formInline.floorDescription" placeholder="楼层楼座"/>
-      </el-form-item>
-      <el-form-item label="订单种类">
-        <el-select v-model="formInline.type" placeholder="请选择">
-          <el-option
-            v-for="item in typeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
       </el-form-item>
       <el-form-item label="开始日期">
         <el-date-picker
@@ -67,7 +67,11 @@
           <span v-else-if="scope.row.orderStatus==='finish'" style="color: #909344">已完成</span>
         </template>
       </el-table-column>
+      <el-table-column prop="storeId" label="店铺编码" width="180" align="center"/>
       <el-table-column prop="storeName" label="店名" align="center"/>
+      <el-table-column prop="floorDescription" label="楼层楼座" width="180" align="center"/>
+      <el-table-column prop="mallName" label="所属商贸云" width="180" align="center"/>
+      <el-table-column prop="floorAdminName" label="管理员名称" width="180" align="center"/>
       <el-table-column prop="promotionCode" label="优惠码" align="center"/>
       <el-table-column
         prop="serviceReriodMonth"
@@ -82,7 +86,6 @@
         width="180"
         align="center"
       />
-      <el-table-column prop="remark" label="备注" width="180" align="center"/>
       <el-table-column prop="orderNumber" label="订单号" width="180" align="center"/>
       <el-table-column
         prop="discountAmount"
@@ -91,10 +94,7 @@
         align="center"
       />
       <el-table-column prop="orderAmount" label="订单金额(元)" width="180" align="center"/>
-      <el-table-column prop="storeId" label="店铺编码" width="180" align="center"/>
-      <el-table-column prop="floorAdminName" label="管理员名称" width="180" align="center"/>
-      <el-table-column prop="mallName" label="所属商贸云" width="180" align="center"/>
-      <el-table-column prop="floorDescription" label="楼层楼座" width="180" align="center"/>
+      <el-table-column prop="remark" label="备注" width="180" align="center"/>
       <el-table-column label="操作" width="220" align="left">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="toDetail(scope)">详情</el-button>
@@ -202,14 +202,14 @@ export default {
     getAllList() {
       this.listQuery.keyWords = this.serchKey
       if (this.startDate) {
-        this.listQuery.payDateBeginStr = this.startDate
+        this.listQuery.timeBegin = this.startDate
       } else {
-        this.listQuery.payDateBeginStr = ''
+        this.listQuery.timeBegin = ''
       }
       if (this.endDate) {
-        this.listQuery.payDateEndStr = this.endDate + 86400000
+        this.listQuery.timeEnd = this.endDate + 86400000
       } else {
-        this.listQuery.payDateEndStr = ''
+        this.listQuery.timeEnd = ''
       }
       if (this.startDate > this.endDate) {
         this.$message({
