@@ -3,7 +3,7 @@
   <div class="body-cont">
     <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
       <el-form-item label="关键字">
-        <el-input v-model="formInline.serchKey" placeholder="关键字"/>
+        <el-input v-model="formInline.keyWords" placeholder="关键字"/>
       </el-form-item>
       <el-form-item label="订单种类">
         <el-select v-model="formInline.orderStatus" placeholder="请选择">
@@ -134,7 +134,6 @@ export default {
     return {
       formInline: {},
       tableData: [],
-      serchKey: '',
       search: '',
       type: 'all',
       total: 0,
@@ -204,7 +203,6 @@ export default {
       return unix2CurrentTime(cellValue)
     },
     getAllList() {
-      this.listQuery.keyWords = this.serchKey
       if (this.startDate) {
         this.listQuery.timeBegin = this.startDate
       } else {
