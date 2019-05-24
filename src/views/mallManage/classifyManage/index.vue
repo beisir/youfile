@@ -6,6 +6,8 @@
     <el-table
       v-loading.body="listLoading"
       :data="tableData"
+      :row-key="getRowKeys"
+      :expand-row-keys="expands"
       border
       highlight-current-row
       max-height="800"
@@ -13,7 +15,7 @@
     >
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-table :data="props.row.subCategoryList" border style="width: 100%">
+          <el-table :data="props.row.subCategoryList" :row-key="getRowKeys" :expand-row-keys="expands2" border style="width: 100%">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-table :data="props.row.subCategoryList" border style="width: 100%">
@@ -218,7 +220,13 @@ export default {
         parentCategoryCode: [
           { required: true, message: '二级分类不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      // 获取row的key值
+      getRowKeys(row) {
+        return row.categoryCode
+      },
+      expands: [],
+      expands2: []
     }
   },
   created() {
@@ -246,6 +254,20 @@ export default {
       getClassList(mallCode).then(response => {
         this.tableData = response.data
         this.listLoading = false
+
+        if (this.editItem) {
+          if (this.editItem.level === 'THREE') {
+            this.expands = [this.editItem.rootCode]
+            this.expands2 = [this.editItem.parentCategoryCode]
+          }
+          if (this.editItem.level === 'TWO') {
+            this.expands = [this.editItem.parentCategoryCode]
+          }
+          this.editItem = ''
+        } else {
+          this.expands = []
+          this.expands2 = []
+        }
       })
     },
     removeCode(index, row) {
@@ -273,6 +295,7 @@ export default {
       this.title = '编辑分类'
       this.addClassData = true
       getClassDetails(categoryCode).then(response => {
+        this.editItem = response.data
         const parentCategoryCode = response.data.parentCategoryCode
         this.formData = response.data
         this.nameInit = response.data.name
