@@ -134,7 +134,7 @@
             size="mini"
             type="danger"
             data-type="danger"
-            @click="changeStatus(scope.row,'fail')"
+            @click="dialogReject=true;rejectRemark='';rejectItem=scope.row"
           >审核失败</el-button>
           <el-button
             size="mini"
@@ -192,6 +192,17 @@
         <el-button type="primary" @click="updateMes">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- 驳回弹框 -->
+    <el-dialog :visible.sync="dialogReject" title="资质审核失败">
+      <div style="overflow:hidden;">
+        <div v-for="item in rejectReason" :key="item.name" class="reject-item" @click="choseReason(item)">{{ item }}</div>
+      </div>
+      <el-input v-model="rejectRemark" style="margin:20px 10px 50px;" rows="3" maxlength="50" placeholder="请选择或者输入审核失败原因" type="textarea"/>
+      <el-row :gutter="12" justify="end" type="flex" class="btn-box">
+        <el-button type="info" @click="dialogReject=false">取消</el-button>
+        <el-button type="warning" @click="changeStatus({},'fail')">确定</el-button>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -230,18 +241,42 @@ export default {
       },
       storeMes: {},
       tableData: [],
-      dialogTableVisible: false
+      dialogTableVisible: false,
+      // 驳回弹框
+      dialogReject: false,
+      rejectReason: ['商户身份证上传有误', '商户银行卡上传有误', '商户邮箱信息填写有误', '商户营业执照上传有误', '商户法人名称与银行卡不一致'],
+      rejectRemark: ''
     }
   },
   created() {
     this.getList()
   },
   methods: {
+    choseReason(text) {
+      const tt = this.rejectRemark + text
+      if (tt.length > 50) { return }
+      this.rejectRemark += text
+    },
     changeStatus(row, type) {
-      changeMerchantStatus({
-        merchantNumber: row.merchantNumber,
-        auditStatus: type
-      }).then(res => {
+      let obj = {}
+      if (type === 'fail') {
+        if (!this.rejectRemark) {
+          this.$message.error('请填写失败原因')
+          return
+        }
+        obj = {
+          merchantNumber: this.rejectItem.merchantNumber,
+          auditStatus: type,
+          remark: this.rejectRemark
+        }
+      } else {
+        obj = {
+          merchantNumber: row.merchantNumber,
+          auditStatus: type
+        }
+      }
+      changeMerchantStatus(obj).then(res => {
+        this.dialogReject = false
         this.getList()
       })
     },
@@ -350,3 +385,7 @@ export default {
   }
 }
 </script>
+<style>
+.reject-item{float: left;padding:5px 20px;margin:8px 10px;border-radius: 10px;border:1px solid #ddd;}
+.btn-box{border-top: 1px solid #ededed;padding-top: 30px;}
+</style>
