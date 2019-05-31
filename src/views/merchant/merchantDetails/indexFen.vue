@@ -34,10 +34,33 @@
           <el-input :readonly="readonly" v-model="merchantVOData.merchantScope"/>
         </el-form-item>
         <el-form-item label="商户一级分类" prop="firstCategory">
-          <el-input :readonly="readonly" v-model="merchantVOData.firstCategory"/>
+          <el-select
+            :readonly="readonly"
+            v-model="merchantVOData.firstCategory"
+            placeholder="请选择"
+            @change="choseClassone($event)"
+          >
+            <el-option
+              v-for="item in classOne"
+              :label="item.industryName"
+              :value="item.industryCode"
+              :key="item.id"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="商户二级分类" prop="secondCategory">
-          <el-input :readonly="readonly" v-model="merchantVOData.secondCategory"/>
+          <el-select
+            :readonly="readonly"
+            v-model="merchantVOData.secondCategory"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in classTwo"
+              :label="item.industryName"
+              :value="item.industryCode"
+              :key="item.id"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="详细地址" prop="address">
           <el-input :readonly="readonly" v-model="merchantVOData.address"/>
@@ -328,7 +351,7 @@
               </el-dialog>
             </el-form-item>
           </el-col>
-          <el-col v-if="!enterpriseShow && !gtShow" :span="12">
+          <el-col v-if="!enterpriseShow" :span="12">
             <el-form-item label="手持身份证" prop="handIdCardUrl">
               <el-upload
                 :on-remove="handleRemoveFaceHand"
@@ -549,6 +572,10 @@ import {
   getSmallbankList,
   getImgUrl
 } from '@/api/merchant'
+import {
+  getClssOne,
+  getClssTwo
+} from '@/api/commonApi'
 export default {
   data() {
     return {
@@ -790,7 +817,10 @@ export default {
       industryLicenseUrlListShow: false,
       scenePhoneUrlListShow: false,
       handIdCardUrlListShow: false,
-      gtShow: false
+      gtShow: false,
+      // 分类
+      classOne: [],
+      classTwo: []
     }
   },
   created() {
@@ -798,6 +828,20 @@ export default {
     this.getProvinceListData()
   },
   methods: {
+    getClassOne() {
+      getClssOne().then(res => {
+        this.classOne = res.data
+      })
+    },
+    getClassTwo(code) {
+      getClssTwo({ parentCode: code }).then(res => {
+        this.classTwo = res.data
+      })
+    },
+    choseClassone(e) {
+      this.getClassTwo(e)
+      this.merchantVOData.secondCategory = ''
+    },
     organTypeDataFun(event) {
       this.merchantVOData.organType = event
     },
@@ -1292,6 +1336,11 @@ export default {
         }
         this.merchantVOData = obj
         this.merchantNumber = datas.merchantNumber
+
+        this.getClassOne()
+        if (obj.firstCategory) {
+          this.getClassTwo(obj.firstCategory)
+        }
       })
     },
     eidthData() {

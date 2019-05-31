@@ -160,5 +160,9 @@ label {
 .el-date-editor .el-range-separator{
   width: 10%
 }
+.com-red-color{color:#F56C6C}
+.com-green-color{color:#67C23A}
+.com-yellow-color{color:#E6A23C}
+.com-gray-color{color:#909399}
 </style>
 

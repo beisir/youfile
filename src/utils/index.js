@@ -296,6 +296,7 @@ export function isExternal(path) {
  * @return string yyyy-MM-dd HH:mm:ss
  */
 export function unix2CurrentTime(unixTime) {
+  if (!unixTime) { return '' }
   const date = new Date(parseInt(unixTime))
   const y = date.getFullYear()
   let m = date.getMonth() + 1

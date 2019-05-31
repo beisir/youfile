@@ -115,3 +115,12 @@ export function merchantNumberDetails(merchantNumber) {
     method: 'get'
   })
 }
+// 审核商户申请
+export function changeMerchantStatus(data) {
+  return request({
+    url: '/merchant/' + data.merchantNumber + '/audit/' + data.auditStatus,
+    method: 'post',
+    data
+  })
+}
+

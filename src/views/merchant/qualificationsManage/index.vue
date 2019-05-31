@@ -7,11 +7,62 @@
       <el-form-item label="手机号">
         <el-input v-model="formInline.linkmanPhone" placeholder="请输入手机号"/>
       </el-form-item>
+      <el-form-item label="商户名称">
+        <el-input v-model="formInline.merchantName" placeholder="请输入商户名称"/>
+      </el-form-item>
+      <el-form-item label="是否提交资质">
+        <el-select v-model="formInline.completionStatus" placeholder="请选择">
+          <el-option label="全部商户" value>全部商户</el-option>
+          <el-option label="是" value="complete">是</el-option>
+          <el-option label="否" value="incomplete">否</el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="提交开始时间">
+        <el-date-picker
+          v-model="formInline.completeTimeBegin"
+          type="date"
+          placeholder="选择日期"/>
+      </el-form-item>
+      <el-form-item label="提交结束时间">
+        <el-date-picker
+          v-model="formInline.completeTimeEnd"
+          type="date"
+          placeholder="选择日期"/>
+      </el-form-item>
+      <el-form-item label="审核状态">
+        <el-select v-model="formInline.auditStatus" placeholder="请选择">
+          <el-option label="全部" value>全部</el-option>
+          <el-option label="待审核" value="init"/>
+          <el-option label="审核通过" value="success"/>
+          <el-option label="审核失败" value="fail"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="审核开始时间">
+        <el-date-picker
+          v-model="formInline.auditTimeBegin"
+          type="date"
+          placeholder="选择日期"/>
+      </el-form-item>
+      <el-form-item label="审核结束时间">
+        <el-date-picker
+          v-model="formInline.auditTimeEnd"
+          type="date"
+          placeholder="选择日期"/>
+      </el-form-item>
       <el-form-item label="商户类型">
         <el-select v-model="formInline.merchantType" placeholder="请选择">
-          <el-option label="全部商户" value>全部商户</el-option>
-          <el-option label="批发商" value="1">批零商</el-option>
-          <el-option label="零售商" value="2">零售商</el-option>
+          <el-option label="全部商户" value/>
+          <el-option label="批发商" value="1"/>
+          <el-option label="零售商" value="2"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="商户性质">
+        <el-select v-model="formInline.merchantCharacter" placeholder="请选择">
+          <el-option label="全部" value/>
+          <el-option label="企业" value="3"/>
+          <el-option label="个体" value="2"/>
+          <el-option label="个人" value="1"/>
         </el-select>
       </el-form-item>
       <el-form-item label="是否删除">
@@ -20,9 +71,6 @@
           <el-option label="未删除" value="false">未删除</el-option>
           <el-option label="已删除" value="true">已删除</el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="商户名称">
-        <el-input v-model="formInline.merchantName" placeholder="请输入商户名称"/>
       </el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form>
@@ -39,6 +87,13 @@
       <el-table-column prop="merchantName" width="160" label="商户名称" align="center"/>
       <el-table-column prop="linkman" width="160" label="联系人" align="center"/>
       <el-table-column prop="linkmanPhone" width="160" label="联系电话" align="center"/>
+      <el-table-column prop="auditStatus" width="160" label="审核状态" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.auditStatus=='init'" class="com-yellow-color">待审核</span>
+          <span v-if="scope.row.auditStatus=='success'" class="com-green-color">审核通过</span>
+          <span v-if="scope.row.auditStatus=='fail'" class="com-red-color">审核失败</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="merchantCharacter" width="160" label="商户性质" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.merchantCharacter==&quot;1&quot;">个人</span>
@@ -61,11 +116,26 @@
       <el-table-column prop="createTime" label="创建时间" width="160" align="center">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createTime) }}</template>
       </el-table-column>
-      <el-table-column prop="updateTime" label="更新时间" width="160" align="center">
-        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateTime) }}</template>
+      <el-table-column prop="completeTime" label="提交时间" width="160" align="center">
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.completeTime) }}</template>
       </el-table-column>
-      <el-table-column label="操作" width="400" fixed="right" align="center">
+      <el-table-column prop="auditTime" label="审核时间" width="160" align="center">
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.auditTime) }}</template>
+      </el-table-column>
+      <el-table-column label="操作" min-width="600" fixed="right" align="right">
         <template slot-scope="scope">
+          <el-button
+            v-if="scope.row.auditStatus=='init'"
+            size="mini"
+            type="success"
+            @click="changeStatus(scope.row,'success')"
+          >审核通过</el-button><el-button
+            v-if="scope.row.auditStatus=='init'"
+            size="mini"
+            type="danger"
+            data-type="danger"
+            @click="changeStatus(scope.row,'fail')"
+          >审核失败</el-button>
           <el-button
             size="mini"
             type="info"
@@ -125,7 +195,7 @@
   </div>
 </template>
 <script>
-import { newgetListMerchantRetail, getStoreMes, saveupdate } from '@/api/merchant'
+import { newgetListMerchantRetail, getStoreMes, saveupdate, changeMerchantStatus } from '@/api/merchant'
 import { unix2CurrentTime } from '@/utils'
 export default {
   data() {
@@ -167,6 +237,14 @@ export default {
     this.getList()
   },
   methods: {
+    changeStatus(row, type) {
+      changeMerchantStatus({
+        merchantNumber: row.merchantNumber,
+        auditStatus: type
+      }).then(res => {
+        this.getList()
+      })
+    },
     unix2CurrentTime,
     onSubmit() {
       this.listQuery = Object.assign(this.listQuery, this.formInline)
