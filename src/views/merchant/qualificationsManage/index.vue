@@ -87,6 +87,13 @@
       <el-table-column prop="merchantName" width="160" label="商户名称" align="center"/>
       <el-table-column prop="linkman" width="160" label="联系人" align="center"/>
       <el-table-column prop="linkmanPhone" width="160" label="联系电话" align="center"/>
+      <el-table-column prop="onlinePay" width="160" label="审核状态" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.onlinePay=='0'" class="com-red-color">未开通</span>
+          <span v-if="scope.row.onlinePay=='1'" class="com-green-color">已开通</span>
+          <span v-if="scope.row.onlinePay=='2'" class="com-yellow-color">未设置</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="auditStatus" width="160" label="审核状态" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.auditStatus=='init'" class="com-yellow-color">待审核</span>
@@ -119,6 +126,9 @@
       </el-table-column>
       <el-table-column prop="completeTime" label="提交时间" width="160" align="center">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.completeTime) }}</template>
+      </el-table-column>
+      <el-table-column prop="openPayDate" label="开通支付时间" width="160" align="center">
+        <template slot-scope="scope">{{ unix2CurrentTime(scope.row.openPayDate) }}</template>
       </el-table-column>
       <el-table-column prop="auditTime" label="审核时间" width="160" align="center">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.auditTime) }}</template>
