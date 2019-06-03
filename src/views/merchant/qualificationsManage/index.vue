@@ -214,7 +214,7 @@
       <div style="overflow:hidden;">
         <div v-for="item in rejectReason" :key="item.name" class="reject-item" @click="choseReason(item)">{{ item }}</div>
       </div>
-      <el-input v-model="rejectRemark" style="margin:20px 10px 50px;" rows="3" maxlength="50" placeholder="请选择或者输入审核失败原因" type="textarea"/>
+      <el-input v-model="rejectRemark" style="margin:20px 10px 50px;" rows="3" maxlength="100" placeholder="请选择或者输入审核失败原因" type="textarea"/>
       <el-row :gutter="12" justify="end" type="flex" class="btn-box">
         <el-button type="info" @click="dialogReject=false">取消</el-button>
         <el-button type="warning" @click="changeStatus({},'fail')">确定</el-button>
@@ -271,7 +271,7 @@ export default {
   methods: {
     choseReason(text) {
       const tt = this.rejectRemark + text
-      if (tt.length > 50) { return }
+      if (tt.length > 100) { return }
       this.rejectRemark += text
     },
     changeStatus(row, type) {
