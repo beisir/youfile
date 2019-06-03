@@ -87,7 +87,7 @@
       <el-table-column prop="merchantName" width="160" label="商户名称" align="center"/>
       <el-table-column prop="linkman" width="160" label="联系人" align="center"/>
       <el-table-column prop="linkmanPhone" width="160" label="联系电话" align="center"/>
-      <el-table-column prop="onlinePay" width="160" label="审核状态" align="center">
+      <el-table-column prop="onlinePay" width="160" label="在线支付状态" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.onlinePay=='0'" class="com-red-color">未开通</span>
           <span v-if="scope.row.onlinePay=='1'" class="com-green-color">已开通</span>
