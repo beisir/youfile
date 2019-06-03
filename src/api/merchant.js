@@ -120,7 +120,8 @@ export function changeMerchantStatus(data) {
   return request({
     url: '/merchant/' + data.merchantNumber + '/audit/' + data.auditStatus,
     method: 'post',
-    data
+    data,
+    params: data
   })
 }
 
