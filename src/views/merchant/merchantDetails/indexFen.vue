@@ -431,7 +431,7 @@
             </el-dialog>
           </el-form-item>
           <el-form-item
-            v-if="!enterpriseShow && !gtShow"
+            v-if="!enterpriseShow"
             :span="12"
             style="width:48%"
             label="手持银行卡"
