@@ -92,6 +92,7 @@
           <span v-if="scope.row.auditStatus=='init'" class="com-yellow-color">待审核</span>
           <span v-if="scope.row.auditStatus=='success'" class="com-green-color">审核通过</span>
           <span v-if="scope.row.auditStatus=='fail'" class="com-red-color">审核失败</span>
+          <span v-if="scope.row.auditStatus=='fail' && scope.row.auditRemark"><br>理由：{{ scope.row.auditRemark }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="merchantCharacter" width="160" label="商户性质" align="center">
