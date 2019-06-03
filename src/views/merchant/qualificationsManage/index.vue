@@ -30,6 +30,13 @@
           type="date"
           placeholder="选择日期"/>
       </el-form-item>
+      <el-form-item label="支付开通状态">
+        <el-select v-model="formInline.onlinePay" placeholder="请选择">
+          <el-option label="全部" value>全部</el-option>
+          <el-option label="未开通" value="0"/>
+          <el-option label="已开通" value="1"/>
+        </el-select>
+      </el-form-item>
       <el-form-item label="审核状态">
         <el-select v-model="formInline.auditStatus" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
@@ -91,7 +98,6 @@
         <template slot-scope="scope">
           <span v-if="scope.row.onlinePay=='0'" class="com-red-color">未开通</span>
           <span v-if="scope.row.onlinePay=='1'" class="com-green-color">已开通</span>
-          <span v-if="scope.row.onlinePay=='2'" class="com-yellow-color">未设置</span>
         </template>
       </el-table-column>
       <el-table-column prop="auditStatus" width="160" label="审核状态" align="center">
