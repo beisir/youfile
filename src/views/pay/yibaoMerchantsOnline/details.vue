@@ -56,11 +56,34 @@
         <el-form-item label="商户经营范围：" prop="merchantScope">
           <el-input :readonly="readonly" v-model="merchantVOData.merchantScope"/>
         </el-form-item>
-        <el-form-item label="商户一级分类：">
-          <el-input :readonly="readonly" v-model="merchantVOData.firstCategory"/>
+        <el-form-item label="商户一级分类" prop="firstCategory">
+          <el-select
+            :disabled="readonly"
+            v-model="merchantVOData.firstCategory"
+            placeholder="请选择"
+            @change="choseClassone($event)"
+          >
+            <el-option
+              v-for="item in classOne"
+              :label="item.industryName"
+              :value="item.industryCode"
+              :key="item.id"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="商户二级分类：">
-          <el-input :readonly="readonly" v-model="merchantVOData.secondCategory"/>
+        <el-form-item label="商户二级分类" prop="secondCategory">
+          <el-select
+            :disabled="readonly"
+            v-model="merchantVOData.secondCategory"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in classTwo"
+              :label="item.industryName"
+              :value="item.industryCode"
+              :key="item.id"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="详细地址：" prop="address">
           <el-input :readonly="readonly" v-model="merchantVOData.address"/>
@@ -404,6 +427,10 @@ import {
   getSmallbankList,
   getImgUrl
 } from '@/api/merchant'
+import {
+  getClssOne,
+  getClssTwo
+} from '@/api/commonApi'
 import { yeepayRegister } from '@/api/pay'
 export default {
   data() {
@@ -413,6 +440,9 @@ export default {
       readonly: true,
       activeName: 'first',
       listLoading: false,
+      // 分类
+      classOne: [],
+      classTwo: [],
       // 校验规则
       rules: {
         linkman: [
@@ -602,6 +632,20 @@ export default {
     this.getProvinceListData()
   },
   methods: {
+    getClassOne() {
+      getClssOne().then(res => {
+        this.classOne = res.data
+      })
+    },
+    getClassTwo(code) {
+      getClssTwo({ parentCode: code }).then(res => {
+        this.classTwo = res.data
+      })
+    },
+    choseClassone(e) {
+      this.getClassTwo(e)
+      this.merchantVOData.secondCategory = ''
+    },
     uploadDisabled: function() {
       return this.imagelist.length > 0
     },
@@ -840,6 +884,11 @@ export default {
         }
         this.merchantVOData = obj
         this.merchantNumber = response.data.merchantNumber
+
+        this.getClassOne()
+        if (obj.firstCategory) {
+          this.getClassTwo(obj.firstCategory)
+        }
       })
     },
     eidthData() {

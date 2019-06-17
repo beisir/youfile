@@ -35,7 +35,7 @@
         </el-form-item>
         <el-form-item label="商户一级分类" prop="firstCategory">
           <el-select
-            :readonly="readonly"
+            :disabled="readonly"
             v-model="merchantVOData.firstCategory"
             placeholder="请选择"
             @change="choseClassone($event)"
@@ -50,7 +50,7 @@
         </el-form-item>
         <el-form-item label="商户二级分类" prop="secondCategory">
           <el-select
-            :readonly="readonly"
+            :disabled="readonly"
             v-model="merchantVOData.secondCategory"
             placeholder="请选择"
           >

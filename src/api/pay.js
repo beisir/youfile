@@ -6,6 +6,13 @@ export function getMerchantList(params) {
     params
   })
 }
+export function getRegisterMerchantList(params) {
+  return request({
+    url: '/register/merchant/noRegister/list',
+    method: 'get',
+    params
+  })
+}
 export function getMerchantDetails(params) {
   return request({
     url: '/register/merchant/' + params,
