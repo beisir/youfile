@@ -20,14 +20,14 @@
             <el-option v-for="item in mallList" :key="item.code" :label="item.name" :value="item.code"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="提交开始时间">
+        <el-form-item label="通过开始时间">
           <el-date-picker
             v-model="formInline.beginDate"
             value-format="yyyy-MM-dd HH:mm:ss"
             type="datetime"
           />
         </el-form-item>
-        <el-form-item label="提交结束时间">
+        <el-form-item label="通过结束时间">
           <el-date-picker
             v-model="formInline.endDate"
             value-format="yyyy-MM-dd HH:mm:ss"
@@ -62,6 +62,23 @@
         <el-table-column type="index" width="50" label="序号" align="center"/>
         <el-table-column prop="requestNumber" width="200" label="入网请求编号" align="center"/>
         <el-table-column prop="merchantNumber" width="200" label="商户编号" align="center"/>
+        <el-table-column prop="merchantName" width="160" label="商户名称" align="center"/>
+        <el-table-column prop="mallName" width="160" label="商贸云" align="center"/>
+        <el-table-column prop="linkman" width="160" label="联系人" align="center"/>
+        <el-table-column prop="linkmanPhone" width="160" label="联系电话" align="center"/>
+        <el-table-column prop="merchantType" width="160" label="商户类型" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.merchantType=='1'">批发商</span>
+            <span v-if="scope.row.merchantType=='2'">零售商</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="merchantCharacter" width="160" label="商户性质" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.merchantCharacter=='1'">个人</span>
+            <span v-if="scope.row.merchantCharacter=='2'">个体</span>
+            <span v-if="scope.row.merchantCharacter=='3'">企业</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="thirdParentMerchantNumber"
           width="200"
@@ -181,6 +198,7 @@
         <el-table-column type="index" width="50" label="序号" align="center"/>
         <el-table-column prop="merchantNumber" width="160" label="商户编号" align="center"/>
         <el-table-column prop="merchantName" width="160" label="商户名称" align="center"/>
+        <el-table-column prop="mallName" width="160" label="商贸云" align="center"/>
         <el-table-column prop="linkman" width="160" label="联系人" align="center"/>
         <el-table-column prop="linkmanPhone" width="160" label="联系电话" align="center"/>
         <el-table-column prop="merchantType" width="160" label="商户类型" align="center">
