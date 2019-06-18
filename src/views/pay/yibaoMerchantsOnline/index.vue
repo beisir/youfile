@@ -7,17 +7,46 @@
     <div v-show="alreadyIn">
       <el-form :inline="true" :model="formInline" class="demo-form-inline border-form">
         <el-form-item label="商户编号">
-          <el-input v-model="formInline.merchantNumber" placeholder="请输入商户编号"/>
+          <el-input v-model="formInline.merchantNumber" placeholder="请输入商户编号" clearable/>
         </el-form-item>
-        <el-date-picker
-          v-model="value6"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          format="yyyy-MM-dd HH:mm:ss"
-          value-format="yyyy-MM-dd HH:mm:ss"
-        />
+        <el-form-item label="商户手机号">
+          <el-input v-model="formInline.linkmanPhone" clearable/>
+        </el-form-item>
+        <el-form-item label="商户名称">
+          <el-input v-model="formInline.merchantName" clearable/>
+        </el-form-item>
+        <el-form-item label="商贸城">
+          <el-select v-model="formInline.mallCode" clearable>
+            <el-option v-for="item in mallList" :key="item.code" :label="item.name" :value="item.code"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="提交开始时间">
+          <el-date-picker
+            v-model="formInline.beginDate"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            type="datetime"
+          />
+        </el-form-item>
+        <el-form-item label="提交结束时间">
+          <el-date-picker
+            v-model="formInline.endDate"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            type="datetime"
+          />
+        </el-form-item>
+        <el-form-item label="商户类型" prop="merchantType">
+          <el-select v-model="formInline.merchantType" clearable>
+            <el-option label="批发商" value="1">批发商</el-option>
+            <el-option label="零售商" value="2">零售商</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="商户性质" prop="merchantCharacter">
+          <el-select v-model="formInline.merchantCharacter" clearable>
+            <el-option label="个人" value="1">个人</el-option>
+            <el-option label="个体" value="2">个体</el-option>
+            <el-option label="企业" value="3">企业</el-option>
+          </el-select>
+        </el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
         <el-button type="success" @click="exportExcel">导出</el-button>
       </el-form>
@@ -394,14 +423,6 @@ export default {
       if (this.alreadyIn) {
         this.listQuery = Object.assign(this.listQuery, this.formInline)
         this.listQuery.pageNum = 1
-        const arrData = this.value6
-        if (arrData) {
-          this.listQuery.beginDate = arrData[0]
-          this.listQuery.endDate = arrData[1]
-        } else {
-          this.listQuery.beginDate = ''
-          this.listQuery.endDate = ''
-        }
       } else {
         this.listQueryOther = Object.assign(this.listQueryOther, this.formDataOther)
         this.listQueryOther.pageNum = 1
