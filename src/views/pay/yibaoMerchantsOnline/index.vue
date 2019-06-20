@@ -320,7 +320,7 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="rowData.registerStatus === 'register_fail'" :label-width="formLabelWidth" label="失败原因">
-          <el-input v-model="rowData.remark" type="textarea" disabled="disabled" placeholder/>
+          <el-input v-model="rowData.remark" type="textarea" style="width: 350px;" placeholder/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="入网渠道">
           <el-select v-model="rowData.registerChannel" disabled="disabled" placeholder="请选择">
