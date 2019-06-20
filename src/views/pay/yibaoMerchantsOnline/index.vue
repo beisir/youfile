@@ -1,6 +1,6 @@
 <template>
   <div class="body-cont">
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+    <el-menu :default-active="activeIndex" class="tab-box" mode="horizontal" @select="handleSelect">
       <el-menu-item index="wait">待入网商户</el-menu-item>
       <el-menu-item index="already">已入网商户</el-menu-item>
     </el-menu>
@@ -580,5 +580,6 @@ export default {
 .el-dialog .el-dialog__body input {
   width: 350px;
 }
+.tab-box{margin-top: 10px; }
 </style>
 
