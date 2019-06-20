@@ -312,16 +312,15 @@
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="入网状态">
           <el-select v-model="rowData.registerStatus" disabled="disabled" placeholder="请选择">
-            <el-option label="微信支付" value="unkonown">微信支付</el-option>
+            <el-option label="未知" value="unkonown">未知</el-option>
             <el-option label="初始化" value="init">初始化</el-option>
             <el-option label="注册失败" value="register_fail">注册失败</el-option>
-            <el-option label="注册成功" value="register_success">注册成功</el-option>
             <el-option label="注册成功" value="register_success">注册成功</el-option>
             <el-option label="审核中" value="register_processing">审核中</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="rowData.registerStatus === 'regist_fail'" :label-width="formLabelWidth" label="入网状态">
-          <el-input v-model="rowData.remark" disabled="disabled" placeholder/>
+        <el-form-item v-if="rowData.registerStatus === 'register_fail'" :label-width="formLabelWidth" label="失败原因">
+          <el-input v-model="rowData.remark" type="textarea" disabled="disabled" placeholder/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="入网渠道">
           <el-select v-model="rowData.registerChannel" disabled="disabled" placeholder="请选择">
