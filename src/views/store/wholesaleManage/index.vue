@@ -19,6 +19,9 @@
           <el-option v-for="item in mallList" :label="item.name" :value="item.code" :key="item.code">{{ item.name }}</el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="商户编号">
+        <el-input v-model="formInline.merchantNumber" placeholder="商户编号"/>
+      </el-form-item>
       <el-form-item label="店铺性质">
         <el-select v-model="formInline.storeNature" placeholder="请选择">
           <el-option label="全部" value>全部</el-option>
