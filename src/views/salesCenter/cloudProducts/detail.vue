@@ -3,6 +3,12 @@
   <div v-if="showPage" style="padding:30px;">
     <el-form ref="form" :inline="true" :model="msg" label-position="right" label-width="180px">
       <el-row>
+        <el-form-item label="店名">
+          <el-input v-model="msg.yunStore.name" disabled/>
+        </el-form-item>
+        <el-form-item label="购买产品">
+          <el-input v-model="msg.yunStoreGoodsSnapshot.classifyName" disabled/>
+        </el-form-item>
         <el-form-item label="购买人">
           <el-input v-model="msg.userInfoVO.nickName" disabled/>
         </el-form-item>
