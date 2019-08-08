@@ -55,10 +55,12 @@
           <el-input v-model="msg.orderNumber" disabled/>
         </el-form-item>
 
-        <el-form-item label="交易单号">
+        <!-- <el-form-item label="交易单号">
           <el-input v-model="msg.payVoucher" disabled/>
+        </el-form-item> -->
+        <el-form-item label="交易流水号">
+          <el-input v-model="msg.paymentNumber" disabled/>
         </el-form-item>
-
         <el-form-item label="下单时间">
           <el-date-picker v-model="msg.createDate" type="date" placeholder="无" readonly/>
         </el-form-item>
